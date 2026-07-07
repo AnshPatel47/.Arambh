@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import React from "react";
@@ -20,6 +21,20 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
 });
+=======
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/home/hero/Hero";
+
+export default function Page() {
+  return (
+    <main className="flex min-h-screen flex-col overflow-x-hidden bg-white">
+      <Navbar />
+      <Hero />
+    </main>
+  );
+}
+import Image from "next/image";
+>>>>>>> e2b361e (Created Home page)
 
 export default function Home() {
   return (
