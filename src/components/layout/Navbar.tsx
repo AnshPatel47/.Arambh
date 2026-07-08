@@ -6,10 +6,9 @@ import { ChevronDown } from "lucide-react";
 
 export default function Navbar() {
   return (
-    
     <header className="fixed top-0 left-0 right-0 z-50 w-full flex justify-center pt-4 px-4 bg-white/75 backdrop-blur-md transition-all">
       
-    
+      {/* Navbar Container with exact Figma measurements */}
       <nav
         className="
           flex 
@@ -30,8 +29,10 @@ export default function Navbar() {
           borderRadius: "16px",
         }}
       >
+        {/* Logo Link Wrapper */}
         <Link href="/" className="flex items-center gap-3 group">
           
+          {/* Logo container using your logo.svg file */}
           <div className="relative h-[28px] w-[28px] shrink-0">
             <Image
               src="/images/logo.svg" 
@@ -42,19 +43,26 @@ export default function Navbar() {
             />
           </div>
 
+          {/* Vertical brand title stack - Enforced DM Sans */}
           <div className="flex flex-col justify-center select-none" style={{ width: "150px" }}>
-            <span className="text-[13px] font-bold leading-tight tracking-[0.03em] text-[#1F1F1F] whitespace-nowrap">
+            <span 
+              className="text-[13px] font-bold leading-tight tracking-[0.03em] text-[#1F1F1F] whitespace-nowrap"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
               ARAMBH ADVISORY
             </span>
-            <span className="text-[9px] font-semibold tracking-[0.08em] text-neutral-400 uppercase whitespace-nowrap mt-0.5">
+            <span 
+              className="text-[9px] font-semibold tracking-[0.08em] text-neutral-400 uppercase whitespace-nowrap mt-0.5"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
               SERVICES LLP
             </span>
           </div>
           
         </Link>
 
-        {/* Navigation Routes */}
-        <div className="flex items-center gap-6">
+        {/* Navigation Routes - Enforced DM Sans */}
+        <div className="flex items-center gap-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           <Link href="/consulting-services" className="text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
             Consulting Services
           </Link>
@@ -69,12 +77,12 @@ export default function Navbar() {
           </Link>
           
           <Link href="/contact" className="text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
-            Contact
+            Contact Us
           </Link>
         </div>
 
-        {/* Action Button */}
-        <div>
+        {/* Action Button - Enforced DM Sans */}
+        <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
           <Link 
             href="/schedule" 
             className="rounded-full bg-black px-5 py-2.5 text-xs font-semibold text-white hover:bg-neutral-800 transition shadow-sm inline-block"

@@ -3,14 +3,12 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll"; 
-import { Search } from "lucide-react"; 
+import { Search } from "lucide-react";
 import { services } from "@/constants/hero";
 import ServiceCard from "./ServiceCard";
 
 export default function ServicesSlider() {
   const [searchQuery, setSearchQuery] = useState("");
-  
- 
   const tags = ["Bookkeeper", "Tax Preparer", "Security", "Process"];
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -34,65 +32,65 @@ export default function ServicesSlider() {
     }
   }, [emblaApi]);
 
-
   const filteredServices = services.filter((service) =>
     service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     service.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="flex h-full min-h-0 flex-col rounded-[32px] border border-[#E8E1D8] bg-white p-8 md:p-10">
+    <div 
+      className="flex h-full min-h-0 flex-col p-8 md:p-10 md:pl-16"
+      style={{ fontFamily: "'DM Sans', sans-serif" }} // FIX 2: All text defaults to DM Sans
+    >
       
       {/* Header Info */}
       <div>
-<div 
-  className="inline-flex items-center gap-2 rounded-full bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-[0.3em] text-neutral-600 shadow-sm border border-[#E8E1D8]"
-  style={{
-    height: "29px",
-    fontFamily: "'DM Sans', sans-serif",
-  }}
->
-  <span className="h-2 w-2 rounded-full bg-[#333333]" />
-  Services
-</div>
+        {/* FIX 1: Badge updated to bg-[#F6F4F0], dot bg-[#333333], and DM Sans */}
+        <div 
+          className="inline-flex items-center gap-2 rounded-full border border-[#E8E1D8] bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-wider text-neutral-500"
+          style={{
+            height: "29px",
+            fontFamily: "'DM Sans', sans-serif",
+          }}
+        >
+          <span className="h-2 w-2 rounded-full bg-[#333333]" />
+          Services
+        </div>
 
-        <h2 className="mt-3 text-xl font-semibold leading-snug text-[#1F1F1F]">
+        <h2 
+          className="mt-3 text-xl font-semibold leading-snug text-[#1F1F1F]"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
           Everything Your Business Needs Under One Roof
         </h2>
       </div>
 
-  
-<div className="mt-5 w-full">
-  <div 
-    className="
-      relative 
-      flex 
-      w-full 
-      items-center 
-      rounded-2xl 
-      bg-[#F4F2EE] 
-      p-2 
-      /* The 3D Trick: Stronger top inset shadow + light bottom border highlight */
-      shadow-[inset_0_4px_6px_rgba(0,0,0,0.12),inset_0_1px_3px_rgba(0,0,0,0.2)] 
-      border-t border-black/10
-      border-b border-white
-    "
-  >
-    <input
-      type="text"
-      placeholder="e.g. bookkeeper, tax preparer, compliance..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      className="w-full bg-transparent px-4 py-2.5 text-sm text-[#090909] placeholder-neutral-400 outline-none"
-    />
-    
-   
-    <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#43413c] text-white shadow-md transition-transform active:scale-95 hover:bg-[#0b0b0b]">
-      <Search size={18} />
-    </button>
-  </div>
+      {/* FIX 3: Ultimate 3D Indented Search Bar Container */}
+      <div className="mt-5 w-full">
+        <div 
+          className="relative flex w-full items-center rounded-2xl bg-[#F2EFEA] p-2 border-t border-black/15 border-b border-white"
+          style={{
+            /* Stronger dual-inset layers simulating a real geometric step-down cutout */
+            boxShadow: "inset 0 4px 6px rgba(0,0,0,0.14), inset 0 1px 3px rgba(0,0,0,0.22)"
+          }}
+        >
+          <input
+            type="text"
+            placeholder="e.g. bookkeeper, tax preparer, compliance..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-transparent px-4 py-2.5 text-sm text-[#1F1F1F] placeholder-neutral-400 outline-none"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          />
+          
+          <button 
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1B2A4A] text-white shadow-md transition-transform active:scale-95 hover:bg-[#111C33]"
+          >
+            <Search size={18} />
+          </button>
+        </div>
 
- 
+        {/* Filter Pills Row */}
         <div className="mt-3 flex flex-wrap gap-2">
           {tags.map((tag) => (
             <button
@@ -103,6 +101,7 @@ export default function ServicesSlider() {
                   ? "border-[#0F4C3A] bg-[#0F4C3A]/10 text-[#0F4C3A]"
                   : "border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
               }`}
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               {tag}
             </button>
@@ -110,22 +109,22 @@ export default function ServicesSlider() {
         </div>
       </div>
 
-      {/* For Embla Slider */}
-<div className="mt-6 w-full h-[280px]" style={{ touchAction: "pan-y" }}>
-  <div className="embla h-full w-full overflow-hidden" ref={emblaRef}>
-    <div className="embla__container flex h-full flex-nowrap items-stretch ml-[-24px]">
-      {(filteredServices.length > 0 ? filteredServices : services).map((service) => (
-        <div
-          className="embla__slide h-full shrink-0 min-w-0 pl-6"
-          key={service.id}
-          style={{ flex: "0 0 544px" }}
-        >
-          <ServiceCard service={service} />
+      {/* Embla Slider Container */}
+      <div className="mt-6 w-full h-[280px]" style={{ touchAction: "pan-y" }}>
+        <div className="embla h-full w-full overflow-hidden" ref={emblaRef}>
+          <div className="embla__container flex h-full flex-nowrap items-stretch ml-[-24px]">
+            {(filteredServices.length > 0 ? filteredServices : services).map((service) => (
+              <div
+                className="embla__slide h-full shrink-0 min-w-0 pl-6"
+                key={service.id}
+                style={{ flex: "0 0 544px" }}
+              >
+                <ServiceCard service={service} />
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+      </div>
 
     </div>
   );
