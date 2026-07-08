@@ -40,12 +40,11 @@ export default function ServicesSlider() {
   return (
     <div 
       className="flex h-full min-h-0 flex-col p-8 md:p-10 md:pl-16"
-      style={{ fontFamily: "'DM Sans', sans-serif" }} // FIX 2: All text defaults to DM Sans
+      style={{ fontFamily: "'DM Sans', sans-serif" }} 
     >
       
       {/* Header Info */}
       <div>
-        {/* FIX 1: Badge updated to bg-[#F6F4F0], dot bg-[#333333], and DM Sans */}
         <div 
           className="inline-flex items-center gap-2 rounded-full border border-[#E8E1D8] bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-wider text-neutral-500"
           style={{
@@ -65,12 +64,11 @@ export default function ServicesSlider() {
         </h2>
       </div>
 
-      {/* FIX 3: Ultimate 3D Indented Search Bar Container */}
       <div className="mt-5 w-full">
         <div 
           className="relative flex w-full items-center rounded-2xl bg-[#F2EFEA] p-2 border-t border-black/15 border-b border-white"
           style={{
-            /* Stronger dual-inset layers simulating a real geometric step-down cutout */
+          
             boxShadow: "inset 0 4px 6px rgba(0,0,0,0.14), inset 0 1px 3px rgba(0,0,0,0.22)"
           }}
         >
