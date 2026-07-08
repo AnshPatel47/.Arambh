@@ -54,14 +54,19 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="mt-4 text-xl font-semibold leading-snug text-[#1F1F1F]">
-          {service.title}
-        </h3>
+       <h3 
+  className="mt-4 text-lg font-semibold leading-tight text-[#1F1F1F]"
+  style={{ fontFamily: "'DM Sans', sans-serif" }}
+>
+  {service.title}
+</h3>
 
-        {/* Description */}
-        <p className="mt-2 text-sm leading-relaxed text-[#666666]">
-          {service.description}
-        </p>
+<p 
+  className="mt-2 text-sm leading-relaxed text-[#666666] line-clamp-3"
+  style={{ fontFamily: "'DM Sans', sans-serif" }}
+>
+  {service.description}
+</p>
       </div>
 
       <button

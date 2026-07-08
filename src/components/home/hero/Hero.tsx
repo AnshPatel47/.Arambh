@@ -8,22 +8,26 @@ export default function Hero() {
     <section className="w-full bg-[#FCFBF9] pt-32 pb-12 md:pb-20">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 items-stretch min-h-[580px]">
+        {/* THE FIX: Replaced custom layout with md:divide-x division layout to make that clean vertical line! */}
+        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[580px] divide-y md:divide-y-0 md:divide-x divide-[#E8E1D8]">
           
-          <div className="flex flex-col items-center justify-center rounded-[32px] border border-[#E8E1D8] bg-white p-8 md:p-10">
+          {/* Left Column Section - REMOVED: rounded, borders, shadows, and background */}
+          <div className="flex flex-col items-center justify-center p-8 md:p-10 md:pr-16">
             
+            {/* Top Content Group */}
             <div className="flex flex-col items-center w-full flex-1 justify-center">
-             {/* Badge */}
-<div 
-  className="inline-flex items-center gap-2 rounded-full border border-[#E8E1D8] bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-wider text-neutral-500"
-  style={{
-    height: "29px",
-    fontFamily: "'DM Sans', sans-serif",
-  }}
->
-  <span className="h-2 w-2 rounded-full bg-[#333333]" />
-  Trusted by 350+ Businesses
-</div>
+              {/* Badge */}
+              <div 
+                className="inline-flex mx-auto w-fit items-center gap-2 rounded-full border border-[#E8E1D8] bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-wider text-neutral-500"
+                style={{
+                  height: "29px",
+                  fontFamily: "'DM Sans', sans-serif",
+                }}
+              >
+                <span className="h-2 w-2 rounded-full bg-[#333333]" />
+                Trusted by 350+ Businesses
+              </div>
+
               {/* Headings & Text */}
               <h1 
                 className="mt-6 text-[40px] font-semibold text-[#1F1F1F] tracking-tight text-center"
@@ -50,9 +54,8 @@ export default function Hero() {
               </p>
             </div>
 
+            {/* Bottom Content Group (Buttons + Features) */}
             <div className="flex-1 w-full flex flex-col items-center justify-center pt-6">
-              
-              {/* Buttons Wrapper */}
               <div className="flex flex-wrap gap-4 justify-center w-full">
                 <button className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:bg-neutral-800 transition">
                   Book a Free Consultation
@@ -64,8 +67,6 @@ export default function Hero() {
 
               {/* Features checklist */}
               <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full">
-                
-                {/* Feature 1 */}
                 <div className="flex items-center gap-2.5">
                   <div className="relative h-5 w-5 shrink-0">
                     <Image
@@ -80,7 +81,6 @@ export default function Hero() {
                   </span>
                 </div>
 
-                {/* Feature 2 */}
                 <div className="flex items-center gap-2.5">
                   <div className="relative h-5 w-5 shrink-0">
                     <Image
@@ -94,12 +94,12 @@ export default function Hero() {
                     Transparent Process
                   </span>
                 </div>
-
               </div>
             </div>
             
           </div>
 
+          {/* Right Column Section */}
           <ServicesSlider />
 
         </div>
