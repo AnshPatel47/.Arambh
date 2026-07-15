@@ -1,109 +1,98 @@
 "use client";
 
 import Image from "next/image";
-import ServicesSlider from "./ServicesSlider";
+import SchemesSlider from "./SchemesSlider"; 
 
 export default function Hero() {
   return (
-    <section className="w-full bg-[#FCFBF9] pt-32 pb-12 md:pb-20">
-      <div className="mx-auto max-w-7xl px-4 md:px-6">
-        
-        {/* THE FIX: Replaced custom layout with md:divide-x division layout to make that clean vertical line! */}
-        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[580px] divide-y md:divide-y-0 md:divide-x divide-[#E8E1D8]">
-          
-          {/* Left Column Section - REMOVED: rounded, borders, shadows, and background */}
-          <div className="flex flex-col items-center justify-center p-8 md:p-10 md:pr-16">
-            
-            {/* Top Content Group */}
-            <div className="flex flex-col items-center w-full flex-1 justify-center">
-              {/* Badge */}
-              <div 
-                className="inline-flex mx-auto w-fit items-center gap-2 rounded-full border border-[#E8E1D8] bg-[#F6F4F0] px-4 py-0 text-xs font-semibold uppercase tracking-wider text-neutral-500"
-                style={{
-                  height: "29px",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
-                <span className="h-2 w-2 rounded-full bg-[#333333]" />
-                Trusted by 350+ Businesses
-              </div>
+    <section
+      className="relative w-full pt-[72px] pb-10 overflow-hidden flex items-center min-h-[480px]"
+      style={{ background: "#FBF7EE" }}
+    >
+      {/* Centered vertical line spanning to hero ends */}
+      <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-[#E6DFD4] -translate-x-1/2 z-0" />
 
-              {/* Headings & Text */}
-              <h1 
-                className="mt-6 text-[40px] font-semibold text-[#1F1F1F] tracking-tight text-center"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 600,
-                  lineHeight: '120%',       
-                  letterSpacing: '-0.02em', 
-                }}
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-20 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-12 w-full">
+
+          {/* ══ LEFT PANEL ══ */}
+          <div className="lg:col-span-6 flex flex-col items-start text-left w-full lg:max-w-[500px] lg:ml-auto lg:mr-8 reveal">
+
+            <h1
+              className="text-[#131313] tracking-[-0.04em] rv-up"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontSize: "clamp(2rem, 3.2vw, 3.2rem)",
+                fontWeight: 500,
+                lineHeight: "1.05",
+                maxWidth: "100%",
+              }}
+            >
+              <span>Your Trusted Startup &amp;</span>
+              <br />
+              <span>Business Growth Partner</span>
+            </h1>
+
+            {/* Description */}
+            <p
+              className="mt-5 text-[#666665] max-w-[460px] rv-up"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "1.6",
+              }}
+            >
+              Whether you&apos;re launching your first startup or growing an
+              established MSME, Arambh Advisory simplifies every step with
+              expert guidance and end-to-end consulting.
+            </p>
+
+            {/* CTA buttons */}
+            <div className="mt-6 flex flex-wrap gap-3 w-full rv-up">
+              <button
+                className="rounded-full bg-[#131313] px-5 py-2.5 text-[13px] text-white font-semibold transition-all hover:bg-black hover:shadow-lg hover:-translate-y-[1px] active:scale-95 cursor-pointer"
+                style={{ fontFamily: "var(--font-dm), sans-serif" }}
               >
-                Your Trusted Startup & Business Growth Partner
-              </h1>
-              
-              <p 
-                className="mt-4 text-[16px] font-normal text-[#666666] text-center"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 400,
-                  lineHeight: '140%',        
-                  letterSpacing: '-0.02em',  
-                }}
+                Book a Free Consultation
+              </button>
+
+              <button
+                className="rounded-full bg-transparent border border-black px-5 py-2.5 text-[13px] text-black font-semibold transition-all hover:bg-black hover:text-white hover:shadow-lg hover:-translate-y-[1px] active:scale-95 cursor-pointer"
+                style={{ fontFamily: "var(--font-dm), sans-serif" }}
               >
-                Whether you're launching your first startup or growing an established MSME, Arambh Advisory simplifies every step with expert guidance, faster approvals, and end-to-end consulting.
-              </p>
+                Explore Services
+              </button>
             </div>
 
-            {/* Bottom Content Group (Buttons + Features) */}
-            <div className="flex-1 w-full flex flex-col items-center justify-center pt-6">
-              <div className="flex flex-wrap gap-4 justify-center w-full">
-                <button className="rounded-full bg-black px-6 py-3 text-sm font-medium text-white hover:bg-neutral-800 transition">
-                  Book a Free Consultation
-                </button>
-                <button className="rounded-full border border-[#E8E1D8] bg-white px-6 py-3 text-sm font-medium text-black hover:bg-neutral-50 transition">
-                  Explore Services
-                </button>
-              </div>
-
-              {/* Features checklist */}
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 w-full">
-                <div className="flex items-center gap-2.5">
-                  <div className="relative h-5 w-5 shrink-0">
+            {/* Trust checklist */}
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2.5 w-full rv-up">
+              {["Faster Approvals", "Transparent Process"].map((item) => (
+                <div key={item} className="flex items-center gap-2">
+                  <div className="relative h-[18px] w-[18px] shrink-0">
                     <Image
-                      src="/images/rosette-discount-check-filled.svg" 
-                      alt="Checkmark icon"
+                      src="/images/rosette-discount-check-filled.svg"
+                      alt="check"
                       fill
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-base font-medium text-[#1F1F1F]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    Faster Approvals
+                  <span
+                    className="text-[13px] font-medium text-[#444444]"
+                    style={{ fontFamily: "var(--font-dm), sans-serif" }}
+                  >
+                    {item}
                   </span>
                 </div>
-
-                <div className="flex items-center gap-2.5">
-                  <div className="relative h-5 w-5 shrink-0">
-                    <Image
-                      src="/images/rosette-discount-check-filled.svg" 
-                      alt="Checkmark icon"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <span className="text-base font-medium text-[#1F1F1F]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    Transparent Process
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
-            
           </div>
 
-          {/* Right Column Section */}
-          <ServicesSlider />
-
+          {/* ══ RIGHT PANEL ══ */}
+          <div className="lg:col-span-6 w-full lg:mr-auto lg:ml-0 reveal">
+            <SchemesSlider />
+          </div>
         </div>
-
       </div>
     </section>
   );

@@ -24,10 +24,10 @@ export default function Navbar() {
   return (
 
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 w-full flex justify-center transition-all duration-500 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full flex justify-center transition-all duration-500 ease-in-out bg-white ${
         isScrolled 
-          ? "pt-0 bg-white/80 backdrop-blur-md border-b border-neutral-200/60 shadow-sm" 
-          : "pt-4 bg-transparent"
+          ? "pt-0 backdrop-blur-md border-b border-neutral-200/60 shadow-sm" 
+          : "pt-4"
       }`}
     >
       
@@ -84,20 +84,20 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          <Link href="/consulting-services" className="text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
+          <Link href="/consulting-services" className="text-[13px] font-medium text-neutral-600 hover:text-black transition-colors">
             Consulting Services
           </Link>
           
-          <button className="flex items-center gap-1 text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
+          <button className="flex items-center gap-1 text-[13px] font-medium text-neutral-600 hover:text-black transition-colors">
             Resources
-            <ChevronDown size={14} className="text-neutral-400" />
+            <ChevronDown size={13} className="text-neutral-400" />
           </button>
 
-          <Link href="/about" className="text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
+          <Link href="/about" className="text-[13px] font-medium text-neutral-600 hover:text-black transition-colors">
             About
           </Link>
           
-          <Link href="/contact" className="text-[14px] font-medium text-neutral-600 hover:text-black transition-colors">
+          <Link href="/contact" className="text-[13px] font-medium text-neutral-600 hover:text-black transition-colors">
             Contact
           </Link>
         </div>
@@ -105,7 +105,7 @@ export default function Navbar() {
         <div style={{ fontFamily: "'DM Sans', sans-serif" }} className="shrink-0">
           <Link 
             href="/schedule" 
-            className="rounded-full bg-black px-5 py-2.5 text-xs font-semibold text-white hover:bg-neutral-800 transition shadow-sm inline-block"
+            className="rounded-full bg-black px-4 py-2 text-[11px] font-semibold text-white hover:bg-neutral-800 transition shadow-sm inline-block"
           >
             Schedule a Call
           </Link>
