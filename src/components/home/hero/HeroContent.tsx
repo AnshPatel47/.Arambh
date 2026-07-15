@@ -46,7 +46,7 @@ export default function HeroContent() {
       <h1
         className="
         mt-8
-        text-5xl
+        text-6xl
         font-DM Sans
         leading-tight
         text-[#1F1F1F]
@@ -67,7 +67,7 @@ export default function HeroContent() {
         text-[#666]
       "
       >
-        Whether you're launching a startup or scaling an existing
+        Whether you&apos;re launching a startup or scaling an existing
         business, Arambh Advisory provides registration,
         government funding, compliance and strategic consulting
         under one roof.

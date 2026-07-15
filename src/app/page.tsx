@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Footer from "./components/Footer";
 import { DM_Sans } from "next/font/google";
@@ -14,6 +13,12 @@ import {
   ArrowRight,
   CheckCircle2
 } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/home/hero/Hero";
+import HeroStats from "@/components/home/hero/HeroStats";
+import Services from "@/components/home/services/Services";
+import dynamic from "next/dynamic";
+import Image from "next/image";
 
 // Configure DM Sans
 const dmSans = DM_Sans({
@@ -21,22 +26,83 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
 });
-=======
-import Navbar from "@/components/layout/Navbar";
-import Hero from "@/components/home/hero/Hero";
 
-export default function Page() {
+const SmartIndia = dynamic(() => import("@/components/home/smartindia/SmartIndia"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[600px] bg-[#FBF7EE] animate-pulse rounded-3xl" />
+});
+
+const Testimonials = dynamic(() => import("@/components/home/testimonials/testimonials/Testimonials"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[400px] bg-white animate-pulse rounded-3xl" />
+});
+
+const CaseStudies = dynamic(() => import("@/components/home/case_studies/CaseStudies"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[500px] bg-white animate-pulse rounded-3xl" />
+});
+
+const Blogs = dynamic(() => import("@/components/home/blogs/Blogs"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[500px] bg-[#FFF8F6] animate-pulse rounded-3xl" />
+});
+
+const FAQ = dynamic(() => import("@/components/home/faq/FAQ"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[400px] bg-white animate-pulse rounded-3xl" />
+});
+
+function PageKP() {
   return (
-    <main className="flex min-h-screen flex-col overflow-x-hidden bg-white">
+    <main className="flex min-h-screen flex-col overflow-x-clip bg-white">
       <Navbar />
       <Hero />
+      <HeroStats />
+      <Services />
+      <SmartIndia />
+      <Testimonials />
+      <CaseStudies />
+      <Blogs />
+      <FAQ />
     </main>
   );
 }
-import Image from "next/image";
->>>>>>> e2b361e (Created Home page)
 
 export default function Home() {
+  const [view, setView] = useState<"modular" | "original">("modular");
+
+  return (
+    <>
+      {/* Floating view toggle to switch between modular and original versions */}
+      <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-2.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-neutral-200/80">
+        <button
+          onClick={() => setView("modular")}
+          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 ${
+            view === "modular" 
+              ? "bg-[#BD8E32] text-white shadow-sm" 
+              : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+          }`}
+        >
+          KP Version (Modular)
+        </button>
+        <button
+          onClick={() => setView("original")}
+          className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 ${
+            view === "original" 
+              ? "bg-[#BD8E32] text-white shadow-sm" 
+              : "text-neutral-600 hover:text-black hover:bg-neutral-100"
+          }`}
+        >
+          My-Arambh Version
+        </button>
+      </div>
+
+      {view === "modular" ? <PageKP /> : <HomeOriginal />}
+    </>
+  );
+}
+
+function HomeOriginal() {
   return (
     <div className={`min-h-screen bg-[#F8F9FA] text-zinc-900 antialiased flex flex-col justify-between ${dmSans.className}`}>
       
