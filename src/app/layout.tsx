@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/app/components/Footer";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -34,7 +36,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={dmSans.className}>
+        <Navbar />
         <ScrollRevealProvider>{children}</ScrollRevealProvider>
+        <Footer />
       </body>
     </html>
   );
