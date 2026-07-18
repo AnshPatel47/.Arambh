@@ -24,4 +24,46 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .container {
+  padding: 2rem;
 }
+
+.heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.verticalList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* space between items */
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.image {
+  border-radius: 8px;
+}
+
+}
+
+
