@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
 import {
   Search,
   X,
@@ -10,13 +9,8 @@ import {
   Landmark,
   CheckCircle2,
   ChevronRight,
-  Award,
   Globe,
   TrendingUp,
-  FileCheck,
-  Building2,
-  Users,
-  Compass,
   FileText,
   Mail,
   Info,
