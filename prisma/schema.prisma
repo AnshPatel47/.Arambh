@@ -1,13 +1,106 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
-datasource db {
-  provider = "postgresql"
+generator client {
+  provider = "prisma-client-js"
+}
+
+// USERS & AUTHENTICATION
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String   // Store hashed passwords here
+  role      Role     @default(USER) // Assign ADMIN to permit editing/deleting
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// SERVICES MODEL
+
+model Service {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique 
+  title       String
+  description String
+  category    String   @default("General")
+  price       String?
+  features    String[]
+  icon        String?  @default("Briefcase")
+  image       String?  // e.g. "assets/images/service_registration.png"
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+model ServiceDetail {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug            String   @unique // URL matching parameter
+  title           String  
+  titleGradient   String?  
+  categoryBadge   String   @default("Complete Guide")
+  heroDescription String
+  heroBgImage     String   @default("/assets/images/br2.webp")
+
+  // Introduction Section
+  introHeading    String   @default("Introduction")
+  introLead       String   
+  introBody       String   
+
+  // Key Benefits Section
+  benefits        BenefitItem[]
+
+  // Requirements & Documents
+  eligibility     String[] 
+  documents       String[] 
+
+  // Registration Process Steps
+  processSteps    ProcessStep[]
+
+  // Frequently Asked Questions
+  faqs            FAQItem[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Composite/Embedded Types for MongoDB
+type BenefitItem {
+  title       String
+  description String
+  iconName    String?
+}
+
+type ProcessStep {
+  stepNumber  Int
+  title       String
+  description String
+  isFinal     Boolean @default(false)
+}
+
+type FAQItem {
+  question String
+  answer   String
+}
+
+// 4. FEATURES MODEL
+model Feature {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  image       String
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

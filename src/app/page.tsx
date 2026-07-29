@@ -123,7 +123,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 3. FEATURES STATS SECTION ── */}
+      {/* ─ FEATURES STATS SECTION ── */}
       <section className="bg-white py-12 border-b border-zinc-200">
         <div className="max-w-[1440px] mx-auto px-6 sm:px-12 md:px-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -147,132 +147,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 4. KEY SERVICES SUMMARY SECTION ── */}
-      <section className="py-24 px-6 sm:px-12 md:px-16 bg-[#F8F9FA]">
-        <div className="max-w-[1440px] mx-auto text-center">
-          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-4 rounded-full border border-zinc-300 bg-white text-zinc-900 font-semibold tracking-widest text-xs uppercase shadow-sm">
-            Core Offerings
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 tracking-tight mb-4">
-            Custom-Tailored Corporate Solutions
-          </h2>
-          <p className="text-zinc-600 max-w-xl mx-auto mb-16">
-            We guide startups, SMEs, and corporate entities through structural engineering, legal compliance, and tax incentives.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Service 1 */}
-            <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group flex flex-col items-start text-left">
-              <div className="w-12 h-12 rounded-2xl bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Building2 className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900 mb-3">Business Incorporation</h3>
-              <p className="text-zinc-600 text-sm leading-relaxed mb-6">
-                Incorporate a Private Limited, One Person Company, or LLP structure. We handle name checks, MoA/AoA filings, and fast-track registry approvals.
-              </p>
-              <Link href="/services" className="text-sm font-semibold text-[#BD8E32] hover:text-[#a67c29] flex items-center gap-2 mt-auto">
-                Learn More <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Service 2 */}
-            <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group flex flex-col items-start text-left">
-              <div className="w-12 h-12 rounded-2xl bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Award className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900 mb-3">Startup India Recognition</h3>
-              <p className="text-zinc-600 text-sm leading-relaxed mb-6">
-                Secure formal DPIIT certificates to unlock 3-year income tax exemptions (80-IAC), 80% patent filing rebates, and public tender relaxations.
-              </p>
-              <Link href="/services" className="text-sm font-semibold text-[#BD8E32] hover:text-[#a67c29] flex items-center gap-2 mt-auto">
-                Learn More <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* Service 3 */}
-            <div className="bg-white p-8 rounded-3xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group flex flex-col items-start text-left">
-              <div className="w-12 h-12 rounded-2xl bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Landmark className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-zinc-900 mb-3">Government Funding</h3>
-              <p className="text-zinc-600 text-sm leading-relaxed mb-6">
-                Identify, prepare, and apply for high-value government seed funding grants (SISFS), state incentives, and collateral-free credit lines.
-              </p>
-              <Link href="/services" className="text-sm font-semibold text-[#BD8E32] hover:text-[#a67c29] flex items-center gap-2 mt-auto">
-                Learn More <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. VALUE PROPOSITION SECTION ── */}
-      <section className="py-24 px-6 sm:px-12 md:px-16 bg-white border-t border-b border-zinc-200">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left illustration/image */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative w-full max-w-[450px] aspect-[4/3] rounded-3xl overflow-hidden border border-zinc-200 shadow-lg">
-                <img 
-                  src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=800&q=80" 
-                  alt="Centralized Corporate Dashboard" 
-                  className="w-full h-full object-cover" 
-                />
-              </div>
-            </div>
-
-            {/* Right text list */}
-            <div className="lg:col-span-7 flex flex-col items-start text-left">
-              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-4 rounded-full border border-zinc-300 bg-[#F8F9FA] text-zinc-900 font-semibold tracking-widest text-xs uppercase">
-                Why Arambh Advisory
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 tracking-tight mb-8">
-                Compliance Optimized for Modern Scale
-              </h2>
-
-              <ul className="space-y-6">
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center shrink-0 mt-1">
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-zinc-900">Expert-Led Direct Filings</h4>
-                    <p className="text-zinc-600 text-sm leading-relaxed mt-1">
-                      Our applications are direct and handled by qualified legal consultants, eliminating third-party agent errors.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center shrink-0 mt-1">
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-zinc-900">Centralized Dashboard Management</h4>
-                    <p className="text-zinc-600 text-sm leading-relaxed mt-1">
-                      Track registration milestones, certificate audits, and return schedules in a single transparent layout.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-[#BD8E32]/10 text-[#BD8E32] flex items-center justify-center shrink-0 mt-1">
-                    <CheckCircle2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-zinc-900">100% Audit Compliance Guarantee</h4>
-                    <p className="text-zinc-600 text-sm leading-relaxed mt-1">
-                      Every resolution, MoA clause, and proposal report matches latest MCA guidelines, ensuring clean due diligence.
-                    </p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
       {/* ── 6. FOOTER ── */}
+      <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>
       <Footer />
     </div>
   );

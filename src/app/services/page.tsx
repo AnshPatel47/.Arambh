@@ -12,6 +12,7 @@ import {
   Menu,
   ChevronDown
 } from "lucide-react";
+import Footer from "../components/Footer";
 
 // Configure DM Sans
 const dmSans = DM_Sans({
@@ -80,7 +81,7 @@ export default function ServicesPage() {
   // const ActiveIcon = activeService.icon; // Keeping this commented out since we are using images now
 
   return (
-    <div className={`min-h-screen bg-[#fcfcfc] pb-24 ${dmSans.className}`}>
+    <div className={`min-h-screen bg-[#ffff] ${dmSans.className}`}>
 
       {/* ── 1. HERO SECTION ── */}
       <section className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[520px] flex items-center mb-16">
@@ -95,19 +96,19 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
-          <nav className="flex items-center gap-2 text-DM sans font-semibold tracking-widest text-[#BD8E32] mb-6 uppercase" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <span className="text-zinc-900">/</span>
             <span className="text-white">Services</span>
           </nav>
           <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight leading-tight text-white mb-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-medium tracking-tight leading-tight text-white mb-4">
               Explore Our <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BD8E32] to-[#f8d08b]">
+              <span className="text-[#C2943A]">
                 Advisory Services.
               </span>
             </h1>
-            <p className="text-md sm:text-xl text-zinc-300 leading-relaxed max-w-xl">
+            <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-xl">
               From business incorporation and DPIIT startup recognition to securing government seed grants and compliance audits—we provide end-to-end support for your corporate journey.
             </p>
           </div>
@@ -120,7 +121,7 @@ export default function ServicesPage() {
         <div className="lg:hidden mb-6">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="w-full bg-white border border-gray-300 rounded-lg p-4 flex items-center justify-between text-DM sans font-semibold text-[#BD8E32]"
+            className="w-full bg-white border border-gray-300 rounded-lg p-4 flex items-center justify-between text-DM sans font-semibold text-[#C2943A]"
           >
             <div className="flex items-center gap-2">
               <Menu className="w-5 h-5" />
@@ -138,7 +139,7 @@ export default function ServicesPage() {
                     setActiveServiceId(service.id);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`w-full text-left px-4 py-3 border-b border-gray-100 last:border-0 text-DM sans ${activeServiceId === service.id ? "bg-amber-50 text-[#BD8E32] font-bold" : "text-zinc-900"
+                  className={`w-full text-left px-4 py-3 border-b border-gray-100 last:border-0 text-DM sans ${activeServiceId === service.id ? "bg-amber-50 text-[#C2943A] font-bold" : "text-zinc-900"
                     }`}
                 >
                   {service.title}
@@ -155,7 +156,7 @@ export default function ServicesPage() {
           <div className="hidden lg:block lg:col-span-4">
             <div className="sticky top-8">
               {/* Sidebar Header */}
-              <div className="bg-[#BD8E32] text-white p-6 rounded-t-xl">
+              <div className="bg-[#C2943A] text-white p-6 rounded-t-xl">
                 <h2 className="font-bold text-xl mb-1">Available Services</h2>
                 <p className="text-amber-100 text-sm">{servicesData.length} services</p>
               </div>
@@ -168,8 +169,8 @@ export default function ServicesPage() {
                     onClick={() => setActiveServiceId(service.id)}
                     className={`w-full flex items-center justify-between px-6 py-4 text-left transition-all duration-200 last:border-0 border-l-4 text-DM sans
                       ${activeServiceId === service.id
-                        ? "bg-[#faf8f5] text-[#BD8E32] font-bold border-[#BD8E32]"
-                        : "text-zinc-900 hover:bg-gray-50 hover:text-[#BD8E32] border-transparent"
+                        ? "bg-[#faf8f5] text-[#C2943A] font-bold border-[#C2943A]"
+                        : "text-zinc-900 hover:bg-gray-50 hover:text-[#C2943A] border-transparent"
                       }
                     `}
                   >
@@ -186,17 +187,17 @@ export default function ServicesPage() {
 
               {/* Text Content */}
               <div className="p-8 md:p-12 md:w-3/5 flex flex-col justify-center">
-                <h2 className="text-3xl font-bold text-[#BD8E32] mb-6 leading-tight">
+                <h2 className="text-3xl font-bold text-[#C2943A] mb-6 leading-tight">
                   {activeService.title}
                 </h2>
                 <p className="DM sans text-neutral-800 leading-relaxed text-base sm:text-lg">
                   {activeService.description}
                 </p>
                 <div className="flex flex-wrap gap-4 mt-8">
-                  <button className="bg-[#BD8E32] hover:bg-[#764A04] text-white px-6 py-3 rounded-xl text-DM sans font-semibold transition-all shadow-md cursor-pointer">
+                  <button className="bg-[#C2943A] hover:bg-[#a67c29] text-white px-6 py-3 rounded-xl text-DM sans font-semibold transition-all shadow-md cursor-pointer">
                     Consult an Expert
                   </button>
-                  <button className="border border-zinc-300 text-zinc-900 hover:border-[#BD8E32] hover:text-[#BD8E32] px-6 py-3 rounded-xl text-DM sans font-semibold transition-all cursor-pointer">
+                  <button className="border border-zinc-300 text-zinc-900 hover:border-[#C2943A] hover:text-[#C2943A] px-6 py-3 rounded-xl text-DM sans font-semibold transition-all cursor-pointer">
                     Know Details
                   </button>
                 </div>
@@ -218,10 +219,10 @@ export default function ServicesPage() {
       </div>
 
       {/* ── 3. FEATURES SECTION ── */}
-      <section className="bg-[#fafaf9] py-16 px-6 sm:px-12 md:px-16 border-t border-zinc-300 mt-20">
+      <section className="bg-[#ffff] pt-16 pb-36 md:pb-44 px-6 sm:px-12 md:px-16 border-t border-zinc-300 mt-20">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-12 text-center">
-            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-[#BD8E32]/10 text-DM sans font-bold tracking-widest text-[#BD8E32] uppercase text-xs">
+            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-[#C2943A]/10 text-DM sans font-bold tracking-widest text-[#C2943A] uppercase text-xs">
               Why Arambh
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 font-DM">Why Partner With Arambh?</h2>
@@ -275,17 +276,18 @@ export default function ServicesPage() {
       </section>
 
       {/* Side "Free Consultation" Sticky Button (Like in the reference site) */}
-      <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50">
+      {/* <div className="fixed left-0 top-1/2 -translate-y-1/2 z-50">
         <button
-          className="bg-[#BD8E32] hover:bg-[#764A04] text-white font-semibold py-3 px-4 rounded-r-lg shadow-lg transform -rotate-180 transition-colors flex items-center gap-2"
+          className="bg-[#C2943A] hover:bg-[#a67c29] text-white font-semibold py-3 px-4 rounded-r-lg shadow-lg transform -rotate-180 transition-colors flex items-center gap-2"
           style={{ writingMode: 'vertical-rl' }}
         >
           <span className="text-sm tracking-wider" style={{ writingMode: 'vertical-rl' }}>
             Free Consultation
           </span>
         </button>
-      </div>
-
+      </div> */}
+      {/* <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section> */}
+       <Footer />
     </div>
   );
 }

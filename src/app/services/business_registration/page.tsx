@@ -11,9 +11,7 @@ import {
   Landmark,
   FileText,
   FileCheck,
-  ChevronDown,
-  Info,
-  Mail
+  ChevronDown
 } from "lucide-react";
 
 // Configure DM Sans
@@ -117,7 +115,7 @@ export default function BusinessRegistrationGuide() {
                   </a>
                   <a href="#benefits" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                     <span className="group-hover:translate-x-1 transition-transform">Key Benefits</span>
-                    <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded">4 Core</span>
+                    <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded"><span className="font-mono">4</span> Core</span>
                   </a>
                   <a href="#eligibility" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                     <span className="group-hover:translate-x-1 transition-transform">Eligibility</span>
@@ -166,7 +164,7 @@ export default function BusinessRegistrationGuide() {
                   <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group">
                     <ShieldCheck className="w-10 h-10 text-[#BD8E32] mb-4 group-hover:scale-110 transition-transform" />
                     <h3 className="text-xl font-semibold mb-2">Limited Liability</h3>
-                    <p className="text-zinc-600 text-sm leading-relaxed">Founders' personal assets are fully protected. Your liability is strictly limited only to the amount of shares you hold in the company.</p>
+                    <p className="text-zinc-600 text-sm leading-relaxed">{"Founders' personal assets are fully protected. Your liability is strictly limited only to the amount of shares you hold in the company."}</p>
                   </div>
 
                   <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group">
@@ -184,7 +182,7 @@ export default function BusinessRegistrationGuide() {
                   <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:border-[#BD8E32] transition-colors group">
                     <CheckCircle2 className="w-10 h-10 text-[#BD8E32] mb-4 group-hover:scale-110 transition-transform" />
                     <h3 className="text-xl font-semibold mb-2">Brand Credibility</h3>
-                    <p className="text-zinc-600 text-sm leading-relaxed">The "Pvt Ltd" tag adds massive credibility, making it easier to attract top-tier talent, close B2B enterprise clients, and secure bank loans.</p>
+                    <p className="text-zinc-600 text-sm leading-relaxed">{"The \"Pvt Ltd\" tag adds massive credibility, making it easier to attract top-tier talent, close B2B enterprise clients, and secure bank loans."}</p>
                   </div>
 
                 </div>
@@ -236,7 +234,7 @@ export default function BusinessRegistrationGuide() {
                 <div className="relative border-l-2 border-zinc-200 ml-6 md:ml-1/2 space-y-12">
 
                   <div className="relative pl-8">
-                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA]">1</div>
+                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA] font-mono">1</div>
                     <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
                       <h4 className="text-xl font-semibold text-zinc-900 mb-2">Digital Signature & DIN</h4>
                       <p className="text-zinc-600">First, we apply for Digital Signature Certificates (DSC) and Director Identification Numbers (DIN) for all proposed directors.</p>
@@ -244,7 +242,7 @@ export default function BusinessRegistrationGuide() {
                   </div>
 
                   <div className="relative pl-8">
-                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA]">2</div>
+                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA] font-mono">2</div>
                     <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
                       <h4 className="text-xl font-semibold text-zinc-900 mb-2">Name Approval (RUN)</h4>
                       <p className="text-zinc-600">We file the Reserve Unique Name (RUN) application with the MCA to ensure your chosen brand name is legally available and reserved.</p>
@@ -252,7 +250,7 @@ export default function BusinessRegistrationGuide() {
                   </div>
 
                   <div className="relative pl-8">
-                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA]">3</div>
+                    <div className="absolute w-10 h-10 bg-[#BD8E32] rounded-full text-white font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA] font-mono">3</div>
                     <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
                       <h4 className="text-xl font-semibold text-zinc-900 mb-2">Incorporation Filing (SPICe+)</h4>
                       <p className="text-zinc-600">We draft the MoA & AoA and file the comprehensive SPICe+ form which handles company registration, PAN, and TAN simultaneously.</p>
@@ -349,7 +347,7 @@ export default function BusinessRegistrationGuide() {
                 </a>
                 <a href="#benefits" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                   <span className="group-hover:translate-x-1 transition-transform">Key Benefits</span>
-                  <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded">4 Core</span>
+                  <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded"><span className="font-mono">4</span> Core</span>
                 </a>
                 <a href="#eligibility" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                   <span className="group-hover:translate-x-1 transition-transform">Eligibility</span>
