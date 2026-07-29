@@ -77,7 +77,7 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
   };
 
   return (
-    <div className="flex flex-col text-left p-6 w-full md:max-w-[360px] select-none bg-[#131210]">
+    <div className="flex flex-col text-left p-6 w-full md:max-w-[520px] select-none bg-[#131210]">
       {/* Month Selection Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-[15px] font-bold text-white tracking-wide">
@@ -118,7 +118,7 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
           Array.from({ length: 35 }).map((_, index) => (
             <div
               key={`skeleton-${index}`}
-              className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#2A2925] animate-pulse mx-auto"
+              className="w-[59px] h-[59px] rounded-xl bg-[#2A2925] animate-pulse mx-auto"
             />
           ))
         ) : (
@@ -138,7 +138,7 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
                   disabled={past}
                   onClick={() => handleDayClick(day)}
                   className={`
-                    w-9 h-9 md:w-10 md:h-10 rounded-xl text-[13px] font-semibold transition-all flex items-center justify-center relative outline-none mx-auto
+                    w-[59px] h-[59px] rounded-xl text-[13px] font-semibold transition-all flex items-center justify-center relative outline-none mx-auto
                     ${past 
                       ? "text-neutral-700 cursor-not-allowed" 
                       : active

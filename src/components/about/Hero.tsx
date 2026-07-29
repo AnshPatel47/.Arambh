@@ -17,48 +17,54 @@ export default function Hero() {
           priority
           className="object-cover"
         />
-        {/* Dark Shadow Overlay to make text stand out */}
-        <div className="absolute inset-0 bg-black/80 backdrop-blur-[1px] z-10" />
       </div>
 
-      {/* Main Content Area */}
-      <section className="relative z-20 w-full pt-20 lg:pt-24 pb-0 flex flex-col justify-center min-h-[400px] lg:min-h-[460px]">
-        <div className="relative z-20 mx-auto max-w-[1440px] px-6 lg:px-20 w-full flex flex-col justify-center py-10 lg:py-12">
+      <section className="relative z-20 w-full pt-44 pb-20 lg:pb-24 px-6 sm:px-12 md:px-16 flex flex-col justify-center min-h-[440px] lg:min-h-[480px]">
+        {/* Dark Gradient Overlay to make text stand out (contained only inside the content section) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent z-0" />
+        
+        <div className="relative z-20 mx-auto max-w-[1440px] w-full flex flex-col justify-center">
           {/* Breadcrumbs: Home › About */}
-          <nav className="flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase rv-up" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-8 uppercase rv-up" aria-label="Breadcrumb">
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-white">About</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-            
-            {/* Eyebrow & Heading (Left Side) */}
-            <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left gap-4 rv-up">
-              <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-medium leading-[115%] tracking-[-0.04em] text-white">
-                Small on purpose.
-                <br />
-                <span className="text-[#C2943A]">
-                  Accountable by design.
-                </span>
-              </h1>
-            </div>
-
-            {/* Main Description Content (Center/Right Side) */}
-            <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left rv-up">
-              <p className="text-base sm:text-lg leading-relaxed text-zinc-300">
-                Arambh means beginning. We exist so that a founder&apos;s beginning
-                is done right: the structure, the filings, the funding, and a real
-                person who stays on the line long after the certificates arrive.
-              </p>
-            </div>
-
+          <div className="max-w-2xl flex flex-col items-start text-left">
+            <h1 
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4 rv-up"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 500,
+              }}
+            >
+              Small on purpose.
+              <br />
+              <span className="text-[#C2943A]">
+                Accountable by design.
+              </span>
+            </h1>
+            <p 
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl rv-up"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 400,
+              }}
+            >
+              Arambh means beginning. We exist so that a founder&apos;s beginning
+              is done right: the structure, the filings, the funding, and a real
+              person who stays on the line long after the certificates arrive.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Stats Bar (Moved to transition/white area below, but retaining original styling over background image) */}
-      <div className="relative z-20 w-full border-t border-white border-b border-white/10 bg-white/5 backdrop-blur-md overflow-hidden lg:h-[192px] reveal">
+      <div className="relative z-20 w-full border-t border-white border-b border-white/10 bg-white/5 backdrop-blur-md overflow-hidden lg:h-[192px]">
+        {/* Dark overlay to restore full dark shadow for stats section */}
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-md -z-10" />
+        
         {/* Animated Golden Line below the white border */}
         <div className="absolute top-0 left-0 right-0 h-[3px] overflow-hidden z-30 pointer-events-none">
           <motion.div
@@ -72,7 +78,7 @@ export default function Hero() {
           />
         </div>
 
-        <div className="mx-auto max-w-[1304px] w-full h-full px-6 lg:px-0">
+        <div className="mx-auto max-w-[1304px] w-full h-full px-6 lg:px-0 reveal">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 w-full h-full justify-center">
             {stats.map((stat, index) => (
               <div

@@ -16,11 +16,6 @@ const Services = dynamic(() => import("@/components/home/services/Services"), {
   loading: () => <div className="w-full h-[500px] bg-[#FBF7EE] animate-pulse rounded-3xl" />
 });
 
-const Contact = dynamic(() => import("@/components/home/contact/Contact"), {
-  ssr: false,
-  loading: () => <div className="w-full h-[500px] bg-[#FBF7EE] animate-pulse rounded-3xl" />
-});
-
 const SmartIndia = dynamic(() => import("@/components/home/smartindia/SmartIndia"), {
   ssr: false,
   loading: () => <div className="w-full h-[600px] bg-[#FBF7EE] animate-pulse rounded-3xl" />
@@ -69,12 +64,6 @@ export default function Page() {
         <Testimonials />
       </SectionErrorBoundary>
 
-      {/* Contact Section: pt-10 (40px) mobile / pt-20 (80px) desktop. 
-          When combined with ContactForm's internal pt-10 (40px) / pt-12 (48px), 
-          it results in exactly 80px mobile / 128px desktop gap. */}
-      <div className="pt-10 lg:pt-20 bg-white">
-        <Contact />
-      </div>
 
       {/* CaseStudies Section: -mt-30 (-120px) mobile / -mt-26 (-104px) desktop 
           adjusts ContactForm's pb-36 (144px) / pb-44 (176px) and CaseStudies pt-14 (56px) 

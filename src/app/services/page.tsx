@@ -102,13 +102,25 @@ export default function ServicesPage() {
             <span className="text-white">Services</span>
           </nav>
           <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-medium tracking-tight leading-tight text-white mb-4">
+            <h1 
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 500,
+              }}
+            >
               Explore Our <br />
               <span className="text-[#C2943A]">
                 Advisory Services.
               </span>
             </h1>
-            <p className="text-base sm:text-lg text-zinc-300 leading-relaxed max-w-xl">
+            <p 
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 400,
+              }}
+            >
               From business incorporation and DPIIT startup recognition to securing government seed grants and compliance audits—we provide end-to-end support for your corporate journey.
             </p>
           </div>
