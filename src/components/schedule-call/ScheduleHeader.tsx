@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Clock, Video, Globe, Calendar } from "lucide-react";
 import { formatSelectedDate } from "./schedule.data";
 
@@ -10,14 +11,19 @@ interface ScheduleHeaderProps {
   selectedTimeSlot: string | null;
 }
 
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 6 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] as [number, number, number, number], delay },
+});
+
 export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: ScheduleHeaderProps) {
-  // Simple check to find if timezone or localization needs mapping
   const timeZone = typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "Asia/Kolkata";
 
   return (
     <div className="flex flex-col text-left gap-6 p-6 md:p-8 text-neutral-200 border-r border-[#2A2925] h-full bg-[#131210] md:max-w-[340px] w-full shrink-0">
       {/* Brand Header */}
-      <div className="flex items-center gap-3">
+      <motion.div {...fadeUp(0.06)} className="flex items-center gap-3">
         <div className="relative h-10 w-10 shrink-0 flex items-center justify-center">
           <Image
             src="/images/logo.svg"
@@ -35,20 +41,20 @@ export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: Sched
             Services LLP
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Title & Description */}
-      <div className="flex flex-col gap-2">
+      <motion.div {...fadeUp(0.14)} className="flex flex-col gap-2">
         <h2 className="text-xl font-bold text-white tracking-tight leading-snug">
           Quick Intro Call
         </h2>
         <p className="text-[13px] text-neutral-400 leading-relaxed font-normal">
           Let us know your startup or business requirements and ask any questions you have. We are here to help.
         </p>
-      </div>
+      </motion.div>
 
       {/* Details List */}
-      <div className="flex flex-col gap-3.5 pt-4">
+      <motion.div {...fadeUp(0.22)} className="flex flex-col gap-3.5 pt-4">
         {/* Date and Time confirmation (only visible if selected) */}
         {selectedDate && selectedTimeSlot && (
           <div className="flex items-start gap-3 text-[13px] font-medium text-[#C2943A]">
@@ -77,7 +83,7 @@ export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: Sched
           <Globe size={16} className="text-neutral-500 shrink-0" />
           <span className="truncate">{timeZone}</span>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
