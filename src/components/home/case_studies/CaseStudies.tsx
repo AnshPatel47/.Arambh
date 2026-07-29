@@ -12,7 +12,7 @@ export default function CaseStudies() {
   return (
     <section
       id="case-studies"
-      className="w-full bg-[#F6F4F0] py-14 border-t border-b border-[#E6DFD4] overflow-hidden"
+      className="w-full bg-[#FBF7EE] py-14 overflow-hidden"
     >
       <div
         className="
@@ -27,6 +27,9 @@ export default function CaseStudies() {
       >
         {/* Header */}
         <CaseStudiesHeader />
+
+        {/* Horizontal Line below the heading */}
+        <div className="w-full border-t border-[#E6DFD4]" />
 
         {/* Cards List slider */}
         <div className="flex flex-col gap-10">

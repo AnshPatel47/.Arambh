@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import Hero from "./Hero";
 import dynamic from "next/dynamic";
+import SectionErrorBoundary from "@/components/ui/SectionErrorBoundary";
+
+const Hero = dynamic(() => import("./Hero"), {
+  ssr: false,
+  loading: () => <div className="w-full h-[600px] bg-white animate-pulse" />
+});
 
 const Founders = dynamic(() => import("./Founders"), {
   ssr: false,
-  loading: () => <div className="w-full h-[500px] bg-[#F6F4F0] animate-pulse rounded-3xl" />
+  loading: () => <div className="w-full h-[500px] bg-white animate-pulse rounded-3xl" />
 });
 
 const Values = dynamic(() => import("./Values"), {
@@ -16,17 +21,12 @@ const Values = dynamic(() => import("./Values"), {
 
 const Process = dynamic(() => import("./Process"), {
   ssr: false,
-  loading: () => <div className="w-full h-[400px] bg-[#FFF8F6] animate-pulse rounded-3xl" />
-});
-
-const FounderNote = dynamic(() => import("./FounderNote"), {
-  ssr: false,
-  loading: () => <div className="w-full h-[450px] bg-[#F6F4F0] animate-pulse rounded-3xl" />
+  loading: () => <div className="w-full h-[400px] bg-white animate-pulse rounded-3xl" />
 });
 
 const CTASection = dynamic(() => import("./CTASection"), {
   ssr: false,
-  loading: () => <div className="w-full h-[400px] bg-[#FFF8F6] animate-pulse rounded-3xl" />
+  loading: () => <div className="w-full h-[400px] bg-white animate-pulse rounded-3xl" />
 });
 
 export default function About() {
@@ -40,17 +40,25 @@ export default function About() {
 
   return (
     <main className="bg-white overflow-x-clip">
-      <Hero />
+      <SectionErrorBoundary sectionName="About Hero">
+        <Hero />
+      </SectionErrorBoundary>
 
-      <Founders />
+      <SectionErrorBoundary sectionName="Founders">
+        <Founders />
+      </SectionErrorBoundary>
 
-      <Values />
+      <SectionErrorBoundary sectionName="Values">
+        <Values />
+      </SectionErrorBoundary>
 
-      <Process />
+      <SectionErrorBoundary sectionName="Process">
+        <Process />
+      </SectionErrorBoundary>
 
-      <FounderNote />
-
-      <CTASection />
+      <SectionErrorBoundary sectionName="Problem & Solutions">
+        <CTASection />
+      </SectionErrorBoundary>
     </main>
   );
 }

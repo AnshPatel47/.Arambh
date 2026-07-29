@@ -538,7 +538,7 @@ export default function ResourcesBlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
               <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
+                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
                   <Globe className="w-5 h-5" />
                 </span>
                 <span className="text-[10px] font-bold font-DM sans text-[#BD8E32] uppercase tracking-widest mb-0">Growth Engine</span>
@@ -570,7 +570,7 @@ export default function ResourcesBlogPage() {
 
             <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
               <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
+                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
                   <FileText className="w-5 h-5" />
                 </span>
                 <span className="text-[10px] font-DM sans font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>

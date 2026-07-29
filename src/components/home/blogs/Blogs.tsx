@@ -6,17 +6,19 @@ export default function Blogs() {
   return (
     <section
       id="blogs"
-      className="w-full bg-[#FFF8F6] py-24"
+      className="w-full bg-[#FBF7EE] py-12 sm:py-24"
     >
       <div
         className="
           mx-auto
-          max-w-[1440px]
+          max-w-[1136px]
           px-6
-          lg:px-20
+          lg:px-0
           flex
           flex-col
-          gap-16
+          gap-8
+          sm:gap-16
+          w-full
         "
       >
         {/* Header */}
@@ -27,7 +29,8 @@ export default function Blogs() {
           className="
             flex
             flex-col
-            gap-10
+            gap-4
+            sm:gap-6
           "
         >
           <BlogsList />

@@ -15,9 +15,11 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-dm-sans)", "'DM Sans'", "sans-serif"],
         dm: ["var(--font-dm-sans)", "'DM Sans'", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
       },
     },
   },
   plugins: [],
 };
+
 export default config;

@@ -12,7 +12,8 @@ export default function BlogsList() {
         scroll-smooth
         snap-x
         snap-mandatory
-        pb-8
+        pb-4
+        sm:pb-8
         no-scrollbar
       "
     >

@@ -1,10 +1,12 @@
 export default function TestimonialsHeader() {
   return (
-    <div className="max-w-[549px] text-left reveal">
+    <div className="max-w-[549px] text-center md:text-left mx-auto md:mx-0 reveal">
       {/* Heading - with netbounce inspired clamp size and professional gold accent */}
       <h2
         className="
-          text-[32px]
+          text-[28px]
+          xs:text-[32px]
+          sm:text-[36px]
           md:text-[40px]
           lg:text-[48px]
           font-semibold
@@ -14,8 +16,8 @@ export default function TestimonialsHeader() {
           rv-up
         "
       >
-        <span className="block whitespace-nowrap">
-          Trusted by <span className="text-[#B68A45]">Founders</span>
+        <span className="block md:whitespace-nowrap">
+          Trusted by <span className="text-[#C2943A]">Founders</span>
         </span>
         <span className="block mt-2">
           Who Dream Big

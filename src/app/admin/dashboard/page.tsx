@@ -4,16 +4,21 @@ import DashboardClient from "./components/DashboardClient";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  let contacts: any[] = [];
   try {
-    if (prisma && (prisma as any).contact) {
-      contacts = await prisma.contact.findMany({
-        orderBy: { createdAt: "desc" },
-      });
-    }
-  } catch (error) {
-    console.warn("Could not query contacts from Prisma DB, falling back safely:", error);
+    const contacts = await prisma.contact.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return <DashboardClient contacts={contacts} dbError={null} />;
+  } catch (error: unknown) {
+    console.error("Database connection failed on admin dashboard:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to retrieve contacts from database.";
+    return (
+      <DashboardClient
+        contacts={[]}
+        dbError={errorMessage}
+      />
+    );
   }
-
-  return <DashboardClient contacts={contacts} />;
 }

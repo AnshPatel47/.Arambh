@@ -18,10 +18,9 @@ export default function Testimonials() {
     <section
       ref={containerRef}
       id="testimonials"
-      className="relative w-full bg-white h-auto lg:h-[230vh]"
+      className="relative w-full bg-[#FBF7EE] h-auto lg:h-[230vh]"
     >
-      {/* Sticky container that spans the viewport height on desktop, normal container on mobile */}
-      <div className="relative lg:sticky lg:top-[100px] lg:h-[calc(100vh-100px)] w-full flex items-center overflow-visible lg:overflow-hidden py-16 lg:py-0">
+      <div className="relative lg:sticky lg:top-[100px] lg:h-[calc(100vh-100px)] w-full flex items-center overflow-visible py-10 lg:py-0">
         <div
           className="
             mx-auto

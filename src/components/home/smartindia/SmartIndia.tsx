@@ -9,22 +9,13 @@ export default function SmartIndia() {
   return (
     <section
       ref={ref}
+      className="w-full bg-[#FBF7EE] overflow-x-hidden"
       style={{
-        width: "100%",
-        background: "#FBF7EE",
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
       <div
-        style={{
-          maxWidth: 1440,
-          margin: "0 auto",
-          display: "flex",
-          alignItems: "center",
-          gap: 100,
-          padding: "80px 80px",
-          boxSizing: "border-box",
-        }}
+        className="mx-auto max-w-[1440px] px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-[100px] py-10 lg:py-16 box-sizing-border-box"
       >
         <LeftPanel />
         <MapSection show={show} />

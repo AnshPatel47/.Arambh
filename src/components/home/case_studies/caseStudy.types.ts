@@ -10,4 +10,6 @@ export interface CaseStudy {
   result: string;
   metrics: string;
   image: string;
+  readTime?: string;
 }
+

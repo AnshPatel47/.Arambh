@@ -1,198 +1,165 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { processSteps } from "./about.data";
 
 export default function Process() {
-  const [inView, setInView] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const activeStep = processSteps[activeIndex];
 
   return (
-    <section ref={containerRef} className="w-full bg-[#FFF8F6] py-14 md:py-16 reveal">
-      <div className="mx-auto max-w-[1440px] px-6 lg:px-20 w-full text-center">
+    <section className="w-full bg-white pt-10 pb-10 lg:pt-16 lg:pb-16 reveal">
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-20 w-full">
         
-        {/* Header Column */}
-        <div className="flex flex-col items-center justify-center text-center gap-3 rv-up mb-12 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD6CA] bg-white px-4 py-1.5 w-fit">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#B68A45]" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#333333]">
-              THE PROCESS
-            </span>
-          </div>
-
-          <h2 className="mt-4 text-[32px] md:text-[38px] lg:text-[40px] font-semibold leading-[120%] tracking-[-0.03em] text-[#131313]">
-            Five steps, no surprises.
-          </h2>
-
-          <p className="mt-3 text-[14px] md:text-[15px] leading-relaxed text-[#666665]">
-            The same disciplined path for every client, from the first call to long after the certificates arrive.
-          </p>
+        {/* Tag at top */}
+        <div className="flex items-center gap-2 bg-transparent px-0 py-2 w-fit mb-6 mx-auto lg:mx-0">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#C2943A]" />
+          <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#333333]">
+            THE PROCESS
+          </span>
         </div>
 
-        {/* ══ MOBILE TIMELINE ══ */}
-        <div className="lg:hidden relative w-full flex flex-col gap-10 pl-6 md:pl-16 pr-4 mt-6 select-none">
-          {/* Vertical line background */}
-          <div className="absolute left-[38px] md:left-[78px] top-4 bottom-4 w-[2px] bg-neutral-200" />
-          {/* Animated vertical line */}
-          <div
-            className="absolute left-[38px] md:left-[78px] top-4 w-[2px] bg-[#B68A45] origin-top transition-transform duration-[2500ms] ease-out-sine"
-            style={{
-              transform: inView ? "scaleY(1)" : "scaleY(0)",
-              height: "calc(100% - 32px)",
-            }}
-          />
-
-          {processSteps.map((step, index) => (
-            <div
-              key={step.number}
-              className="relative flex gap-6 md:gap-10 items-start text-left"
-            >
-              {/* Circle */}
-              <div
-                className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#B68A45] bg-white text-[13px] font-bold text-[#B68A45] shadow-sm transition-all duration-500"
-                style={{
-                  transform: inView ? "scale(1)" : "scale(0.6)",
-                  opacity: inView ? 1 : 0,
-                  transitionDelay: `${100 + index * 400}ms`,
-                }}
-              >
-                {step.number}
-              </div>
-              {/* Text */}
-              <div className="flex-1 pt-1.5">
-                <h4 className="text-[16px] font-semibold text-[#131313]">
-                  {step.title}
-                </h4>
-                <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#666666]">
-                  {step.description}
-                </p>
-              </div>
-            </div>
-          ))}
-
-          {/* End Arrow on mobile */}
-          <div className="relative flex gap-6 md:gap-10 items-center">
-            <div
-              className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#B68A45] text-white shadow-md transition-all duration-500"
-              style={{
-                transform: inView ? "scale(1)" : "scale(0.6)",
-                opacity: inView ? 1 : 0,
-                transitionDelay: `${100 + processSteps.length * 400}ms`,
-              }}
-            >
-              <ArrowUpRight size={18} />
-            </div>
-            <span className="text-[13px] font-semibold text-[#B68A45] pt-0.5">
-              We are with you all the way
-            </span>
+        {/* Header Block: Left Heading, Right Description + Bottom Border Line */}
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start text-center lg:text-left gap-8 lg:gap-16 pb-12 border-b border-[#E6DFD4]">
+          <div className="flex-1">
+            <h2 className="text-[36px] md:text-[48px] font-medium leading-[1.1] tracking-[-0.03em] text-[#131313]">
+              Five steps, no surprises.
+            </h2>
+          </div>
+          <div className="flex-1 lg:max-w-[500px]">
+            <p className="text-[15px] md:text-[16px] leading-relaxed text-[#666665] pt-2">
+              The same disciplined path for every client, from the first call to long after the certificates arrive.
+            </p>
           </div>
         </div>
 
-        {/* ══ DESKTOP HORIZONTAL WAVY TIMELINE ══ */}
-        <div className="hidden lg:block relative w-full min-h-[290px] mt-12 select-none max-w-6xl mx-auto">
+        {/* ══ STEPPER LAYOUT ══ */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start mt-12">
           
-          {/* SVG Wavy Line Overlay */}
-          <svg
-            className="absolute top-0 left-0 w-full h-[110px] pointer-events-none"
-            viewBox="0 0 1000 110"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            {/* Base line */}
-            <path
-              d="M 100 30 C 200 30, 200 70, 300 70 C 400 70, 400 30, 500 30 C 600 30, 600 70, 700 70 C 800 70, 800 30, 900 30 C 935 30, 950 18, 970 15"
-              stroke="#E8E2D8"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            {/* Animated drawing line */}
-            <path
-              d="M 100 30 C 200 30, 200 70, 300 70 C 400 70, 400 30, 500 30 C 600 30, 600 70, 700 70 C 800 70, 800 30, 900 30 C 935 30, 950 18, 970 15"
-              stroke="#B68A45"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="1000"
-              strokeDashoffset={inView ? 0 : 1000}
-              style={{
-                transition: "stroke-dashoffset 2.5s cubic-bezier(0.4, 0, 0.2, 1)",
-              }}
-            />
-          </svg>
-
-          {/* Steps columns */}
-          <div className="grid grid-cols-5 w-full relative z-10">
+          {/* Left Column: Vertical Step Selector Buttons (h-76px, w-360px) with Dynamic Golden Line */}
+          <div className="lg:col-span-4 flex flex-col gap-3 w-full max-w-[360px] mx-auto lg:mx-0 relative">
             {processSteps.map((step, index) => {
-              const isEven = index % 2 === 1;
-              return (
-                <div
-                  key={step.number}
-                  className="flex flex-col items-center text-center px-4 relative h-[250px]"
-                >
-                  {/* Step Circle */}
-                  <div
-                    className="absolute w-10 h-10 rounded-full border border-[#B68A45]/80 bg-white flex items-center justify-center font-bold text-[13px] text-[#B68A45] shadow-sm z-20 transition-all duration-700"
-                    style={{
-                      top: isEven ? "50px" : "10px",
-                      transform: inView ? "scale(1)" : "scale(0.6)",
-                      opacity: inView ? 1 : 0,
-                      transitionDelay: `${100 + index * 500}ms`,
-                    }}
-                  >
-                    {step.number}
-                  </div>
+              const isActive = activeIndex === index;
 
-                  {/* Step Text Content */}
-                  <div
-                    className="absolute flex flex-col items-center transition-all duration-1000"
-                    style={{
-                      top: isEven ? "100px" : "60px",
-                      transform: inView ? "translateY(0)" : "translateY(12px)",
-                      opacity: inView ? 1 : 0,
-                      transitionDelay: `${250 + index * 500}ms`,
-                    }}
+              return (
+                <div key={step.number} className="relative w-full max-w-[360px]">
+                  <button
+                    onClick={() => setActiveIndex(index)}
+                    className={`flex items-center gap-3.5 px-4 h-[76px] w-full max-w-[360px] rounded-[20px] text-left transition-all duration-300 cursor-pointer border relative z-10 ${
+                      isActive
+                        ? "bg-[#FAF8F5] border-[#E6DFD4] shadow-sm scale-[1.01]"
+                        : "bg-white border-transparent hover:bg-neutral-50"
+                    }`}
                   >
-                    <h4 className="text-[15px] font-semibold text-[#131313]">
-                      {step.title}
-                    </h4>
-                    <p className="mt-2 text-[12px] leading-relaxed text-[#666666] max-w-[190px]">
-                      {step.description}
-                    </p>
-                  </div>
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[13px] font-mono font-bold transition-all duration-300 relative z-20 ${
+                        isActive
+                          ? "bg-[#C2943A] text-white shadow-sm"
+                          : "border border-zinc-300 bg-white text-zinc-700 shadow-xs"
+                      }`}
+                    >
+                      {step.number}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className={`text-[11px] font-bold uppercase tracking-wider ${
+                        isActive ? "text-[#C2943A]" : "text-zinc-500"
+                      }`}>
+                        STEP <span className="font-mono">{step.number}</span>
+                      </span>
+                      <span
+                        className={`text-[14.5px] md:text-[15px] font-semibold transition-colors ${
+                          isActive ? "text-[#131313]" : "text-[#131313]"
+                        }`}
+                      >
+                        {step.title}
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Vertical Golden Line connecting to next step (starts at card/circle border, never inside card box or circle) */}
+                  {index < processSteps.length - 1 && (
+                    <div
+                      className="absolute left-[33.5px] w-[2px] bg-[#C2943A] transition-all duration-300 z-20 pointer-events-none rounded-full"
+                      style={{
+                        top: activeIndex === index ? "76px" : "56px",
+                        height: `${
+                          (activeIndex === index + 1 ? 88 : 108) -
+                          (activeIndex === index ? 76 : 56)
+                        }px`,
+                      }}
+                    />
+                  )}
                 </div>
               );
             })}
           </div>
 
-          {/* End Arrow on desktop */}
-          <div
-            className="absolute w-10 h-10 rounded-full bg-[#B68A45] flex items-center justify-center text-white shadow-md z-20 transition-all duration-700"
-            style={{
-              top: "-5px",
-              left: "97%",
-              transform: inView ? "scale(1) translateX(-50%)" : "scale(0.6) translateX(-50%)",
-              opacity: inView ? 1 : 0,
-              transitionDelay: "2600ms",
-            }}
-          >
-            <ArrowUpRight size={18} />
+          {/* Center Column: Active Step Image (Height 428px perfectly matching 5 step buttons height) */}
+          <div className="lg:col-span-4 flex justify-center items-start w-full">
+            <div className="relative w-full max-w-[360px] h-[340px] sm:h-[380px] lg:h-[428px] rounded-[28px] overflow-hidden border border-[#E6DFD4] bg-white shadow-md">
+              {activeStep.image && (
+                <Image
+                  src={activeStep.image}
+                  alt={activeStep.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 360px"
+                  className="object-cover object-center"
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Right Column: Active Step Details */}
+          <div className="lg:col-span-4 flex flex-col items-start text-left justify-start pt-1 px-2 lg:px-4 min-h-[380px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep.number}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full"
+              >
+                <span className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#C2943A] mb-1.5 block">
+                  STEP {activeStep.number}
+                </span>
+                <h3 className="text-[24px] md:text-[28px] font-semibold text-[#131313] tracking-tight mb-3">
+                  {activeStep.title}
+                </h3>
+                <p className="text-[14.5px] leading-relaxed text-[#666665] mb-4">
+                  {activeStep.description}
+                </p>
+
+                {/* Bullet Points List */}
+                {activeStep.bullets && (
+                  <ul className="flex flex-col gap-2.5 mt-2">
+                    {activeStep.bullets.map((bullet, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-[13.5px] md:text-[14px] text-zinc-700 leading-snug">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#C2943A] mt-1.5 shrink-0" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Preload inactive step images in the background */}
+          <div className="hidden" aria-hidden="true">
+            {processSteps.map((step) => step.image && (
+              <Image
+                key={`preload-${step.number}`}
+                src={step.image}
+                alt=""
+                width={360}
+                height={428}
+                priority
+              />
+            ))}
           </div>
 
         </div>

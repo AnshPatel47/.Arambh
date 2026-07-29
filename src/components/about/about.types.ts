@@ -9,6 +9,7 @@ export interface Founder {
   role: string;
   description: string;
   phone: string;
+  image?: string;
 }
 
 export interface Value {
@@ -21,6 +22,8 @@ export interface ProcessStep {
   number: string;
   title: string;
   description: string;
+  image?: string;
+  bullets?: string[];
 }
 
 export interface CTA {
@@ -28,4 +31,12 @@ export interface CTA {
   title: string;
   description: string;
   button: string;
+  problem: {
+    title: string;
+    description: string;
+  };
+  solution: {
+    title: string;
+    description: string;
+  };
 }

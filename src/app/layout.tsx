@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
+import dynamic from "next/dynamic";
+import ConditionalFooter from "@/app/components/ConditionalFooter";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/app/components/Footer";
+
+const Navbar = dynamic(() => import("@/components/layout/Navbar"), { ssr: false });
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -23,6 +25,9 @@ export const metadata: Metadata = {
 };
 
 import ScrollRevealProvider from "@/components/layout/ScrollRevealProvider";
+import ClientMountLoader from "@/app/components/ClientMountLoader";
+import { ScheduleCallProvider } from "@/components/schedule-call/ScheduleCallContext";
+import ScheduleCallModal from "@/components/schedule-call/ScheduleCallModal";
 
 export default function RootLayout({
   children,
@@ -36,9 +41,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={dmSans.className}>
-        <Navbar />
-        <ScrollRevealProvider>{children}</ScrollRevealProvider>
-        <Footer />
+        <ClientMountLoader>
+          <ScheduleCallProvider>
+            <Navbar />
+            <ScrollRevealProvider>{children}</ScrollRevealProvider>
+            <ConditionalFooter />
+            <ScheduleCallModal />
+          </ScheduleCallProvider>
+        </ClientMountLoader>
       </body>
     </html>
   );
