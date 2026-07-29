@@ -7,12 +7,14 @@ interface BlogCardProps {
 
 export default function BlogCard({ blog }: BlogCardProps) {
   return (
-    <article className="flex w-[362.67px] shrink-0 snap-start flex-col gap-4">
+    <article className="flex w-[280px] xs:w-[320px] sm:w-[362.67px] shrink-0 snap-start flex-col gap-3 sm:gap-4">
       {/* Image */}
       <div
         className="
           relative
-          h-[198px]
+          h-[160px]
+          xs:h-[180px]
+          sm:h-[198px]
           w-full
           overflow-hidden
           rounded-2xl

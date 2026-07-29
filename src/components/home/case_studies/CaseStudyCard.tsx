@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CaseStudy } from "./caseStudy.types";
 
 interface CaseStudyCardProps {
@@ -13,8 +13,10 @@ export default function CaseStudyCard({ study, onClick }: CaseStudyCardProps) {
       onClick={onClick}
       className="
         flex
-        w-[294px]
-        h-[440px]
+        w-[240px]
+        h-[375px]
+        sm:w-[294px]
+        sm:h-[440px]
         shrink-0
         flex-col
         justify-between
@@ -22,69 +24,64 @@ export default function CaseStudyCard({ study, onClick }: CaseStudyCardProps) {
         cursor-pointer
         bg-white
         border
-        border-[#E6DFD4]
-        rounded-[24px]
+        border-zinc-200
+        rounded-[18px]
         overflow-hidden
-        mr-6
+        mr-4
+        sm:mr-6
+        shadow-xs
         transition-all
-        duration-500
-        hover:-translate-y-3
-        hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]
-        hover:border-transparent
+        duration-200
+        hover:-translate-y-0.5
+        hover:shadow-lg
       "
     >
-      {/* Image container */}
-      <div className="relative w-full h-[190px] overflow-hidden bg-[#FBF8F4]">
-        <Image
-          src={study.image}
-          alt={study.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-
-        {/* Industry Tag Overlay */}
-        <div className="absolute top-4 left-4 bg-black/75 text-[#B68A45] text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-lg border border-[#B68A45]/30 backdrop-blur-sm">
-          {study.industry}
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="flex flex-col gap-2 p-4 flex-grow text-left justify-between overflow-hidden">
-        <div className="flex flex-col gap-1.5">
-          {/* Category & Location */}
-          <div className="flex items-center justify-between text-[10px] font-bold text-[#B68A45] uppercase tracking-wider">
-            <span>{study.category}</span>
-            <span className="text-[#999999] font-normal">{study.location}</span>
-          </div>
-
-          {/* Title */}
-          <h3 className="text-[15px] font-semibold leading-snug text-[#131313] transition-colors group-hover:text-[#B68A45] line-clamp-2 min-h-[40px] flex items-center">
-            {study.title}
-          </h3>
-
-          {/* Horizontal Line */}
-          <hr className="border-t border-[#E6DFD4] my-0.5" />
-
-          {/* Excerpt */}
-          <p className="text-[12px] text-[#666666] leading-relaxed line-clamp-3">
-            {study.excerpt}
-          </p>
+      <div>
+        {/* 1. Image Container — Full landscape widescreen ratio on desktop */}
+        <div className="relative w-full aspect-[16/9] sm:aspect-[16/9.5] overflow-hidden bg-zinc-100 rounded-t-[18px]">
+          <Image
+            src={study.image}
+            alt={study.title}
+            fill
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
         </div>
 
-        {/* Bottom Area: Metrics & Action Link */}
-        <div className="flex items-center justify-between mt-1 pt-2 border-t border-dashed border-[#E6DFD4]/60">
-          <div className="flex items-center gap-1 rounded-lg bg-[#F6F4F0] border border-[#DDD6CA] px-2 py-0.5 shrink-0">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-            <span className="text-[9px] font-bold text-[#333333] tracking-wide">
-              {study.metrics}
+        {/* 2. Card Body Area */}
+        <div className="p-4 sm:p-6 flex flex-col">
+          {/* Arambh Category Badge & Meta Line */}
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 sm:gap-2 mb-2 sm:mb-3 w-full">
+            <span className="inline-block text-[10px] sm:text-[12px] font-semibold px-2 sm:px-3 py-0.5 rounded-full text-[#BD8E32] shrink-0">
+              {study.category}
+            </span>
+            <span className="text-[10px] sm:text-[12px] text-zinc-500 font-medium shrink-0">
+              {study.location} {study.readTime ? `• ${study.readTime}` : ""}
             </span>
           </div>
 
-          <span className="text-[12px] font-semibold text-[#B68A45] group-hover:text-[#8c652d] transition-colors flex items-center gap-0.5 select-none">
-            Read study <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
-          </span>
+          {/* Title */}
+          <h3 className="text-DM sans text-sm sm:text-lg font-bold text-zinc-900 leading-snug mb-1.5 sm:mb-2 line-clamp-2">
+            {study.title}
+          </h3>
+
+          {/* Excerpt */}
+          <p className="text-DM sans text-xs sm:text-sm text-zinc-600 leading-relaxed line-clamp-3 font-normal mb-3 sm:mb-4">
+            {study.excerpt}
+          </p>
         </div>
+      </div>
+
+      {/* 3. Card Footer (Action Link on Left, No Border) */}
+      <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-0 flex items-center justify-start mt-auto w-full">
+        {/* Arambh Gold Pill Button */}
+        <span
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#BD8E32] group-hover:text-[#764A04] transition-all duration-200 cursor-pointer select-none"
+        >
+          Read full Story <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+        </span>
       </div>
     </div>
   );
 }
+

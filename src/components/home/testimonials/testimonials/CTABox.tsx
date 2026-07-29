@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 import { CTAData } from "./testimonials.types";
 
 interface CTABoxProps {
@@ -8,9 +7,10 @@ interface CTABoxProps {
 
 export default function CTABox({ data }: CTABoxProps) {
   return (
-    <div className="w-full h-[100px] flex items-center justify-between rounded-[22px] border border-[#E6E0D6] bg-[#F6F4F0] p-3 px-6 shadow-sm transition-all duration-300 hover:shadow-md text-left">
+    <div className="w-full flex flex-col gap-4 rounded-2xl border border-[#E6E0D6] bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md text-left">
+      {/* Top Row: Avatar and Text */}
       <div className="flex items-center gap-4">
-        <div className="h-14 w-14 overflow-hidden rounded-[14px] bg-white border border-[#E6E0D6] flex-shrink-0 relative">
+        <div className="h-12 w-12 overflow-hidden rounded-xl bg-white border border-[#E6E0D6] flex-shrink-0 relative">
           <Image
             src={data.image}
             alt={data.title}
@@ -19,36 +19,33 @@ export default function CTABox({ data }: CTABoxProps) {
           />
         </div>
         <div className="flex flex-col justify-center">
-          <span className="text-[14px] font-bold text-[#111111] leading-tight">
+          <h4 className="text-[16px] font-bold text-black leading-snug">
             {data.title}
-          </span>
-          <span className="text-[10px] font-bold text-[#B68A45] tracking-wider uppercase mt-1">
-            Book a 15-Min Call
-          </span>
+          </h4>
+          <p className="text-[13px] text-[#666666] leading-relaxed mt-0.5">
+            {data.description}
+          </p>
         </div>
       </div>
 
+      {/* Button: Full Width, Rounded Corners, Black Background */}
       <button
         className="
-          flex
-          items-center
-          gap-2
+          w-full
           rounded-xl
           bg-black
-          px-5
-          py-2.5
-          text-[13px]
+          py-3
+          text-[14px]
           font-semibold
           text-white
           transition-all
           duration-300
           hover:bg-[#222222]
           cursor-pointer
-          shrink-0
+          text-center
         "
       >
         {data.buttonText}
-        <ArrowRight size={14} />
       </button>
     </div>
   );

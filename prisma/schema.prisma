@@ -18,8 +18,8 @@ model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String   @unique
-  password  String   // Store hashed passwords here
-  role      Role     @default(USER) // Assign ADMIN to permit editing/deleting
+  password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -28,45 +28,39 @@ model User {
 
 model Service {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String   @unique 
+  slug        String   @unique
   title       String
   description String
   category    String   @default("General")
   price       String?
   features    String[]
   icon        String?  @default("Briefcase")
-  image       String?  // e.g. "assets/images/service_registration.png"
+  image       String?
   status      String   @default("active")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
-
 model ServiceDetail {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug            String   @unique // URL matching parameter
-  title           String  
-  titleGradient   String?  
+  slug            String   @unique
+  title           String
+  titleGradient   String?
   categoryBadge   String   @default("Complete Guide")
   heroDescription String
   heroBgImage     String   @default("/assets/images/br2.webp")
 
-  // Introduction Section
   introHeading    String   @default("Introduction")
-  introLead       String   
-  introBody       String   
+  introLead       String
+  introBody       String
 
-  // Key Benefits Section
   benefits        BenefitItem[]
 
-  // Requirements & Documents
-  eligibility     String[] 
-  documents       String[] 
+  eligibility     String[]
+  documents       String[]
 
-  // Registration Process Steps
   processSteps    ProcessStep[]
 
-  // Frequently Asked Questions
   faqs            FAQItem[]
 
   createdAt       DateTime @default(now())
@@ -74,6 +68,7 @@ model ServiceDetail {
 }
 
 // Composite/Embedded Types for MongoDB
+
 type BenefitItem {
   title       String
   description String
@@ -92,7 +87,8 @@ type FAQItem {
   answer   String
 }
 
-// 4. FEATURES MODEL
+// FEATURES MODEL
+
 model Feature {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
@@ -103,4 +99,16 @@ model Feature {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// CONTACT MODEL
+
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  email     String?
+  phone     String?
+  company   String?
+  message   String?
+  createdAt DateTime @default(now())
 }

@@ -106,7 +106,7 @@ export default function TestimonialsList({ scrollYProgress }: TestimonialsListPr
           transformOrigin: "top center",
           zIndex: 40,
         }}
-        className="absolute top-0 left-0 w-full shadow-lg rounded-3xl"
+        className="absolute top-0 left-0 w-full shadow-lg rounded-2xl"
       >
         <CTABox data={ctaData} />
       </motion.div>

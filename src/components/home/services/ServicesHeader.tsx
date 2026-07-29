@@ -1,33 +1,26 @@
-import { ArrowRight, Wrench } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function ServicesHeader() {
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-16 w-full mb-10 text-left">
-      {/* LEFT COLUMN: Tag + Heading */}
-      <div className="w-full lg:max-w-[550px] flex flex-col items-start">
-        {/* Our Services Tag */}
-        <div className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#DDD5C9] bg-white px-3 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
-          <Wrench size={13} className="text-[#333333]" />
-          <span className="text-[12px] font-semibold text-[#333333] tracking-wide">
-            Our services
-          </span>
-        </div>
-
+    <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-16 w-full mb-10 text-center lg:text-left">
+      {/* LEFT COLUMN: Heading */}
+      <div className="w-full lg:max-w-[550px] flex flex-col items-center lg:items-start">
         {/* Heading */}
-        <h3 className="mt-4 text-[32px] md:text-[40px] lg:text-[46px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#131313]">
+        <h2 className="text-[32px] md:text-[40px] lg:text-[45px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#131313]">
           What we can do
           <br />
           for you
-        </h3>
+        </h2>
       </div>
 
       {/* RIGHT COLUMN: Description + CTA Button */}
-      <div className="w-full lg:max-w-[460px] flex flex-col items-start lg:pt-12">
+      <div className="w-full lg:max-w-[460px] flex flex-col items-center lg:items-start">
         <p className="text-[15px] md:text-[16px] leading-relaxed font-medium text-[#666665]">
           Empowering businesses with expert guidance, strategic planning,
           government recognition, compliance support, and funding assistance —
           all under one roof.
         </p>
+
 
         {/* CTA Button */}
         <div className="mt-6">

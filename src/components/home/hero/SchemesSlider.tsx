@@ -31,7 +31,7 @@ export default function SchemesSlider() {
     setDebouncedSearchQuery(nextQuery);
   };
 
-  const [emblaRef] = useEmblaCarousel(
+  const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start", dragFree: true },
     [
       AutoScroll({
@@ -42,6 +42,31 @@ export default function SchemesSlider() {
       }),
     ]
   );
+
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    emblaApi.on("init", onSelect);
+    onSelect();
+  }, [emblaApi]);
+
+  // Dynamically compute the gradient fade mask based on scroll capability
+  let maskStyle = "none";
+  if (canScrollPrev && canScrollNext) {
+    maskStyle = "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)";
+  } else if (canScrollPrev) {
+    maskStyle = "linear-gradient(to right, transparent 0%, black 5%)";
+  } else if (canScrollNext) {
+    maskStyle = "linear-gradient(to right, black 95%, transparent 100%)";
+  }
 
   // Which schemes match the current query?
   const isMatch = (s: (typeof schemes)[0]) => {
@@ -54,7 +79,7 @@ export default function SchemesSlider() {
 
   return (
     <div
-      className="flex h-full min-h-0 flex-col p-4 pt-10 md:p-6 md:pt-16 md:pl-8"
+      className="flex h-full min-h-0 flex-col p-4 pt-4 md:p-6 md:pt-4 md:pl-8 lg:pr-0"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       {/* Header */}
@@ -125,8 +150,12 @@ export default function SchemesSlider() {
 
       {/* Cards — duplicated 4× so Embla always has enough for infinite loop */}
       <div
-        className="mt-5 w-full flex-1 overflow-hidden"
-        style={{ touchAction: "pan-y" }}
+        className="mt-5 w-full flex-1 overflow-hidden relative"
+        style={{
+          touchAction: "pan-y",
+          maskImage: maskStyle,
+          WebkitMaskImage: maskStyle,
+        }}
       >
         <div className="embla h-full w-full overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex h-full flex-nowrap items-stretch ml-[-14px]">
@@ -134,11 +163,8 @@ export default function SchemesSlider() {
             {(debouncedSearchQuery ? [0] : [0, 1, 2, 3]).flatMap((copyIdx) =>
               schemes.filter(isMatch).map((scheme) => (
                 <div
-                  className="embla__slide h-full shrink-0 min-w-0 pl-[14px] transition-opacity duration-300"
+                  className="embla__slide h-full shrink-0 min-w-0 pl-[14px] transition-opacity duration-300 flex-[0_0_254px] sm:flex-[0_0_294px]"
                   key={`copy-${copyIdx}-${scheme.id}`}
-                  style={{
-                    flex: "0 0 294px",
-                  }}
                 >
                   <SchemeCard scheme={scheme} />
                 </div>

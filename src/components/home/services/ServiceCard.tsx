@@ -30,11 +30,11 @@ export default function ServiceCard({ service }: Props) {
           src={service.image}
           alt={service.title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-cover"
         />
         
-        {/* Dark Gradient Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        {/* Dark Gradient Overlay for text readability - only at the bottom up to heading height */}
+        <div className="absolute bottom-0 left-0 right-0 h-[80px] bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
 
         {/* Title Inside Card Bottom-Left */}
         <div className="absolute bottom-6 left-6 pr-16 text-left">
@@ -47,7 +47,7 @@ export default function ServiceCard({ service }: Props) {
               text-white
               transition-colors
               duration-300
-              group-hover:text-[#B68A45]
+              group-hover:text-white
             "
           >
             {service.title}

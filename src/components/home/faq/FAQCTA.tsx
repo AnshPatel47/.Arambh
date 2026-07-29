@@ -1,65 +1,75 @@
+"use client";
+
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { useScheduleCallModal } from "@/components/schedule-call/ScheduleCallContext";
 
 export default function FAQCTA() {
+  const { openModal } = useScheduleCallModal();
   return (
     <div
       className="
-        w-[457px]
-        h-[154px]
+        w-full
+        max-w-[457px]
+        h-auto
+        min-h-[135px]
+        sm:min-h-[154px]
+        lg:h-[154px]
         rounded-2xl
         border
-        border-[#DDD6CA]
+        border-[#E6E0D6]
         bg-white
         p-4
         flex
         flex-col
         justify-between
+        gap-3
+        sm:gap-4
+        lg:gap-0
+        shadow-sm
+        transition-all
+        duration-300
+        hover:shadow-md
       "
     >
-      {/* Top */}
-      <div className="flex items-start gap-4">
-        <Image
-          src="/images/rahul.svg"
-          alt="Rahul"
-          width={56}
-          height={56}
-          className="rounded-xl object-cover"
-        />
-
-        <div className="flex-1">
-          <h3 className="text-[18px] font-semibold leading-[140%] text-[#131313]">
-            Book a 15 Min Call
-          </h3>
-
-          <p className="mt-1 text-[15px] leading-7 text-[#6B6B6B] font-medium ">
-            If you have any questions, just book a 15-minute call with us
-            before subscribing.
+      {/* Top Row: Avatar and Text */}
+      <div className="flex items-center gap-4">
+        <div className="h-12 w-12 overflow-hidden rounded-xl bg-white border border-[#E6E0D6] flex-shrink-0 relative">
+          <Image
+            src="/images/rahul.svg"
+            alt="Rahul"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="flex flex-col justify-center text-left">
+          <h4 className="text-[16px] font-bold text-black leading-snug">
+            Grow your business like above
+          </h4>
+          <p className="text-[13px] text-[#666666] leading-relaxed mt-0.5">
+            If you have any questions, just book a 15-minute call with us before subscribing.
           </p>
         </div>
       </div>
 
       {/* Button */}
       <button
+        onClick={openModal}
         className="
-          font-medium
-          h-[44px]
           w-full
-          rounded-full
-          bg-[#131313]
+          rounded-xl
+          bg-black
+          py-3
+          text-[14px]
+          font-semibold
           text-white
-          text-[15px]
-          flex
-          items-center
-          justify-center
-          gap-2
           transition-all
           duration-300
-          hover:bg-black
+          hover:bg-[#222222]
+          cursor-pointer
+          text-center
         "
       >
         Schedule a Call
-        <ArrowRight size={18} />
       </button>
     </div>
   );

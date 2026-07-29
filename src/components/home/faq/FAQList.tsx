@@ -23,15 +23,21 @@ export default function FAQList() {
     <div
       className="
         flex
-        h-[392px]
-        w-[647px]
+        h-auto
+        lg:h-[392px]
+        w-full
+        max-w-[647px]
         flex-col
         justify-between
+        gap-2
+        sm:gap-3
+        lg:gap-0
         rounded-2xl
         border
         border-[#DDD6CA]
         bg-[#F6F4F0]
-        p-4
+        p-3
+        sm:p-4
       "
     >
       {faqItems.map((item) => (

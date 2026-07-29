@@ -99,9 +99,9 @@ export default function CaseStudyModal({ study, onClose }: CaseStudyModalProps) 
 
           {/* Title Area */}
           <div className="absolute bottom-4 left-6 right-6 text-white">
-            <div className="flex items-center gap-3 text-xs text-[#B68A45] font-bold mb-2 uppercase tracking-wider">
+            <div className="flex items-center gap-3 text-xs text-[#C2943A] font-bold mb-2 uppercase tracking-wider">
               <span>{study.category}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B68A45]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C2943A]" />
               <span>{study.location}</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">
@@ -113,7 +113,7 @@ export default function CaseStudyModal({ study, onClose }: CaseStudyModalProps) 
         {/* Scrollable details body */}
         <div className="p-6 overflow-y-auto space-y-6 text-[#333333]">
           {/* Key outcome achievements */}
-          <div className="bg-[#F6F4F0] border-l-4 border-[#B68A45] p-4 rounded-r-xl flex items-center gap-4 border border-y-[#DDD6CA] border-r-[#DDD6CA] border-l-0">
+          <div className="bg-[#F6F4F0] border-l-4 border-[#C2943A] p-4 rounded-r-xl flex items-center gap-4 border border-y-[#DDD6CA] border-r-[#DDD6CA] border-l-0">
             <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0" />
             <div>
               <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#764A04]">
@@ -128,7 +128,7 @@ export default function CaseStudyModal({ study, onClose }: CaseStudyModalProps) 
           {/* Challenge Section */}
           <div className="space-y-2">
             <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#999999] flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B68A45]" /> The Challenge
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C2943A]" /> The Challenge
             </h4>
             <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
               {study.challenge}
@@ -138,7 +138,7 @@ export default function CaseStudyModal({ study, onClose }: CaseStudyModalProps) 
           {/* Solution Section */}
           <div className="space-y-2">
             <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#999999] flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B68A45]" /> Our Solution
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C2943A]" /> Our Solution
             </h4>
             <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
               {study.solution}
@@ -148,7 +148,7 @@ export default function CaseStudyModal({ study, onClose }: CaseStudyModalProps) 
           {/* Outcome Section */}
           <div className="space-y-2 pb-2">
             <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#999999] flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B68A45]" /> The Outcome
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C2943A]" /> The Outcome
             </h4>
             <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
               {study.result}

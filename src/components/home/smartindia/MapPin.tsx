@@ -51,12 +51,12 @@ export default function MapPin({ pin, show }: MapPinProps) {
           userSelect: "none",
           whiteSpace: "nowrap",
           opacity: show ? 1 : 0,
-          transform: show ? "translateY(0) scale(1)" : "translateY(10px) scale(0.92)",
+          transform: show ? "translateY(-50%) scale(1)" : "translateY(calc(-50% + 10px)) scale(0.92)",
           transition: "opacity 0.4s ease, transform 0.4s ease",
           transitionDelay: `${cardDelay}ms`,
         }}
       >
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#131313", fontFamily: "'DM Sans', sans-serif", lineHeight: 1.3 }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#131313", fontFamily: "var(--font-geist-mono), monospace", lineHeight: 1.3 }}>
           {pin.title}
         </span>
         <span style={{ fontSize: 9, fontWeight: 600, color: "#88887F", textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'DM Sans', sans-serif" }}>
