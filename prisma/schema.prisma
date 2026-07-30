@@ -105,10 +105,19 @@ model Feature {
 
 model Contact {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Contact form fields
   name      String?
   email     String?
   phone     String?
   company   String?
   message   String?
+
+  // Schedule a Call fields
+  scheduleDate  DateTime?
+  scheduleTime  String?
+  scheduleNotes String?
+  scheduleGuests String[] @default([])
+
   createdAt DateTime @default(now())
 }

@@ -23,9 +23,7 @@ export default function ScheduleCallModal() {
   // Form State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
-  const [softwareStack, setSoftwareStack] = useState("");
-  const [roleRequirements, setRoleRequirements] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState("");
   const [guests, setGuests] = useState<string[]>([]);
   const [showGuestSection, setShowGuestSection] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,20 +85,18 @@ export default function ScheduleCallModal() {
         setSelectedTimeSlot(null);
         setName("");
         setEmail("");
-        setNotes("");
-        setSoftwareStack("");
-        setRoleRequirements("");
+        setAdditionalNotes("");
         setGuests([]);
         setShowGuestSection(false);
         setMobileShowTimes(false);
         setIsInitialLoad(true);
-      }, 300); // Wait for transition out
+      }, 300);
     } else {
       setIsCalendarLoading(true);
       setIsInitialLoad(true);
       const today = new Date();
       setSelectedDate(today);
-      setMobileShowTimes(true);
+      setMobileShowTimes(false);
 
       const timer = setTimeout(() => {
         setIsCalendarLoading(false);
@@ -118,7 +114,6 @@ export default function ScheduleCallModal() {
 
   const handleSelectTime = (time: string) => {
     setSelectedTimeSlot(time);
-    // Transition directly to booking form
     setView("form");
   };
 
@@ -150,7 +145,6 @@ export default function ScheduleCallModal() {
     if (!name || !email) return;
 
     setIsSubmitting(true);
-    // Mock API submission
     setTimeout(() => {
       setIsSubmitting(false);
       setView("success");
@@ -169,40 +163,55 @@ export default function ScheduleCallModal() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.28, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             onClick={closeModal}
-            className="absolute inset-0 bg-black/70 backdrop-blur-[4px]"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
           />
 
-          {/* Close Button outside box */}
-          <button
+          {/* Close Button */}
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
             onClick={closeModal}
             className="fixed top-6 right-6 md:top-8 md:right-8 z-[10000] p-2 text-neutral-400 hover:text-white hover:bg-neutral-800/40 rounded-full transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             <X size={24} />
-          </button>
+          </motion.button>
 
-          {/* Modal Container */}
+          {/* Modal Container: locked height to 520px identical to the calendar state */}
           <motion.div
             ref={modalRef}
-            initial={{ scale: 0.975, opacity: 0, y: 14 }}
+            layout
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.975, opacity: 0, y: 14 }}
-            transition={{ duration: 0.34, ease: [0.2, 0.8, 0.2, 1] }}
-            className={`relative w-full md:max-w-none bg-[#131210] border border-[#2A2925] rounded-3xl shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row h-auto max-h-[90vh] transition-all duration-500 ease-in-out ${view === "calendar"
-                ? "md:w-[1180px] md:h-[520px]"
-                : "md:w-[760px] md:h-[590px]"
-              }`}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            transition={{ 
+              layout: { type: "spring", bounce: 0, duration: 0.5 },
+              default: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } 
+            }}
+            className={`relative w-full md:max-w-none bg-[#131210] border border-[#2A2925] rounded-3xl shadow-[0_24px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col md:flex-row h-auto max-h-[90vh] ${
+              view === "calendar"
+                ? selectedDate 
+                  ? "md:w-[1180px] md:h-[520px]" 
+                  : "md:w-[560px] md:h-[520px]"
+                : "md:w-[800px] md:h-[520px]"
+            }`}
           >
-
             {/* View 1: Booking Success */}
             {view === "success" ? (
-              <div className="flex flex-col items-center justify-center p-8 md:p-12 w-full text-center text-white bg-[#131210]">
+              <motion.div 
+                initial={{ opacity: 0, filter: "blur(4px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+                className="flex flex-col items-center justify-center p-8 md:p-12 w-full text-center text-white bg-[#131210]"
+              >
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 150, delay: 0.1 }}
+                  transition={{ type: "spring", bounce: 0.5, delay: 0.2 }}
                 >
                   <CheckCircle2 size={64} className="text-[#C2943A] mb-6" />
                 </motion.div>
@@ -223,199 +232,138 @@ export default function ScheduleCallModal() {
                 >
                   Close Window
                 </button>
-              </div>
+              </motion.div>
             ) : (
               <>
                 {/* Left Sidebar Info Panel */}
                 <ScheduleHeader selectedDate={selectedDate} selectedTimeSlot={selectedTimeSlot} />
 
                 {/* Right Interactive Area */}
-                <div className="flex-1 flex flex-col overflow-y-auto min-h-0 bg-[#131210]">
+                <div className="flex-1 flex flex-col overflow-y-auto min-h-0 bg-[#131210] h-full">
                   <AnimatePresence mode="wait">
                     {view === "form" ? (
                       <motion.form
                         key="booking-form"
-                        initial={{ opacity: 0, x: 25 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -25 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
                         onSubmit={handleSubmit}
-                        className="p-6 md:p-8 flex flex-col gap-5 text-left text-neutral-200"
+                        className="p-6 md:p-8 flex flex-col justify-between h-full text-left text-neutral-200 overflow-y-auto"
                       >
-                        {/* Back to Calendar Navigation */}
-                        <button
-                          type="button"
-                          onClick={() => setView("calendar")}
-                          className="flex items-center gap-2 text-[12px] font-bold text-neutral-400 hover:text-white transition-colors uppercase tracking-wider mb-2 self-start cursor-pointer"
-                        >
-                          <ArrowLeft size={14} /> Back to calendar
-                        </button>
+                         <div className="flex flex-col gap-3.5">
+                           {/* Your name field */}
+                           <div className="flex flex-col gap-1">
+                             <label className="text-[13px] font-semibold text-white">Your name *</label>
+                             <input
+                               type="text"
+                               required
+                               value={name}
+                               onChange={(e) => setName(e.target.value)}
+                               className="w-full px-3 py-2 rounded-xl bg-[#1A1815] border border-[#2A2925] text-white text-sm focus:outline-none focus:border-[#C2943A] transition-colors"
+                             />
+                           </div>
 
-                        <h3 className="text-lg font-bold text-white tracking-tight mb-1">Enter Details</h3>
+                           {/* Email address field */}
+                           <div className="flex flex-col gap-1">
+                             <label className="text-[13px] font-semibold text-white">Email address *</label>
+                             <input
+                               type="email"
+                               required
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
+                               className="w-full px-3 py-2 rounded-xl bg-[#1A1815] border border-[#2A2925] text-white text-sm focus:outline-none focus:border-[#C2943A] transition-colors"
+                             />
+                           </div>
 
-                        {/* Name input */}
-                        <div className="flex flex-col gap-1.5">
-                          <label htmlFor="booking-name" className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                            Your Name *
-                          </label>
-                          <input
-                            id="booking-name"
-                            type="text"
-                            required
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="First and last name"
-                            className="w-full bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all"
-                          />
-                        </div>
+                           {/* Additional notes field */}
+                           <div className="flex flex-col gap-1">
+                             <label className="text-[13px] font-semibold text-white">Additional notes</label>
+                             <textarea
+                               value={additionalNotes}
+                               onChange={(e) => setAdditionalNotes(e.target.value)}
+                               placeholder="Please share anything that will help prepare for our meeting."
+                               rows={2}
+                               className="w-full px-3 py-2 rounded-xl bg-[#1A1815] border border-[#2A2925] text-white text-sm focus:outline-none focus:border-[#C2943A] transition-colors resize-none"
+                             />
+                           </div>
 
-                        {/* Email input */}
-                        <div className="flex flex-col gap-1.5">
-                          <label htmlFor="booking-email" className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                            Email Address *
-                          </label>
-                          <input
-                            id="booking-email"
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="you@example.com"
-                            className="w-full bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all"
-                          />
-                        </div>
+                           {/* Add guests section */}
+                           {!showGuestSection ? (
+                             <button
+                               type="button"
+                               onClick={handleAddGuest}
+                               className="flex items-center gap-1.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors cursor-pointer w-fit"
+                             >
+                               <Plus size={14} /> Add guests
+                             </button>
+                           ) : (
+                             <div className="flex flex-col gap-2">
+                               <div className="flex items-center justify-between">
+                                 <span className="text-xs font-semibold text-neutral-300">Guest Email(s)</span>
+                                 <button
+                                   type="button"
+                                   onClick={handleAddGuest}
+                                   className="text-xs text-[#C2943A] hover:underline flex items-center gap-1"
+                                 >
+                                   <Plus size={12} /> Add another
+                                 </button>
+                               </div>
+                               {guests.map((guestEmail, index) => (
+                                 <div key={index} className="flex items-center gap-2">
+                                   <input
+                                     type="email"
+                                     value={guestEmail}
+                                     onChange={(e) => handleGuestEmailChange(index, e.target.value)}
+                                     placeholder="guest@example.com"
+                                     className="flex-1 px-3 py-1.5 rounded-xl bg-[#1A1815] border border-[#2A2925] text-white text-sm focus:outline-none focus:border-[#C2943A]"
+                                   />
+                                   <button
+                                     type="button"
+                                     onClick={() => handleRemoveGuest(index)}
+                                     className="p-1.5 text-neutral-500 hover:text-red-400 transition-colors"
+                                   >
+                                     <Trash2 size={16} />
+                                   </button>
+                                 </div>
+                               ))}
+                             </div>
+                           )}
+                         </div>
 
-                        {/* Software stack input */}
-                        <div className="flex flex-col gap-1.5">
-                          <label htmlFor="booking-software-stack" className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                            Software Stack / Primary Technologies
-                          </label>
-                          <input
-                            id="booking-software-stack"
-                            type="text"
-                            value={softwareStack}
-                            onChange={(e) => setSoftwareStack(e.target.value)}
-                            placeholder="e.g. React, Next.js, Python, Node.js"
-                            className="w-full bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all"
-                          />
-                        </div>
-
-                        {/* Role requirements input */}
-                        <div className="flex flex-col gap-1.5">
-                          <label htmlFor="booking-role-requirements" className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                            Role Requirements / Project Needs
-                          </label>
-                          <textarea
-                            id="booking-role-requirements"
-                            rows={2}
-                            value={roleRequirements}
-                            onChange={(e) => setRoleRequirements(e.target.value)}
-                            placeholder="Describe the roles, expertise, or talent requirements you need"
-                            className="w-full bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all resize-none"
-                          />
-                        </div>
-
-                        {/* Additional notes input */}
-                        <div className="flex flex-col gap-1.5">
-                          <label htmlFor="booking-notes" className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                            Additional Notes
-                          </label>
-                          <textarea
-                            id="booking-notes"
-                            rows={2}
-                            value={notes}
-                            onChange={(e) => setNotes(e.target.value)}
-                            placeholder="Please share anything that will help prepare for our meeting."
-                            className="w-full bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all resize-none"
-                          />
-                        </div>
-
-                        {/* Guests inputs */}
-                        {showGuestSection && guests.length > 0 && (
-                          <div className="flex flex-col gap-2">
-                            <label className="text-[12px] font-bold text-neutral-400 uppercase tracking-wider">
-                              Guest Emails
-                            </label>
-                            <div className="flex flex-col gap-2">
-                              {guests.map((gEmail, idx) => (
-                                <div key={`guest-${idx}`} className="flex items-center gap-2">
-                                  <input
-                                    type="email"
-                                    value={gEmail}
-                                    onChange={(e) => handleGuestEmailChange(idx, e.target.value)}
-                                    placeholder="guest@example.com"
-                                    className="flex-1 bg-[#1A1815] border border-[#2A2925] rounded-xl px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-[#C2943A] transition-all"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => handleRemoveGuest(idx)}
-                                    className="p-3 text-neutral-500 hover:text-red-400 rounded-xl hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
-                                  >
-                                    <Trash2 size={16} />
-                                  </button>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Add Guests trigger buttons */}
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={handleAddGuest}
-                            className="flex items-center gap-2 text-[13px] font-semibold text-[#C2943A] hover:text-[#A87E2E] transition-colors cursor-pointer py-1"
-                          >
-                            <Plus size={16} /> {showGuestSection ? "Add another guest" : "Add guests"}
-                          </button>
-                        </div>
-
-                        {/* Actions and details */}
-                        <div className="mt-4 pt-5 flex flex-col gap-4">
-                          <p className="text-[11px] text-neutral-500 leading-normal">
-                            By proceeding, you agree to Arambh Advisory&apos;s{" "}
-                            <a href="#" className="underline hover:text-neutral-400 transition-colors">
-                              Terms of Service
-                            </a>{" "}
-                            and{" "}
-                            <a href="#" className="underline hover:text-neutral-400 transition-colors">
-                              Privacy Policy
-                            </a>
-                            .
-                          </p>
-                          <div className="flex items-center justify-end gap-3">
-                            <button
-                              type="button"
-                              onClick={() => setView("calendar")}
-                              className="px-6 py-2.5 rounded-full text-[13px] font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer"
-                            >
-                              Back
-                            </button>
-                            <button
-                              type="submit"
-                              disabled={isSubmitting}
-                              className="rounded-full bg-[#C2943A] px-7 py-3 text-[13px] text-white font-semibold transition hover:bg-[#A87E2E] disabled:bg-neutral-700 disabled:text-neutral-500 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-[#C2943A]/20"
-                            >
-                              {isSubmitting ? "Confirming..." : "Confirm Booking"}
-                            </button>
-                          </div>
-                        </div>
+                         {/* Footer navigation */}
+                         <div className="flex items-center justify-between pt-3 border-t border-[#2A2925] mt-2">
+                           <button
+                             type="button"
+                             onClick={() => setView("calendar")}
+                             className="text-xs font-bold text-neutral-400 hover:text-white transition-colors uppercase tracking-wider cursor-pointer"
+                           >
+                             Back
+                           </button>
+                           <button
+                             type="submit"
+                             disabled={isSubmitting}
+                             className="rounded-xl bg-[#C2943A] px-6 py-2 text-[13px] text-white font-semibold transition hover:bg-[#A87E2E] active:scale-95 cursor-pointer shadow-lg shadow-[#C2943A]/20 disabled:opacity-50"
+                           >
+                             {isSubmitting ? "Confirming..." : "Confirm"}
+                           </button>
+                         </div>
                       </motion.form>
                     ) : (
                       /* View 3: Calendar and Time Selection */
                       <motion.div
                         key="calendar-view"
-                        initial={{ opacity: 0, x: -25 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 25 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, x: 20, filter: "blur(4px)" }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
                         className="flex flex-col md:flex-row h-full min-h-0 w-full"
                       >
                       <LayoutGroup id="schedule-layout">
-                        {/* Calendar view (hidden on mobile if times list is active) */}
+                        {/* Calendar view */}
                         <motion.div
                           layout
-                          transition={{ type: "spring", stiffness: 220, damping: 30, mass: 0.7 }}
+                          transition={{ type: "spring", bounce: 0, duration: 0.5 }}
                           className={`flex justify-center flex-1 min-w-0 overflow-hidden ${mobileShowTimes ? "hidden md:flex" : "flex"}`}
                         >
                           <ScheduleCalender
@@ -426,78 +374,72 @@ export default function ScheduleCallModal() {
                           />
                         </motion.div>
 
-                        {/* Time Slots Selection Drawer (jointed on the right) */}
-                        <AnimatePresence>
-                          {selectedDate && !isInitialLoad && (
-                            <motion.div
-                              layout
-                              initial={{ width: 0, opacity: 0 }}
-                              animate={{ width: 280, opacity: 1 }}
-                              exit={{ width: 0, opacity: 0 }}
-                              transition={{ type: "spring", stiffness: 220, damping: 30, mass: 0.7 }}
-                              className={`md:border-l border-[#2A2925] flex-col p-6 w-full md:w-[280px] shrink-0 overflow-hidden ${mobileShowTimes ? "flex" : "hidden md:flex"
-                                }`}
+                        {/* Time Slots Selection Drawer */}
+                        {selectedDate && (
+                          <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 20 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className={`md:border-l border-[#2A2925] flex-col p-6 w-full md:w-[280px] shrink-0 overflow-hidden ${mobileShowTimes ? "flex" : "hidden md:flex"}`}
+                          >
+                            {/* Back to Calendar for Mobile view */}
+                            <button
+                              onClick={() => setMobileShowTimes(false)}
+                              className="md:hidden flex items-center gap-2 text-[12px] font-bold text-neutral-400 hover:text-white transition-colors uppercase tracking-wider mb-4 cursor-pointer"
                             >
-                              {/* Back to Calendar for Mobile view */}
-                              <button
-                                onClick={() => setMobileShowTimes(false)}
-                                className="md:hidden flex items-center gap-2 text-[12px] font-bold text-neutral-400 hover:text-white transition-colors uppercase tracking-wider mb-4 cursor-pointer"
-                              >
-                                <ArrowLeft size={14} /> Back to calendar
-                              </button>
+                              <ArrowLeft size={14} /> Back to calendar
+                            </button>
 
-                              <div className="flex items-center justify-between mb-4 min-w-[232px]">
-                                <span className="text-[13px] font-bold text-white uppercase tracking-wider">
-                                  {timeLabel}
-                                </span>
+                            <div className="flex items-center justify-between mb-4 min-w-[232px]">
+                              <span className="text-[13px] font-bold text-white uppercase tracking-wider">
+                                {timeLabel}
+                              </span>
 
-                                {/* 12h/24h toggle */}
-                                {!isCalendarLoading && (
-                                  <div className="flex rounded-lg overflow-hidden border border-[#2A2925] bg-[#1A1815] p-0.5 text-[10px] font-bold">
-                                    <button
-                                      type="button"
-                                      onClick={() => setIs24h(false)}
-                                      className={`px-2 py-1 rounded transition-colors cursor-pointer ${!is24h ? "bg-[#C2943A] text-white" : "text-neutral-400 hover:text-white"
-                                        }`}
-                                    >
-                                      12h
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => setIs24h(true)}
-                                      className={`px-2 py-1 rounded transition-colors cursor-pointer ${is24h ? "bg-[#C2943A] text-white" : "text-neutral-400 hover:text-white"
-                                        }`}
-                                    >
-                                      24h
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
+                              {/* 12h/24h toggle */}
+                              {!isCalendarLoading && (
+                                <div className="flex rounded-lg overflow-hidden border border-[#2A2925] bg-[#1A1815] p-0.5 text-[10px] font-bold">
+                                  <button
+                                    type="button"
+                                    onClick={() => setIs24h(false)}
+                                    className={`px-2 py-1 rounded transition-colors cursor-pointer ${!is24h ? "bg-[#C2943A] text-white" : "text-neutral-400 hover:text-white"}`}
+                                  >
+                                    12h
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setIs24h(true)}
+                                    className={`px-2 py-1 rounded transition-colors cursor-pointer ${is24h ? "bg-[#C2943A] text-white" : "text-neutral-400 hover:text-white"}`}
+                                  >
+                                    24h
+                                  </button>
+                                </div>
+                              )}
+                            </div>
 
-                              {/* Time Slots List / Skeleton */}
-                              <div className="flex-1 overflow-y-auto flex flex-col gap-2 pr-1 max-h-[300px] md:max-h-none min-w-[232px]">
-                                {isCalendarLoading ? (
-                                  Array.from({ length: 3 }).map((_, index) => (
-                                    <div
-                                      key={`slot-skeleton-${index}`}
-                                      className="w-full h-[46px] rounded-xl bg-[#2A2925] animate-pulse"
-                                    />
-                                  ))
-                                ) : (
-                                  slots.map((slot) => (
-                                    <button
-                                      key={slot}
-                                      onClick={() => handleSelectTime(slot)}
-                                      className="w-full text-center py-3 rounded-xl border border-[#2A2925] bg-[#1A1815] text-neutral-300 hover:text-white font-semibold text-sm hover:border-[#C2943A] active:scale-98 transition-all cursor-pointer"
-                                    >
-                                      {slot}
-                                    </button>
-                                  ))
-                                )}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                            {/* Time Slots List / Skeleton */}
+                            <div className="flex-1 overflow-y-auto flex flex-col gap-2 pr-1 max-h-[300px] md:max-h-none min-w-[232px]">
+                              {isCalendarLoading ? (
+                                Array.from({ length: 3 }).map((_, index) => (
+                                  <div
+                                    key={`slot-skeleton-${index}`}
+                                    className="w-full h-[46px] rounded-xl bg-[#2A2925] animate-pulse"
+                                  />
+                                ))
+                              ) : (
+                                slots.map((slot) => (
+                                  <button
+                                    key={slot}
+                                    onClick={() => handleSelectTime(slot)}
+                                    className="w-full text-center py-3 rounded-xl border border-[#2A2925] bg-[#1A1815] text-neutral-300 hover:text-white font-semibold text-sm hover:border-[#C2943A] active:scale-98 transition-all cursor-pointer"
+                                  >
+                                    {slot}
+                                  </button>
+                                ))
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
                       </LayoutGroup>
                       </motion.div>
                     )}

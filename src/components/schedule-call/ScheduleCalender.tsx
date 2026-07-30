@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MONTH_NAMES, DAY_NAMES, getDaysInMonth, getFirstDayOfMonth } from "./schedule.data";
+import { motion } from "framer-motion";
 
 interface ScheduleCalenderProps {
   selectedDate: Date | null;
@@ -116,12 +117,16 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
       <div className="grid grid-cols-7 gap-1.5 text-center">
         {isLoading ? (
           Array.from({ length: 35 }).map((_, index) => (
-            <div
+            <motion.div
               key={`skeleton-${index}`}
-              className="w-[59px] h-[59px] rounded-xl bg-[#2A2925] animate-pulse mx-auto"
+              initial={{ opacity: 0.4 }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: index * 0.02 }}
+              className="w-[59px] h-[59px] rounded-xl bg-[#2A2925] mx-auto"
             />
           ))
         ) : (
+          /* ... rest of your calendar ... */
           <>
             {/* Padding Cells for offset */}
             {paddingArray.map((_, index) => (
