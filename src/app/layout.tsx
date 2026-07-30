@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import ConditionalFooter from "@/app/components/ConditionalFooter";
 import "./globals.css";
 
+
 const Navbar = dynamic(() => import("@/components/layout/Navbar"), { ssr: false });
 
 const dmSans = DM_Sans({
