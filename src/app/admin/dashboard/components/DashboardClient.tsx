@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import ServicesManager from "./ServicesManager";
 
 interface Contact {
   id: string;
@@ -42,7 +43,7 @@ export default function DashboardClient({
 
   const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (dbError) {
       console.error(
         "Database Connection Error on admin dashboard:",
@@ -52,7 +53,6 @@ export default function DashboardClient({
   }, [dbError]);
 
   const handleLogout = () => {
-    // Clear any authentication state if needed, then redirect
     router.push("/admin/login");
   };
 
@@ -64,9 +64,7 @@ export default function DashboardClient({
     return val;
   };
 
-  const formatScheduleDate = (
-    date: Date | string | null
-  ) => {
+  const formatScheduleDate = (date: Date | string | null) => {
     if (!date) {
       return "-";
     }
@@ -99,7 +97,7 @@ export default function DashboardClient({
       </header>
 
       {/* Tabs */}
-      <div className="flex border-b border-zinc-200 mb-8 ">
+      <div className="flex border-b border-zinc-200 mb-8">
         {/* Services */}
         <button
           onClick={() => setActiveTab("services")}
@@ -140,17 +138,7 @@ export default function DashboardClient({
       {/* Tab Content */}
       <main className="bg-white">
         {/* Services Tab */}
-        {activeTab === "services" && (
-          <div className="p-12 text-center border border-dashed border-zinc-300 rounded-lg max-w-lg mx-auto mt-8">
-            <h2 className="text-xl font-semibold text-zinc-700 mb-2">
-              Services Module
-            </h2>
-
-            <p className="text-zinc-500">
-              Coming Soon...
-            </p>
-          </div>
-        )}
+        {activeTab === "services" && <ServicesManager />}
 
         {/* Contacts Tab */}
         {activeTab === "contacts" && (
@@ -207,12 +195,13 @@ export default function DashboardClient({
                         className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs"
                         suppressHydrationWarning
                       >
-                        {new Date(
-                          contact.createdAt
-                        ).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
+                        {new Date(contact.createdAt).toLocaleString(
+                          undefined,
+                          {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          }
+                        )}
                       </td>
                     </tr>
                   ))
@@ -263,21 +252,15 @@ export default function DashboardClient({
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {formatScheduleDate(
-                          booking.scheduleDate
-                        )}
+                        {formatScheduleDate(booking.scheduleDate)}
                       </td>
 
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {formatValue(
-                          booking.scheduleTime
-                        )}
+                        {formatValue(booking.scheduleTime)}
                       </td>
 
                       <td className="px-6 py-4 whitespace-pre-wrap max-w-xs break-words">
-                        {formatValue(
-                          booking.scheduleNotes
-                        )}
+                        {formatValue(booking.scheduleNotes)}
                       </td>
 
                       <td className="px-6 py-4">
@@ -290,12 +273,13 @@ export default function DashboardClient({
                         className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs"
                         suppressHydrationWarning
                       >
-                        {new Date(
-                          booking.createdAt
-                        ).toLocaleString(undefined, {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
+                        {new Date(booking.createdAt).toLocaleString(
+                          undefined,
+                          {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          }
+                        )}
                       </td>
                     </tr>
                   ))

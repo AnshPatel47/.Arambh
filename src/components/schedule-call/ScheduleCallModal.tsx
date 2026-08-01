@@ -22,8 +22,10 @@ export default function ScheduleCallModal() {
 
   // Form State
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [additionalNotes, setAdditionalNotes] = useState("");
+const [email, setEmail] = useState("");
+const [emailError, setEmailError] = useState("");
+const [additionalNotes, setAdditionalNotes] = useState("");
+
   const [guests, setGuests] = useState<string[]>([]);
   const [showGuestSection, setShowGuestSection] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,9 +85,11 @@ export default function ScheduleCallModal() {
         setView("calendar");
         setSelectedDate(null);
         setSelectedTimeSlot(null);
-        setName("");
-        setEmail("");
-        setAdditionalNotes("");
+       setName("");
+setEmail("");
+setEmailError("");
+setAdditionalNotes("");
+
         setGuests([]);
         setShowGuestSection(false);
         setMobileShowTimes(false);
@@ -139,47 +143,55 @@ export default function ScheduleCallModal() {
       setShowGuestSection(false);
     }
   };
+const handleSubmit = async (e: React.FormEvent) => {
+e.preventDefault();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+if (!name.trim() || !email.trim() || !selectedDate || !selectedTimeSlot) {
+return;
+}
 
-  if (!name || !email || !selectedDate || !selectedTimeSlot) {
-    return;
-  }
+const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
 
-  setIsSubmitting(true);
+if (!emailRegex.test(email.trim())) {
+setEmailError("Please enter a valid email address.");
+return;
+}
 
-  try {
-    const response = await fetch("/api/schedule-booking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        date: selectedDate.toISOString(),
-        time: selectedTimeSlot,
-        notes: additionalNotes,
-        guests,
-      }),
-    });
+setEmailError("");
+setIsSubmitting(true);
 
-    const data = await response.json();
+try {
+const response = await fetch("/api/schedule-booking", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify({
+name: name.trim(),
+email: email.trim(),
+date: selectedDate.toISOString(),
+time: selectedTimeSlot,
+notes: additionalNotes,
+guests,
+}),
+});
 
-    if (!response.ok || !data.success) {
-      throw new Error(data.error || "Failed to create booking");
-    }
+const data = await response.json();
 
-    console.log("Schedule booking created:", data.bookingId);
+if (!response.ok || !data.success) {
+  throw new Error(data.error || "Failed to create booking");
+}
 
-    setView("success");
-  } catch (error) {
-    console.error("Schedule booking error:", error);
-    alert("Failed to schedule the meeting. Please try again.");
-  } finally {
-    setIsSubmitting(false);
-  }
+console.log("Schedule booking created:", data.bookingId);
+
+setView("success");
+
+} catch (error) {
+console.error("Schedule booking error:", error);
+alert("Failed to schedule the meeting. Please try again.");
+} finally {
+setIsSubmitting(false);
+}
 };
 
   const slots = is24h ? TIME_SLOTS_24H : TIME_SLOTS_12H;
@@ -296,16 +308,29 @@ export default function ScheduleCallModal() {
                            </div>
 
                            {/* Email address field */}
-                           <div className="flex flex-col gap-1">
-                             <label className="text-[13px] font-semibold text-white">Email address *</label>
-                             <input
-                               type="email"
-                               required
-                               value={email}
-                               onChange={(e) => setEmail(e.target.value)}
-                               className="w-full px-3 py-2 rounded-xl bg-[#1A1815] border border-[#2A2925] text-white text-sm focus:outline-none focus:border-[#C2943A] transition-colors"
-                             />
-                           </div>
+                          <div className="flex flex-col gap-1"> <label className="text-[13px] font-semibold text-white"> Email address * </label>
+
+<input
+  type="email"
+  required
+  value={email}
+  onChange={(e) => {
+    setEmail(e.target.value);
+    if (emailError) setEmailError("");
+  }}
+  className={`w-full px-3 py-2 rounded-xl bg-[#1A1815] border text-white text-sm focus:outline-none transition-colors ${
+    emailError
+      ? "border-red-500 focus:border-red-500"
+      : "border-[#2A2925] focus:border-[#C2943A]"
+  }`}
+/>
+{emailError && (
+<p className="text-red-400 text-xs mt-1">
+{emailError}
+</p>
+)}
+
+</div>
 
                            {/* Additional notes field */}
                            <div className="flex flex-col gap-1">

@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
-import dynamic from "next/dynamic";
 import ConditionalFooter from "@/app/components/ConditionalFooter";
 import "./globals.css";
 
-
-const Navbar = dynamic(() => import("@/components/layout/Navbar"), { ssr: false });
+import ConditionalNavbar from "@/app/components/ConditionalNavbar";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -44,7 +42,7 @@ export default function RootLayout({
       <body className={dmSans.className}>
         <ClientMountLoader>
           <ScheduleCallProvider>
-            <Navbar />
+            <ConditionalNavbar /> 
             <ScrollRevealProvider>{children}</ScrollRevealProvider>
             <ConditionalFooter />
             <ScheduleCallModal />

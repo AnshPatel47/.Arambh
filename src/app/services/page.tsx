@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { DM_Sans } from "next/font/google";
 import { Menu, ChevronDown } from "lucide-react";
-import Footer from "../components/Footer";
 import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
 import Link from "next/link";
 
@@ -273,7 +272,6 @@ export default function ServicesPage() {
       </section>
 
       <ScrollToTopButton heroSectionId="hero-section" />
-      <Footer />
     </div>
   );
 }
