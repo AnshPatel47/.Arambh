@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image";
 import { notFound } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import { getServiceBySlug } from "@/lib/services";
