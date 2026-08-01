@@ -24,7 +24,7 @@ import {
   ArrowUp,
   ArrowDown
 } from "lucide-react";
-import Footer from "../../components/Footer";
+
 
 // Interface for Case Study Structure
 interface CaseStudy {
@@ -695,7 +695,6 @@ export default function CaseStudies() {
       )}
       <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"> 
       </section>   
-      <Footer />
     </div>
   );
 }

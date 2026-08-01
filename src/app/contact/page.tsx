@@ -2,7 +2,6 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
-import Footer from "../components/Footer";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
 import {
   FaFacebookF,
@@ -164,7 +163,6 @@ export default function ContactUs() {
       </section>
       <ScrollToTopButton heroSectionId="hero-section" />
       <ContactForm />
-      <Footer />
     </div>
   );
 }

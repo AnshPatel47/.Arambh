@@ -14,7 +14,6 @@ import {
   ArrowUp,
   ArrowDown
 } from "lucide-react";
- import Footer from "../components/Footer";
  import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
 
 // Interface for Blog Post Structure
@@ -590,7 +589,6 @@ export default function ResourcesBlogPage() {
       </section>
       <ScrollToTopButton heroSectionId="hero-section" />
       <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>
-      <Footer />
     </div>
   );
 }
