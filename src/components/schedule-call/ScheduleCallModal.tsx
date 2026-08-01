@@ -140,16 +140,47 @@ export default function ScheduleCallModal() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !email) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setView("success");
-    }, 1200);
-  };
+  if (!name || !email || !selectedDate || !selectedTimeSlot) {
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch("/api/schedule-booking", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        date: selectedDate.toISOString(),
+        time: selectedTimeSlot,
+        notes: additionalNotes,
+        guests,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Failed to create booking");
+    }
+
+    console.log("Schedule booking created:", data.bookingId);
+
+    setView("success");
+  } catch (error) {
+    console.error("Schedule booking error:", error);
+    alert("Failed to schedule the meeting. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const slots = is24h ? TIME_SLOTS_24H : TIME_SLOTS_12H;
   const timeLabel = selectedDate ? selectedDate.toLocaleDateString("en-US", { weekday: "short", day: "numeric" }) : "";

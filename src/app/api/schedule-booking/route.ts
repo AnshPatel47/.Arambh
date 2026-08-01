@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// POST - Create a new Schedule a Call booking
 export async function POST(req: Request) {
   try {
-    // Get data sent from the Schedule a Call form
     const body = await req.json();
 
     const {
@@ -52,6 +52,37 @@ export async function POST(req: Request) {
       {
         success: false,
         error: "Failed to create schedule booking",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// GET - Fetch Schedule a Call bookings for Admin Dashboard
+export async function GET() {
+  try {
+    const bookings = await prisma.contact.findMany({
+      where: {
+        scheduleDate: {
+          not: null,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      bookings,
+    });
+  } catch (error) {
+    console.error("Error fetching schedule bookings:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to fetch schedule bookings",
       },
       { status: 500 }
     );
