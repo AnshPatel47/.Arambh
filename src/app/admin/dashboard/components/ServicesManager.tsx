@@ -83,7 +83,7 @@ export default function ServicesManager() {
               className="w-full pl-10 pr-4 py-2 text-DM sans text-sm bg-white border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ca9d43] text-zinc-900 placeholder-zinc-400"
             />
             <svg
-              className="w-4 h-4 text-zinc-400 absolute left-3 top-3"
+              className="w-4 h-4 text-zinc-500 absolute left-3 top-3"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -120,9 +120,9 @@ export default function ServicesManager() {
       </div>
 
       {/* Services Table */}
-      <div className="overflow-x-auto border border-zinc-200 rounded-xl shadow-sm bg-white">
-        <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
-          <thead className="bg-zinc-50 text-zinc-700 uppercase font-semibold text-xs tracking-wider">
+      <div className="overflow-x-auto border border-zinc-300 rounded-xl shadow-sm bg-white">
+        <table className="min-w-full divide-y divide-zinc-300 text-left text-sm">
+          <thead className="bg-zinc-50 text-zinc-900 uppercase font-semibold text-xs tracking-wider">
             <tr>
               <th className="px-6 py-4">Service</th>
               <th className="px-6 py-4">Category</th>
@@ -156,7 +156,7 @@ export default function ServicesManager() {
                 <tr key={service.id} className="hover:bg-zinc-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="font-semibold text-DM sans text-zinc-900">{service.title}</div>
-                    <div className="text-xs text-DM sans text-zinc-500 font-mono mt-0.5">/{service.slug}</div>
+                    {/* <div className="text-xs text-DM sans text-zinc-500 font-mono mt-0.5">/{service.slug}</div> */}
                   </td>
                   <td className="px-6 py-4">
                     <span className="px-2.5 py-1 bg-zinc-100 text-zinc-700 rounded-md text-s text-DM sans font-medium border border-zinc-200">
@@ -171,7 +171,7 @@ export default function ServicesManager() {
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
                         service.status === "active"
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                          : "bg-zinc-100 text-zinc-600 border border-zinc-200"
+                          : "bg-zinc-100 text-zinc-700 border border-zinc-300"
                       }`}
                     >
                       <span

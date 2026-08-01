@@ -228,9 +228,8 @@ export default function CaseStudies() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
-
       {/* ── 1. HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-[#120E07] text-white pt-28 sm:pt-44 pb-16 sm:pb-32 px-4 sm:px-6 md:px-8 min-h-[420px] sm:min-h-[520px] flex items-center">
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[620px] flex items-center">
 
         {/* Background Image Cover */}
         <div
@@ -244,26 +243,36 @@ export default function CaseStudies() {
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
 
           {/* Breadcrumbs */}
-          <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 font-sans text-xs sm:text-sm font-semibold tracking-widest text-[#BD8E32] mb-4 sm:mb-6" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-8 uppercase" aria-label="Breadcrumb">
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-zinc-400">Resources</span>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-white">Case Studies</span>
           </nav>
-
           <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1 className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight leading-tight text-white mb-3">
+            <h1 
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3"
+                style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 500,
+              }}
+            >
               Accelerating Growth. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BD8E32] to-[#f8d08b]">
+              <span className="text-[#C2943A]">
                 Real Startup Success.
               </span>
             </h1>
-            <p className="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-xl">
+            <p 
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 400,
+              }}
+            >
               Explore how we guide startups and MSMEs through company registration, secure critical government grants, maximize taxation exemptions, and manage compliance audits to turn innovative visions into structured enterprises.
             </p>
           </div>
-
         </div>
       </section>
 
@@ -315,7 +324,7 @@ export default function CaseStudies() {
               key={cat}
               onClick={() => {
                 setActiveCategory(cat);
-                setVisibleCount(4); // Reset pagination
+                setVisibleCount(4);
               }}
               className={`px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
@@ -451,13 +460,13 @@ export default function CaseStudies() {
                 </div>
 
                 {/* Floating scroll action icon with Arambh Gold */}
-                <button
+                {/* <button
                   onClick={scrollToTop}
                   className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-[#BD8E32] hover:bg-[#764A04] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
                   title="Scroll to top"
                 >
                   <ArrowUp className="w-6 h-6" />
-                </button>
+                </button> */}
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
@@ -515,14 +524,9 @@ export default function CaseStudies() {
                   </a>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
-        {/* 100% Full-Width Divider Line & Pagination Section */}
         {hasMore && (
           <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
             <button
@@ -533,7 +537,6 @@ export default function CaseStudies() {
             </button>
            </div>
         )}
-
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
@@ -569,7 +572,7 @@ export default function CaseStudies() {
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Financial Fuel</span>
-                <h4 className="text-DM sans sm:text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-3">Government Funding</h4>
+                <h4 className="text-DM sans sm:text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-2">Government Funding</h4>
                 <p className="text-m text-zinc-900 leading-relaxed mb-3">
                   Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
                 </p>
@@ -585,7 +588,7 @@ export default function CaseStudies() {
                   <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>
-                <h4 className="text-DM sans text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-3">Corporate Advisory</h4>
+                <h4 className="text-DM sans text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-2">Corporate Advisory</h4>
                 <p className="text-DM sans text-m text-zinc-900 leading-relaxed mb-3">
                   Maintain immaculate corporate logs, clean cap tables, monthly tax filings, and full regulatory conformity to stay investor-ready.
                 </p>
@@ -597,8 +600,6 @@ export default function CaseStudies() {
           </div>
         </div>
       </section>
-
-      {/* ── 4. CASE STUDY DETAIL MODAL ── */}
       
       {selectedCaseStudy && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity">

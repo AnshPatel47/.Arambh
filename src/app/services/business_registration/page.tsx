@@ -13,6 +13,7 @@ import {
   FileCheck,
   ChevronDown
 } from "lucide-react";
+import ScrollToTopButton from "../../../components/scrollarrow/ScrollToTopButton";
 
 // Configure DM Sans
 const dmSans = DM_Sans({
@@ -104,11 +105,11 @@ export default function BusinessRegistrationGuide() {
 
             {/* Quick Navigation (Mobile Only) */}
             <div className="block lg:hidden mt-6">
-              <div className="bg-[#120E07]/95 border border-[#BD8E32]/25 rounded-2xl p-5 backdrop-blur-md shadow-2xl text-zinc-300">
+              <div className="bg-[#ffff] border border-[#BD8E32]/25 rounded-2xl p-5 backdrop-blur-md shadow-2xl text-zinc-300">
                 <h3 className="text-sm font-semibold text-[#BD8E32] uppercase tracking-widest flex items-center gap-2 mb-3">
                   <Compass className="w-5 h-5" /> Quick Navigation
                 </h3>
-                <div className="flex flex-col text-sm text-zinc-300">
+                <div className="flex flex-col text-sm text-zinc-900">
                   <a href="#introduction" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                     <span className="group-hover:translate-x-1 transition-transform">Introduction</span>
                     <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded">Read</span>
@@ -261,7 +262,7 @@ export default function BusinessRegistrationGuide() {
                     <div className="absolute w-10 h-10 bg-[#120E07] rounded-full text-[#BD8E32] font-semibold flex items-center justify-center -left-[21px] top-0 shadow-lg border-4 border-[#F8F9FA]">
                       <FileCheck className="w-5 h-5" />
                     </div>
-                    <div className="bg-[#120E07] p-6 rounded-2xl shadow-lg border border-[#BD8E32]/30 text-white">
+                    <div className="bg-[#ffff] p-6 rounded-2xl shadow-lg border border-[#BD8E32]/30 text-white">
                       <h4 className="text-xl font-semibold text-[#BD8E32] mb-2">Certificate of Incorporation</h4>
                       <p className="text-zinc-300">Congratulations! You receive your official Certificate of Incorporation and can immediately open a corporate bank account.</p>
                     </div>
@@ -295,7 +296,7 @@ export default function BusinessRegistrationGuide() {
 
               {/* Newsletter Subscription (visible only on mobile at the bottom) */}
               <div className="block lg:hidden mt-8">
-                <div className="bg-[#120E07]/90 rounded-2xl p-4 border border-white/10 text-[#BD8E32] relative overflow-hidden backdrop-blur-md shadow-2xl">
+                <div className="bg-[#ffff] rounded-2xl p-4 border border-white/10 text-[#BD8E32] relative overflow-hidden backdrop-blur-md shadow-2xl">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-[#BD8E32]/10 rounded-full blur-2xl" />
                   <h3 className="text-2xl font-semibold font-DM text-[#BD8E32] flex items-center gap-2 mb-1.5">
                     {/* <Mail className="w-4 h-4 text-[#BD8E32]" /> */}
@@ -336,11 +337,11 @@ export default function BusinessRegistrationGuide() {
           <div className="lg:col-span-4 lg:sticky lg:top-8 flex flex-col gap-6 self-start lg:mt-14">
 
             {/* Table of Contents (Quick Nav) */}
-            <div className="hidden lg:block bg-[#120E07]/95 border border-[#BD8E32]/25 rounded-2xl p-5 backdrop-blur-md shadow-2xl text-zinc-300">
+            <div className="hidden lg:block bg-[#ffff]/95 border border-zinc-300 rounded-2xl p-5 backdrop-blur-md shadow-xl text-zinc-900">
               <h3 className="text-sm font-semibold text-[#BD8E32] uppercase tracking-widest flex items-center gap-2 mb-3">
                 <Compass className="w-5 h-5" /> Quick Navigation
               </h3>
-              <div className="flex flex-col text-sm text-zinc-300">
+              <div className="flex flex-col text-DM sans text-m text-zinc-900">
                 <a href="#introduction" className="flex justify-between items-center border-b border-white/5 py-2.5 hover:text-[#BD8E32] transition-colors group">
                   <span className="group-hover:translate-x-1 transition-transform">Introduction</span>
                   <span className="text-[10px] uppercase font-semibold bg-white/10 px-2 py-0.5 rounded">Read</span>
@@ -370,13 +371,13 @@ export default function BusinessRegistrationGuide() {
 
             {/* Newsletter Subscription (visible only on desktop in the sidebar) */}
             <div className="hidden lg:block">
-              <div className="bg-[#120E07]/90 rounded-2xl p-4 border border-white/10 text-white relative overflow-hidden backdrop-blur-md shadow-2xl">
+              <div className="bg-[#ffff] rounded-2xl p-4 border border-white/10 text-white relative overflow-hidden backdrop-blur-md shadow-xl">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-[#BD8E32]/10 rounded-full blur-2xl" />
-                <h3 className="text-2xl font-semibold font-DM text-white flex items-center gap-2 mb-1.5">
+                <h3 className="text-xl font-semibold font-DM text-zinc-900 flex items-center gap-2 mb-1.5">
                   {/* <Mail className="w-4 h-4 text-[#BD8E32]" /> */}
                   Monthly Insights
                 </h3>
-                <p className="text-[16px] text-zinc-400 leading-relaxed mb-2.5">
+                <p className="text-[16px] text-zinc-900 leading-relaxed mb-2.5">
                   Curated regulatory mandates, government schemes, and financial updates for Indian startups.
                 </p>
                 <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
@@ -406,6 +407,10 @@ export default function BusinessRegistrationGuide() {
           </div>
         </div>
       </div>
+      <section id="hero-section" className="...">
+       </section>
+       <ScrollToTopButton heroSectionId="hero-section" />
     </div>
+    
   );
 }

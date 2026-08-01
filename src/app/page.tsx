@@ -13,6 +13,7 @@ import {
   ArrowRight,
   CheckCircle2
 } from "lucide-react";
+import ScrollToTopButton from "../components/scrollarrow/ScrollToTopButton";
 
 // Configure DM Sans
 const dmSans = DM_Sans({
@@ -58,7 +59,7 @@ export default function Home() {
       </header>
 
       {/* ── HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-[#120E07] text-white pt-52 pb-36 px-6 sm:px-12 md:px-16 min-h-[640px] flex items-center">
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-52 pb-36 px-6 sm:px-12 md:px-16 min-h-[620px] flex items-center">
         {/* Background Image Overlay */}
         <div 
           className="absolute inset-0 bg-cover bg-center z-0 opacity-40" 

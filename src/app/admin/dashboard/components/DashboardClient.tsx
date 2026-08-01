@@ -76,17 +76,17 @@ export default function DashboardClient({ contacts }: DashboardClientProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-800 font-sans pt-28 pb-6 px-6 sm:pt-32 sm:pb-10 sm:px-10">
+    <div className="min-h-screen bg-white text-zinc-900 font-sans pt-28 pb-6 px-6 sm:pt-32 sm:pb-10 sm:px-10">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-200 pb-5 mb-8 gap-4">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-400 pb-5 mb-8 gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold tracking-tight text-DM sans text-zinc-900">Admin Dashboard</h1>
             <span className="px-2.5 py-0.5 text-xs text-DM sans font-semibold bg-[#C2943A]/10 text-[#C2943A] rounded-full border border-[#C2943A]/30">
               Admin Access
             </span>
           </div>
-          <p className="text-zinc-700 text-DM sans text-sm mt-1">
+          <p className="text-zinc-700 text-DM sans text-s mt-1">
             Welcome back{adminUser?.name ? `, ${adminUser.name}` : ""} ({adminUser?.email || "admin@admin.com"})
           </p>
         </div>
@@ -102,7 +102,7 @@ export default function DashboardClient({ contacts }: DashboardClientProps) {
       </header>
 
       {/* Tabs */}
-      <div className="flex border-b border-zinc-200 mb-8">
+      <div className="flex border-b border-zinc-300 mb-8">
         <button
           onClick={() => setActiveTab("services")}
           className={`px-6 py-3 font-semibold text-sm border-b-2 transition-all duration-200 -mb-px flex items-center gap-2 cursor-pointer ${

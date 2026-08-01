@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/services";
 import bcrypt from "bcryptjs";
 
 export async function verifyAdminAction(formData: FormData) {

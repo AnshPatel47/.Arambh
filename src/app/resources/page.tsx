@@ -15,6 +15,7 @@ import {
   ArrowDown
 } from "lucide-react";
  import Footer from "../components/Footer";
+ import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
 
 // Interface for Blog Post Structure
 interface BlogPost {
@@ -137,7 +138,7 @@ const popularPosts = [
 
 // Categories list for filtering (Matching NetBounce Net-style category pills)
 const categories = [
-  "All Topics",
+  "All Articles",
   "Startup Registration",
   "Funding Support",
   "MSME Benefits",
@@ -148,7 +149,7 @@ const categories = [
 export default function ResourcesBlogPage() {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All Topics");
+  const [activeCategory, setActiveCategory] = useState("All Articles");
   const [visibleCount, setVisibleCount] = useState(4);
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
@@ -172,7 +173,7 @@ export default function ResourcesBlogPage() {
         post.content.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesCategory =
-        activeCategory === "All Topics" || post.category === activeCategory;
+        activeCategory === "All Articles" || post.category === activeCategory;
 
       return matchesSearch && matchesCategory;
     });
@@ -205,9 +206,8 @@ export default function ResourcesBlogPage() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
-
-      {/* ── 1. HERO SECTION ── */}
-       <section className="relative overflow-hidden bg-[#120E07] text-white pt-28 sm:pt-36 md:pt-44 pb-16 sm:pb-24 md:pb-32 px-4 sm:px-6 md:px-8 min-h-[380px] sm:min-h-[460px] md:min-h-[520px] flex items-center">
+{/* ── 1. HERO SECTION ── */}
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-60 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[620px] flex items-center">
 
         {/* Background Image Cover */}
         <div
@@ -215,13 +215,13 @@ export default function ResourcesBlogPage() {
           style={{ backgroundImage: "url('/assets/images/blog_hero.webp')" }}
         />
 
-        {/* Dark Gradient Overlay */}
+        {/* Dark Gradient Overlay (the "shadow") */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
 
           {/* Breadcrumbs */}
-           <nav className="flex flex-wrap items-center gap-1.5 sm:gap-2 font-sans font-semibold tracking-widest text-[#BD8E32] mb-4 sm:mb-6 uppercase text-[11px] sm:text-xs" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-zinc-400">Resources</span>
@@ -230,21 +230,31 @@ export default function ResourcesBlogPage() {
           </nav>
 
           <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-white mb-3">
-              Insights & Guides. <br className="hidden sm:inline" />
+            <h1 
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 500,
+              }}
+            >
               Insights & Guides. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BD8E32] to-[#f8d08b]">
+              <span className="text-[#C2943A]">
                 For Corporate Leaders.
               </span>
             </h1>
-             <p className="text-sm sm:text-base md:text-lg text-zinc-300 leading-relaxed max-w-xl">
+            <p 
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 400,
+              }}
+            >
               Expert research, legal frameworks, and policy updates designed to help Indian entrepreneurs structure their corporate compliance and leverage institutional benefits.
             </p>
           </div>
 
         </div>
       </section>
-      {/* ── 2. MAIN BLOG WORKSPACE ── NetBounce Global Layout ── */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow font-sans">
 
         {/* Section Title & Horizontal Line */}
@@ -276,7 +286,6 @@ export default function ResourcesBlogPage() {
           )}
         </div>
 
-        {/* Sub-header Metadata Line matching NetBounce Global UI */}
         <div className="text-sm text-zinc-500 font-medium mb-4 flex items-center gap-2">
           <span>{filteredPosts.length} articles</span>
           <span>•</span>
@@ -285,7 +294,6 @@ export default function ResourcesBlogPage() {
           <span>42 min total reading time</span>
         </div>
 
-        {/* Filter Category Pills Row — NetBounce Global Style */}
         <div className="flex flex-wrap items-center gap-2.5 mb-8">
           {categories.map((cat) => (
             <button
@@ -306,7 +314,7 @@ export default function ResourcesBlogPage() {
         </div>
 
         {/* MAIN GRID + SIDEBAR LAYOUT (Left column 1fr, right sidebar fixed 320px) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 lg:gap-18 xl:gap-20s items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 lg:gap-18 xl:gap-20 items-start">
 
           {/* Main Grid Column */}
           <div className="w-full flex flex-col">
@@ -338,7 +346,7 @@ export default function ResourcesBlogPage() {
                     >
                       <div>
                         {/* 1. Image Container — Aspect 16/6 */}
-                        <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-100 rounded-t-[18px]">
+                        <div className="relative w-full aspect-[16/9] sm:aspect-[16/9.5] overflow-hidden bg-zinc-100 rounded-t-[18px]">
                           <img
                             src={post.image}
                             alt={post.title}
@@ -349,7 +357,6 @@ export default function ResourcesBlogPage() {
 
                         {/* 2. Card Body Area */}
                         <div className="p-5 sm:p-6 flex flex-col">
-                          {/* Category Badge Pill & Date (Just Below Image like NetBounce) */}
                           <div className="flex items-center gap-3 mb-3">
                             <span className="inline-block text-[12px] font-semibold px-3 py-1 rounded-full bg-[#F2E6CE] text-[#91671B]">
                               {post.category}
@@ -378,14 +385,12 @@ export default function ResourcesBlogPage() {
                           <img
                             src={post.author.avatar}
                             alt={post.author.name}
-                            className="w-7 h-7 rounded-full object-cover border border-zinc-200"
+                            className="w-7 h-7 rounded-full object-cover border border-zinc-300"
                           />
                           <div>
-                            <p className="text-xs font-bold text-zinc-800">{post.author.name}</p>
+                            <p className="text-s font-semibold text-zinc-800">{post.author.name}</p>
                           </div>
                         </div>
-
-                        {/* Reading Time & NetBounce Style Pill Button */}
                         <div className="flex items-center gap-3">
                           <span className="text-xs text-zinc-900 font-medium flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5 text-zinc-900" /> {post.readTime}
@@ -400,19 +405,7 @@ export default function ResourcesBlogPage() {
                       </div>
                     </div>
                   ))}
-                </div>
-
-                {/* Pagination */}
-                {hasMore && (
-                  <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
-                    <button
-                      onClick={loadMore}
-                      className="px-9 py-3 font- DM sans rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-200 transition-all flex items-center gap-2 cursor-pointer shadow-xs mt-6 mb-3"
-                    >
-                      Load More Articles <ArrowDown className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
+                </div>              
               </>
             )}
           </div>
@@ -433,16 +426,16 @@ export default function ResourcesBlogPage() {
                   {popularPosts.map((pop, idx) => (
                     <div
                       key={pop.id}
-                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-3 hover:bg-zinc-50 transition-colors cursor-pointer"
+                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
                     >
-                      <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-2">
+                      <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-1">
                         0{idx + 1}
                       </span>
                       <div>
-                        <h4 className="text-sm font-bold text-DM sans text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-2">
+                        <h4 className="text-sm font-bold text-DM sans text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-4">
                           {pop.title}
                         </h4>
-                        <span className="text-[12px] font-medium text-DM sans text-zinc-900">
+                        <span className="text-[13px] font-medium text-DM sans text-zinc-900">
                           {pop.readTime} • {pop.category}
                         </span>
                       </div>
@@ -451,13 +444,13 @@ export default function ResourcesBlogPage() {
                 </div>
 
                 {/* Floating scroll action icon */}
-                <button
+                {/* <button
                   onClick={scrollToTop}
                   className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-[#BD8E32] hover:bg-[#764A04] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
                   title="Scroll to top"
                 >
                   <ArrowUp className="w-6 h-6" />
-                </button>
+                </button> */}
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
@@ -520,15 +513,25 @@ export default function ResourcesBlogPage() {
           </div>
 
         </div>
-
+        {/* Pagination */}
+           {hasMore && (
+           <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
+             <button
+                onClick={loadMore}
+                className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+              >
+              Load More Articles <ArrowDown className="w-4 h-4" />
+              </button>
+            </div>
+           )}
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <section className="bg-white py-16 px-4 sm:px-6 md:px-8 font- DM sans">
+      <section className="bg-white py-16 px-4 sm:px-6 md:px-8 font DM sans">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-10 text-left">
-            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 font- DM sans">How We Can Help You Succeed</h2>
-            <p className="text-zinc-900 text-m mt-2 font- DM sans">Explore the primary advisory solutions featured in the articles above.</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 font-DM sans">How We Can Help You Succeed</h2>
+            <p className="text-zinc-900 text-m mt-2 font-DM sans">Explore the primary advisory solutions featured in the articles above.</p>
              <div className="w-full border-t border-zinc-300 mt-7 pt-0 flex justify-center mb-2"></div>
           </div>
 
@@ -538,29 +541,29 @@ export default function ResourcesBlogPage() {
                 <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <Globe className="w-5 h-5" />
                 </span>
-                <span className="text-[10px] font-bold font- DM sans text-[#BD8E32] uppercase tracking-widest mb-0">Growth Engine</span>
+                <span className="text-[10px] font-bold font-DM sans text-[#BD8E32] uppercase tracking-widest mb-0">Growth Engine</span>
                 <h4 className="text-lg font-bold text-zinc-900 mt-0 mb-2">DPIIT & Startup India</h4>
-                <p className="text-m font- DM sans text-zinc-900 leading-relaxed mb-3">
+                <p className="text-m font-DM sans text-zinc-900 leading-relaxed mb-3">
                   Set up your business to secure major taxation exemptions, seed grants, intellectual property rebates, and self-compliance benefits.
                 </p>
               </div>
-              <a href="/services/dpiit" className="flex items-center gap-2 font- DM sans text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
+              <a href="/services/dpiit" className="flex items-center gap-2 font-DM sans text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
                 Explore DPIIT Benefits <ArrowRight className="w-4 h-4" />
               </a>
             </div>
 
             <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
               <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
+               <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <TrendingUp className="w-5 h-5" />
                 </span>
-                <span className="text-[10px] font- DM sans font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Financial Fuel</span>
-                <h4 className="text-lg font-bold font- DM sans text-zinc-900 mt-0 mb-3">Government Funding</h4>
-                <p className="text-m font- DM sans text-zinc-900 leading-relaxed mb-3">
+                <span className="text-[10px] font-DM sans font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Financial Fuel</span>
+                <h4 className="text-lg font-bold font-DM sans text-zinc-900 mt-0 mb-2">Government Funding</h4>
+                <p className="text-m font-DM sans text-zinc-900 leading-relaxed mb-3">
                   Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
                 </p>
               </div>
-              <a href="/services/funding" className="flex items-center gap-2 text-m font- DM sans font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
+              <a href="/services/funding" className="flex items-center gap-2 text-m font-DM sans font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
                 Explore Funding Options <ArrowRight className="w-4 h-4" />
               </a>
             </div>
@@ -570,9 +573,9 @@ export default function ResourcesBlogPage() {
                 <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <FileText className="w-5 h-5" />
                 </span>
-                <span className="text-[10px] font- DM sans font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>
-                <h4 className="text-lg font- DM sans font-bold text-zinc-900 mt-0 mb-3">Corporate Advisory</h4>
-                <p className="text-m font- DM sans text-zinc-900 leading-relaxed mb-3">
+                <span className="text-[10px] font-DM sans font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>
+                <h4 className="text-lg font-DM sans font-bold text-zinc-900 mt-0 mb-2">Corporate Advisory</h4>
+                <p className="text-m font-DM sans text-zinc-900 leading-relaxed mb-3">
                   Maintain immaculate corporate logs, clean cap tables, monthly tax filings, and full regulatory conformity to stay investor-ready.
                 </p>
               </div>
@@ -583,6 +586,9 @@ export default function ResourcesBlogPage() {
           </div>
         </div>
       </section>
+      <section id="hero-section" className="...">
+      </section>
+      <ScrollToTopButton heroSectionId="hero-section" />
       <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>
       <Footer />
     </div>

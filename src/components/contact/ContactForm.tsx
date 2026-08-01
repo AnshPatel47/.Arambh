@@ -1,6 +1,15 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
+interface Service {
+  id: string;
+  slug: string;
+  title: string;
+  category?: string;
+  description?: string;
+  status?: string;
+}
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -9,16 +18,56 @@ export default function ContactForm() {
     company: "",
     message: "",
   });
+
+  // Services States
+  const [dbServices, setDbServices] = useState<Service[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [servicesLoading, setServicesLoading] = useState(true);
+
   const [contactId, setContactId] = useState<string | null>(null);
   const [status, setStatus] = useState("");
 
   const formDataRef = useRef(formData);
+  const selectedServicesRef = useRef(selectedServices);
   const contactIdRef = useRef(contactId);
   const isSavingRef = useRef(false);
-  const pendingSaveRef = useRef<typeof formData | null>(null);
+  const pendingSaveRef = useRef<{ data: typeof formData; services: string[] } | null>(null);
   const pendingResolveRef = useRef<(() => void) | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 1. Database se direct updated services fetch karna
+useEffect(() => {
+  async function fetchServicesFromDB() {
+    try {
+      const res = await fetch("/api/services", { cache: "no-store" });
+      const data = await res.json();
+
+      console.log("ContactForm Fetched API Data:", data);
+
+      if (data.success && Array.isArray(data.services) && data.services.length > 0) {
+        // Status check case-insensitive & null handling
+        const activeServices = data.services.filter((s: Service) => {
+          if (!s.status) return true; // If status is not defined, show it
+          return s.status.toLowerCase() === "active";
+        });
+
+        // Agar filtering ke baad services bachti hain toh wo dikhao, warna saari dikha do
+        setDbServices(activeServices.length > 0 ? activeServices : data.services);
+      } else if (Array.isArray(data) && data.length > 0) {
+        setDbServices(data);
+      } else {
+        setDbServices([]);
+      }
+    } catch (err) {
+      console.error("Failed to load services from DB in ContactForm:", err);
+      setDbServices([]);
+    } finally {
+      setServicesLoading(false);
+    }
+  }
+
+  fetchServicesFromDB();
+}, []);
   // Initialize contactId from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -35,59 +84,67 @@ export default function ContactForm() {
   }, [formData]);
 
   useEffect(() => {
+    selectedServicesRef.current = selectedServices;
+  }, [selectedServices]);
+
+  useEffect(() => {
     contactIdRef.current = contactId;
   }, [contactId]);
 
-  const saveToServer = useCallback(async (data: typeof formData, currentId: string | null): Promise<void> => {
-    const hasData = Object.values(data).some((val) => val.trim() !== "");
-    if (!hasData) return;
+  const saveToServer = useCallback(
+    async (data: typeof formData, services: string[], currentId: string | null): Promise<void> => {
+      const hasData = Object.values(data).some((val) => val.trim() !== "") || services.length > 0;
+      if (!hasData) return;
 
-    if (isSavingRef.current) {
-      pendingSaveRef.current = data;
-      return new Promise<void>((resolve) => {
-        const prevResolve = pendingResolveRef.current;
-        pendingResolveRef.current = () => {
-          if (prevResolve) prevResolve();
-          resolve();
-        };
-      });
-    }
+      if (isSavingRef.current) {
+        pendingSaveRef.current = { data, services };
+        return new Promise<void>((resolve) => {
+          const prevResolve = pendingResolveRef.current;
+          pendingResolveRef.current = () => {
+            if (prevResolve) prevResolve();
+            resolve();
+          };
+        });
+      }
 
-    isSavingRef.current = true;
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: currentId,
-          ...data,
-        }),
-      });
-      const resData = await response.json();
-      if (resData.success && resData.contactId) {
-        setContactId(resData.contactId);
-        contactIdRef.current = resData.contactId;
-        if (typeof window !== "undefined") {
-          localStorage.setItem("arambh_contact_id", resData.contactId);
+      isSavingRef.current = true;
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: currentId,
+            services,
+            ...data,
+          }),
+        });
+        const resData = await response.json();
+        if (resData.success && resData.contactId) {
+          setContactId(resData.contactId);
+          contactIdRef.current = resData.contactId;
+          if (typeof window !== "undefined") {
+            localStorage.setItem("arambh_contact_id", resData.contactId);
+          }
+        }
+      } catch (error) {
+        console.error("Auto-save failed:", error);
+      } finally {
+        isSavingRef.current = false;
+        if (pendingSaveRef.current) {
+          const nextPayload = pendingSaveRef.current;
+          pendingSaveRef.current = null;
+          const resolvePending = pendingResolveRef.current;
+          pendingResolveRef.current = null;
+
+          await saveToServer(nextPayload.data, nextPayload.services, contactIdRef.current);
+          if (resolvePending) resolvePending();
         }
       }
-    } catch (error) {
-      console.error("Auto-save failed:", error);
-    } finally {
-      isSavingRef.current = false;
-      if (pendingSaveRef.current) {
-        const nextData = pendingSaveRef.current;
-        pendingSaveRef.current = null;
-        const resolvePending = pendingResolveRef.current;
-        pendingResolveRef.current = null;
-
-        await saveToServer(nextData, contactIdRef.current);
-        if (resolvePending) resolvePending();
-      }
-    }
-  }, []);
+    },
+    []
+  );
 
   useEffect(() => {
     if (debounceTimerRef.current) {
@@ -95,7 +152,7 @@ export default function ContactForm() {
     }
 
     debounceTimerRef.current = setTimeout(() => {
-      saveToServer(formData, contactIdRef.current);
+      saveToServer(formData, selectedServices, contactIdRef.current);
     }, 1500);
 
     return () => {
@@ -103,18 +160,24 @@ export default function ContactForm() {
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [formData, saveToServer]);
+  }, [formData, selectedServices, saveToServer]);
 
   const handleBlur = () => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    saveToServer(formDataRef.current, contactIdRef.current);
+    saveToServer(formDataRef.current, selectedServicesRef.current, contactIdRef.current);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const toggleService = (title: string) => {
+    setSelectedServices((prev) =>
+      prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title]
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -125,7 +188,7 @@ export default function ContactForm() {
       clearTimeout(debounceTimerRef.current);
     }
 
-    await saveToServer(formData, contactIdRef.current);
+    await saveToServer(formData, selectedServices, contactIdRef.current);
 
     setStatus("success");
     setFormData({
@@ -135,6 +198,7 @@ export default function ContactForm() {
       company: "",
       message: "",
     });
+    setSelectedServices([]);
     setContactId(null);
     contactIdRef.current = null;
     if (typeof window !== "undefined") {
@@ -145,23 +209,17 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row justify-between gap-16 lg:gap-0 px-6 md:px-10 lg:px-20 xl:px-20 pt-10 pb-36 md:pt-12 md:pb-44 flex-grow bg-white">
+    <div className="max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10 px-6 md:px-10 lg:px-20 xl:px-20 pt-6 pb-36 md:pt-2 md:pb-44 flex-grow bg-white">
       {/* Left Column: Form Section */}
-      <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-[540px] md:h-[480px] justify-between bg-white">
-        {/* Left side box layout (Send Us a Message title + fields) - gap reduced to 20px */}
-        <div className="flex flex-col w-full md:w-[540px] gap-[20px] opacity-1 mb-5">
-          {/* Title */}
-          <h1
-            className="text-[#131313] flex items-end pb-2 font-semibold text-DM sans text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.03em]"
-          >
+      <form onSubmit={handleSubmit} className="flex flex-col w-full lg:flex-1 justify-between bg-white">
+        <div className="flex flex-col w-full gap-[5px] opacity-1 mb-5">
+          <h1 className="text-[#131313] flex items-end pb-2 font-semibold text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.03em]">
             Send Us a Message
           </h1>
-          
-          {/* Form inputs container: gap 16px between rows */}
+
           <div className="flex flex-col gap-[16px] w-full">
             {/* Row 1: Name and Email */}
-            <div className="flex flex-col sm:flex-row w-full md:w-[540px] gap-[16px] items-center">
-              {/* Name Field: bg-[#F6F4F0], text-[#666665], border-[#DDD5C9], 16px padding, 12px radius, 8px gap */}
+            <div className="flex flex-col sm:flex-row w-full gap-[16px] items-center">
               <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
                 <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -178,7 +236,7 @@ export default function ContactForm() {
                   className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
                 />
               </div>
-              {/* Email Field */}
+
               <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
                 <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -198,8 +256,7 @@ export default function ContactForm() {
             </div>
 
             {/* Row 2: Phone and Company */}
-            <div className="flex flex-col sm:flex-row w-full md:w-[540px] gap-[16px] items-center">
-              {/* Phone Field */}
+            <div className="flex flex-col sm:flex-row w-full gap-[16px] items-center">
               <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
                 <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -216,7 +273,7 @@ export default function ContactForm() {
                   className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
                 />
               </div>
-              {/* Company Field */}
+
               <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
                 <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -235,28 +292,72 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* Write your message Field: 540px width, 160px height, 16px padding, 12px radius, bg-[#F6F4F0], text-[#666665] */}
-            <div>
+            {/* Message Field */}
+            <div className="w-full">
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Write your message.."
-                className="w-full md:w-[540px] h-[160px] border border-[#DDD5C9] focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-[12px] p-[16px] bg-[#F6F4F0] text-base text-[#666665] placeholder-[#666665]/60 resize-none outline-none transition-all duration-200"
+                className="w-full h-[140px] border border-[#DDD5C9] focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 rounded-[12px] p-[16px] bg-[#F6F4F0] text-base text-[#666665] placeholder-[#666665]/60 resize-none outline-none transition-all duration-200"
               />
+            </div>
+
+            {/* Dynamic Services Section (Fetching directly from DB) */}
+            <div className="flex flex-col gap-3 mt-1">
+              <label className="text-[#131313] font-semibold text-lg md:text-xl tracking-tight">
+                Services you are interested in
+              </label>
+
+              {servicesLoading ? (
+                /* Skeleton Loader while DB fetches */
+                <div className="flex flex-wrap gap-2 animate-pulse">
+                  <div className="h-9 w-28 bg-[#F6F4F0] rounded-full"></div>
+                  <div className="h-9 w-36 bg-[#F6F4F0] rounded-full"></div>
+                  <div className="h-9 w-24 bg-[#F6F4F0] rounded-full"></div>
+                </div>
+              ) : dbServices.length === 0 ? (
+                <p className="text-sm text-zinc-400">No services found in database.</p>
+              ) : (
+                /* Live DB Services Pills */
+                <div className="flex flex-wrap gap-2 md:gap-3">
+                  {dbServices.map((service) => {
+                    const isSelected = selectedServices.includes(service.title);
+
+                    return (
+                      <button
+                        key={service.id || service.slug}
+                        type="button"
+                        onClick={() => toggleService(service.title)}
+                        className={`flex items-center gap-2 px-2 py-1 text-sm md:text-base font-medium rounded-full border transition-all duration-200 cursor-pointer ${
+                          isSelected
+                            ? "bg-[#EAF3EA] text-[#C2943A] border-[#d4a038] shadow-sm"
+                            : "bg-[#faf6ed] text-[#555554] border-[#DDD5C9] hover:border-zinc-400"
+                        }`}
+                      >
+                        {isSelected && (
+                          <span className="w-2 h-2 rounded-full bg-[#C2943A] flex-shrink-0" />
+                        )}
+                        <span>{service.title}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Send a Message Button (below the box layout) */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={status === "sending"}
-          className="w-full md:w-[540px] h-[52px] flex items-center justify-center gap-[8px] border border-black bg-black hover:bg-zinc-800 text-white font-semibold rounded-[12px] py-[10px] px-[16px] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-zinc-300 text-base shadow-sm mt-3 cursor-pointer text-DM sans"
+          className="w-full h-[52px] flex items-center justify-center gap-[8px] border border-black bg-black hover:bg-zinc-800 text-white font-semibold rounded-[12px] py-[10px] px-[16px] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-zinc-300 text-base shadow-sm mt-3 cursor-pointer"
         >
           {status === "sending" ? "Sending..." : "Send a Message"}
         </button>
+
         {status === "success" && (
           <p className="text-emerald-600 font-medium text-center mt-2">
             Thank you! Your message has been sent successfully.
@@ -264,63 +365,9 @@ export default function ContactForm() {
         )}
       </form>
 
-      {/* Right Column: Info and Map Section (540px width, 480px height) */}
-      <div className="w-full md:w-[540px] md:h-[480px] flex flex-col justify-between opacity-1 bg-white">
-        {/* Contact Info block */}
-        <div className="flex flex-col gap-[24px]">
-          <div>
-            {/* Reachout Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD5C9] bg-[#F6F4F0] px-3 py-[6px] mb-4">
-              <span className="h-2 w-2 rounded-full bg-[#333333]" />
-              <span className="text-[12px] font-semibold uppercase tracking-[0.15em] leading-[140%] text-[#333333]">
-                Reachout
-              </span>
-            </div>
-
-            <h2
-              className="text-[#131313] mb-6"
-              style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.03em" }}
-            >
-              Contact Information
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-[16px] text-base text-DM sans">
-            <div className="flex items-center gap-6 text-[#000000]">
-              <span className="text-black flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z" />
-                </svg>
-              </span>
-              <span className="font-medium font-mono">+91 88665 56327</span>
-            </div>
-            <div className="flex items-center gap-5 text-[#000000]">
-              <span className="text-black flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                </svg>
-              </span>
-              <span className="font-medium">info@arambhservices.com</span>
-            </div>
-            <div className="flex items-start gap-6 text-[#000000]">
-              <span className="text-black mt-1 flex-shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
-                </svg>
-              </span>
-              <div className="flex flex-col text-DM sans">
-                <span className="font-medium">Ahmedabad, Gujarat, India</span>
-                <span className="text-black mt-1 flex-shrink-0">
-                  Mon – Sat, <span className="font-mono">9:30 AM – 6:30 PM</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Map Container: 540px width, flexible height, border-radius 16px, border-width 1px */}
-        <div className="w-full md:w-[540px] flex-grow md:flex-1 min-h-[180px] rounded-[16px] border border-zinc-200 overflow-hidden mt-4">
+      {/* Right Column: Map Section */}
+      <div className="w-full lg:flex-1 flex flex-col justify-between opacity-1 bg-white">
+        <div className="w-full flex-grow md:flex-1 min-h-[350px] lg:min-h-[520px] rounded-[16px] border border-zinc-200 overflow-hidden mt-4 lg:mt-0">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117510.96395610817!2d72.43962804368149!3d23.02024368021966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fccd11d0872ee11!2sAhmedabad%2C%20Gujarat%20380009!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
             width="100%"

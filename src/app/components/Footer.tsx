@@ -18,7 +18,7 @@ export default function Footer() {
 
             {/* Left Side: Heading text */}
              <div className="w-full md:w-1/2 text-center md:text-left">
-              <h4 className="text-xl md:text-3xl text-DM sans font-bold text-white mt-5 mb-3 tracking-tight">
+              <h4 className="text-xl md:text-3xl font-DM sans font-bold text-white mt-5 mb-3 tracking-tight">
                 Stay Connected With Us
               </h4>
               <p className="font-DM sans text-white/90 md:text-lg mb-8 font-normal leading-relaxed">
@@ -72,7 +72,7 @@ export default function Footer() {
                   <span className="text-[10px] text-zinc-400 font-semibold tracking-widest mt-0.5">SERVICES LLP</span>
                 </div>
               </div>
-              <p className="text-DM sans text-[15px] text-zinc-400 leading-relaxed">
+              <p className="font-DM sans text-[14px] text-zinc-400 leading-relaxed">
                 Arambh Advisory helps startups and MSMEs turn ideas into successful businesses. From company registration and government recognition to funding support and compliance.
               </p>
               <div className="flex items-center gap-4">

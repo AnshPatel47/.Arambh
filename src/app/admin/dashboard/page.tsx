@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/services";
 import DashboardClient from "./components/DashboardClient";
 
 export const dynamic = "force-dynamic";

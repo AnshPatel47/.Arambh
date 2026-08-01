@@ -5,13 +5,13 @@ import React, { useState, useEffect } from "react";
 export interface ServiceFormData {
   id?: string;
   title: string;
-  slug: string;
   category: string;
   description: string;
   price?: string | null;
   features: string[];
   icon?: string | null;
   status: string;
+  
 }
 
 interface ServiceFormProps {
@@ -27,7 +27,6 @@ export default function ServiceForm({
 }: ServiceFormProps) {
   const [formData, setFormData] = useState<ServiceFormData>({
     title: "",
-    slug: "",
     category: "Registration",
     description: "",
     price: "",
@@ -46,7 +45,6 @@ export default function ServiceForm({
       setFormData({
         id: initialData.id,
         title: initialData.title || "",
-        slug: initialData.slug || "",
         category: initialData.category || "Registration",
         description: initialData.description || "",
         price: initialData.price || "",
@@ -60,7 +58,6 @@ export default function ServiceForm({
     } else {
       setFormData({
         title: "",
-        slug: "",
         category: "Registration",
         description: "",
         price: "",
@@ -78,12 +75,6 @@ export default function ServiceForm({
     const { name, value } = e.target;
     setFormData((prev) => {
       const updated = { ...prev, [name]: value };
-      if (name === "title" && !prev.slug) {
-        updated.slug = value
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)+/g, "");
-      }
       return updated;
     });
   };
@@ -213,8 +204,8 @@ export default function ServiceForm({
         </div>
 
         {/* Slug & Category */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-5"> */}
+          {/* <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
               URL Slug
             </label>
@@ -226,9 +217,9 @@ export default function ServiceForm({
               placeholder="e.g. business-registration"
               className="w-full bg-zinc-50 text-DM sans border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all font-mono"
             />
-          </div>
+          </div> */}
 
-          <div>
+          {/* <div> */}
             <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-900 mb-2">
               Category *
             </label>
@@ -241,8 +232,8 @@ export default function ServiceForm({
               placeholder="e.g. Registration, Funding"
               className="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
             />
-          </div>
-        </div>
+          {/* </div> */}
+        {/* </div> */}
 
         {/* Price & Status */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

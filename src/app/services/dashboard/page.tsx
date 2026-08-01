@@ -23,16 +23,15 @@ export default function DashboardPage() {
       return;
     }
 
-    // Role ADMIN verify ho gaya -> Dashboard unlock
     setIsAuthenticated(true);
     setAdminUser(res.user);
     setLoading(false);
   }
 
-  // ── 1. LOGIN SCREEN (Jab user /dashboard par aaye) ──
+  // ── 1. LOGIN SCREEN 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#ffffff] flex items-center justify-center p-4 font- DM sans">
+      <div className="min-h-screen bg-[#ffff] flex items-center justify-center p-4 font- DM sans">
         <div className="bg-[#c5cde6] rounded-2xl shadow-2xl w-full max-w-md p-8 border border-zinc-200">
           
           <div className="text-center mb-8">
@@ -90,11 +89,11 @@ export default function DashboardPage() {
 
   // ── 2. ADMIN DASHBOARD CONTENT 
   return (
-    <div className="min-h-screen bg-zinc-100 p-8">
+    <div className="min-h-screen bg-[#ffff] p-8">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
-        <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-zinc-200 mb-8">
+        <div className="flex justify-between items-center bg-[#ffff] p-6 rounded-2xl shadow-sm border border-zinc-200 mb-8">
           <div>
             <h1 className="text-2xl font-bold text-zinc-900">Services Admin Dashboard</h1>
             <p className="text-sm text-zinc-500">Welcome, {adminUser?.name}</p>
@@ -115,7 +114,7 @@ export default function DashboardPage() {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
+          <div className="bg-white p-6 rounded-2xl border border-zinc-300 shadow-sm">
             <h3 className="font-bold text-zinc-900 text-lg mb-2">Add New Service</h3>
             <p className="text-sm text-zinc-500 mb-4">Create a new advisory service item.</p>
             <button className="w-full bg-[#BD8E32] text-white py-2.5 rounded-xl font-semibold hover:bg-[#764A04] transition-all cursor-pointer">
