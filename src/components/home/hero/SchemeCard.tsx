@@ -29,13 +29,6 @@ export default function SchemeCard({ scheme }: SchemeCardProps) {
         </span>
       </div>
 
-      {/* Arrow button — top right */}
-      <button
-        className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white transition-colors hover:bg-neutral-50"
-        style={{ border: "1px solid rgba(0,0,0,0.10)" }}
-      >
-        <ArrowUpRight size={14} className="text-neutral-500" />
-      </button>
 
       {/* Colored image area - dynamically uses the color from hero.data.ts */}
       <div

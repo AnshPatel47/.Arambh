@@ -14,7 +14,8 @@ export default function CTASection() {
     <section
       className="w-full pt-0 pb-20 lg:pt-0 lg:pb-32 reveal overflow-hidden"
       style={{
-        background: "radial-gradient(ellipse 60% 45% at 10% 18%,rgba(245,158,11,.14) 0%,transparent 60%),radial-gradient(ellipse 55% 45% at 90% 85%,rgba(13,74,34,.11) 0%,transparent 60%),#F8F4EC",
+        background:
+          "radial-gradient(ellipse 60% 45% at 10% 18%,rgba(245,158,11,.14) 0%,transparent 60%),radial-gradient(ellipse 55% 45% at 90% 85%,rgba(13,74,34,.11) 0%,transparent 60%),#F8F4EC",
       }}
     >
       {/* Top Divider Line */}
@@ -24,22 +25,24 @@ export default function CTASection() {
         {/* Section Heading & Description */}
         <div className="flex flex-col items-center text-center max-w-[800px] mx-auto mb-10 md:mb-12">
           <h2 className="text-[32px] md:text-[44px] font-medium leading-[1.15] tracking-[-0.03em] text-[#131313] mb-4">
-            Solving Your <span className="text-[#C2943A]">Business Foundation</span> & <span className="text-[#C2943A]">Strategic Growth</span> Hurdles
+            Solving Your <span className="text-[#C2943A]">Business Foundation</span> &{" "}
+            <span className="text-[#C2943A]">Strategic Growth</span> Hurdles
           </h2>
           <p className="text-[15px] md:text-[16px] leading-relaxed text-[#666665]">
-            Every stage of the entrepreneurial journey comes with distinct challenges. We turn legal complexities and compliance burdens into clear, execution-ready roadmaps.
+            Every stage of the entrepreneurial journey comes with distinct challenges. We turn
+            legal complexities and compliance burdens into clear, execution-ready roadmaps.
           </p>
         </div>
 
         {/* Top Pill Buttons Navigation */}
-        <div className="flex flex-row items-center justify-center gap-2.5 mb-10 md:mb-16 w-full max-w-[480px] mx-auto px-4">
+        <div className="flex flex-row items-center justify-center gap-2 mb-10 md:mb-16 w-full max-w-[500px] mx-auto px-2">
           {tabNames.map((name, index) => {
             const isActive = activeTab === index;
             return (
               <button
                 key={name}
                 onClick={() => setActiveTab(index)}
-                className={`flex-1 text-center py-2.5 sm:py-3 px-4 sm:px-7 rounded-full text-[13px] sm:text-[15px] font-semibold transition-all duration-300 cursor-pointer ${
+                className={`flex-1 text-center py-2.5 sm:py-3 px-3 sm:px-6 rounded-full text-xs sm:text-[15px] font-semibold transition-all duration-300 cursor-pointer whitespace-nowrap ${
                   isActive
                     ? "bg-black text-white shadow-[0_10px_25px_-5px_rgba(0,77,37,0.35)] scale-[1.02]"
                     : "bg-white text-[#4A4A49] border border-[#E6DFD4] hover:bg-[#F5F1EA] hover:text-[#131313]"
@@ -122,7 +125,7 @@ export default function CTASection() {
             </div>
 
             {/* Action Button below Solution Card - Visible on Mobile only */}
-            <div className="block lg:hidden mt-8">
+            <div className="block lg:hidden mt-8 text-center sm:text-left">
               <button className="inline-flex items-center justify-center gap-2.5 rounded-full bg-black px-7 py-3.5 text-white text-[14px] font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-[0_8px_20px_-4px_rgba(0,77,37,0.3)] w-[210px] sm:w-[240px]">
                 <span>{card.button}</span>
                 <ArrowRight size={16} />

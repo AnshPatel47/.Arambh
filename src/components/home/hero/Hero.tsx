@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import SchemesSlider from "./SchemesSlider";
+import { useScheduleCallModal } from "../../schedule-call/ScheduleCallContext";
 
 export default function Hero() {
+  const { openModal } = useScheduleCallModal();
   return (
     <section
       className="relative w-full pt-24 lg:pt-28 pb-10 overflow-hidden flex items-center min-h-[480px]"
@@ -62,18 +65,20 @@ export default function Hero() {
             {/* CTA buttons */}
             <div className="mt-6 flex flex-col sm:flex-row justify-center lg:justify-start gap-3 w-full rv-up items-center px-4 sm:px-0">
               <button
+                onClick={openModal}
                 className="w-full max-w-[280px] sm:w-auto rounded-full bg-[#131313] px-5 py-2.5 text-[13px] text-white font-semibold transition-all hover:bg-black hover:shadow-lg hover:-translate-y-[1px] active:scale-95 cursor-pointer text-center"
                 style={{ fontFamily: "var(--font-dm), sans-serif" }}
               >
                 Book a Free Consultation
               </button>
 
-              <button
-                className="w-full max-w-[280px] sm:w-auto rounded-full bg-transparent border border-black px-5 py-2.5 text-[13px] text-black font-semibold transition-all hover:bg-black hover:text-white hover:shadow-lg hover:-translate-y-[1px] active:scale-95 cursor-pointer text-center"
+              <Link
+                href="/services"
+                className="w-full max-w-[280px] sm:w-auto rounded-full bg-transparent border border-black px-5 py-2.5 text-[13px] text-black font-semibold transition-all hover:shadow-lg hover:-translate-y-[1px] active:scale-95 cursor-pointer text-center block"
                 style={{ fontFamily: "var(--font-dm), sans-serif" }}
               >
                 Explore Services
-              </button>
+              </Link>
             </div>
 
             {/* Trust checklist */}

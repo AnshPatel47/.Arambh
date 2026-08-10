@@ -8,20 +8,22 @@ export default function Footer() {
   return (
     <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50">
       
-      {/* Dark Footer Container */}
-      <div className="w-full bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] relative z-10">
+      {/* ── LIGHT CONTAINER ON MOBILE TO FIX BLACK CORNER GAPS ── */}
+      <div className="w-full bg-[#F8F4EC] md:bg-transparent pt-8 md:pt-0">
 
-        {/* ── BOLD & PREMIUM GOLD OVERLAPPING BOX ── */}
-        <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>
-        <div className="sm:w-[96%] max-w-9xl mx-auto relative z-20 -mt-64 md:-mt-56 mb-8 bg-gradient-to-r from-[#C2943A] to-[#72561d] py-6 px-5 sm:px-8 md:px-10 rounded-2xl ">
+        {/* ── WHITE OVERLAP SECTION (DESKTOP ONLY) ── */}
+        <section className="hidden md:block w-full bg-white text-zinc-900 md:pb-20 relative z-0"></section>
+        
+        {/* ── BOLD & PREMIUM GOLD CARD ── */}
+        <div className="sm:w-[96%] max-w-9xl mx-auto relative z-20 mt-0 md:-mt-56 mb-8 bg-gradient-to-r from-[#C2943A] to-[#72561d] py-6 px-5 sm:px-8 md:px-10 rounded-2xl overflow-hidden shadow-xl">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
 
             {/* Left Side: Heading text */}
-             <div className="w-full md:w-1/2 text-center md:text-left">
-              <h4 className="text-xl md:text-3xl font-DM sans font-bold text-white mt-5 mb-3 tracking-tight">
+            <div className="w-full md:w-1/2 text-center md:text-left">
+              <h4 className="text-xl md:text-3xl font-DM sans font-bold text-white mt-2 md:mt-5 mb-3 tracking-tight">
                 Stay Connected With Us
               </h4>
-              <p className="font-DM sans text-white/90 md:text-lg mb-8 font-normal leading-relaxed">
+              <p className="font-DM sans text-white/90 md:text-lg mb-6 md:mb-8 font-normal leading-relaxed">
                 Subscribe or reach out to our advisory team directly.
               </p>
             </div> 
@@ -33,11 +35,14 @@ export default function Footer() {
                   type="email"
                   placeholder="Enter your email address"
                   className="w-full bg-white text-zinc-900 rounded-lg px-5 py-3.5 text-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all"
-                />         
+                />        
               </div> 
-               <button type ="submit"
-                className="w-full sm:w-auto text-center px-7 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"> Submit
-                </button>
+              <button 
+                type="submit"
+                className="w-full sm:w-auto text-center px-7 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 cursor-pointer"
+              >
+                Submit
+              </button>
               <a
                 href="tel:+918866556327"
                 className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
@@ -47,17 +52,21 @@ export default function Footer() {
                 </svg>
                 Call Now
               </a>
-              
             </div>
           </div>
         </div>  
+      </div>
+
+      {/* Dark Footer Container */}
+      <div className="w-full bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] relative z-10">
+
         {/* ── MAIN FOOTER CONTENT WRAPPER ── */}
         <div className="max-w-[1440px] mx-auto w-full relative z-10">
 
-          {/* UPPER PART: Top Section based on Figma sizing */}
+          {/* UPPER PART */}
           <div className="w-full max-w-[1280px] mx-auto flex flex-col lg:flex-row justify-between pt-[40px] px-8 lg:px-0 pb-[16px] gap-12 lg:gap-0">
 
-            {/* Col 1: Arambh Advisory Logo & Description (Width: 368px) */}
+            {/* Col 1: Arambh Advisory Logo & Description */}
             <div className="flex flex-col gap-6 w-full lg:w-[368px] text-left">
               <div className="flex items-center gap-3">
                 <div className="text-white flex items-center">
@@ -88,7 +97,7 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Col 2 & 3: Quick Links & Services (Width: 386px total, gap: 48px) */}
+            {/* Col 2 & 3: Quick Links & Services */}
             <div className="flex flex-row gap-[48px] w-full lg:w-[386px] text-left">
               <div className="flex flex-col gap-5 w-1/2">
                 <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Quick Links</h3>
@@ -113,7 +122,7 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Col 4: Reach Out (Width: 236px) */}
+            {/* Col 4: Reach Out */}
             <div className="flex flex-col gap-[20px] w-full lg:w-[236px] text-left">
               <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Reach Out</h3>
               <div className="flex flex-col gap-4 text-DM sans">
@@ -143,10 +152,10 @@ export default function Footer() {
 
           </div>
 
-          {/* BOTTOM PART: CTA Section */}
+          {/* BOTTOM PART */}
           <div className="relative px-8 lg:px-0 pt-12 pb-10 w-full max-w-[1280px] mx-auto min-h-[340px]">
 
-            {/* CTA Content (Width: 477px, Gap: ~40px via margins) */}
+            {/* CTA Content */}
             <div className="flex flex-col w-full lg:w-[477px] relative z-20 text-left">
               <h2 className="text-[36px] sm:text-[42px] font-semibold font-DM sans tracking-tight leading-tight text-white mb-4">
                 Ready to give your business a strong start?
@@ -168,7 +177,7 @@ export default function Footer() {
               </span>
             </div>
 
-            {/* Desktop-only Logo Background strictly matching Figma size */}
+            {/* Desktop-only Logo Background */}
             <div className="hidden lg:block absolute right-[80px] bottom-0 pointer-events-none select-none z-0">
               <Image
                 src={logo1}

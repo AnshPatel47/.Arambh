@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Service } from "./service.types";
@@ -8,7 +9,7 @@ interface Props {
 
 export default function ServiceCard({ service }: Props) {
   return (
-    <div className="flex flex-col group cursor-pointer w-full flex-shrink-0">
+    <Link href={service.link} className="flex flex-col group cursor-pointer w-full flex-shrink-0">
       {/* Image Card */}
       <div
         className="
@@ -81,6 +82,6 @@ export default function ServiceCard({ service }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

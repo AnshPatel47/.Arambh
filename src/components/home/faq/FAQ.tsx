@@ -4,7 +4,7 @@ import FAQList from "./FAQList";
 
 export default function FAQ() {
   return (
-    <section className="w-full bg-[#FBF7EE] pt-16 pb-20 lg:pt-20 lg:pb-32 min-h-[calc(100vh-60px)] flex items-center">
+    <section className="w-full bg-[#FBF7EE] pt-16 pb-20 lg:pt-20 lg:pb-56 min-h-[calc(100vh-60px)] flex items-center">
       <div className="mx-auto flex flex-col lg:flex-row h-auto lg:h-[392px] w-full max-w-[1120px] justify-between gap-8 px-6 lg:px-0">
         {/* LEFT */}
 

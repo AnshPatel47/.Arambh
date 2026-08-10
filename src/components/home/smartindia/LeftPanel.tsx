@@ -1,5 +1,7 @@
 "use client";
 
+import { useScheduleCallModal } from "../../schedule-call/ScheduleCallContext";
+
 const STATS = [
   { value: "₹50 CR+", label: "FUNDING OPPORTUNITIES FACILITATED" },
   { value: "20+", label: "INDUSTRY EXPERTS" },
@@ -7,6 +9,8 @@ const STATS = [
 ];
 
 export default function LeftPanel() {
+  const { openModal } = useScheduleCallModal();
+
   return (
     <div className="flex-shrink-0 w-full max-w-[396.32px] flex flex-col gap-10 items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0">
 
@@ -45,6 +49,7 @@ export default function LeftPanel() {
 
       {/* CTA */}
       <button
+        onClick={openModal}
         style={{
           width: "fit-content",
           background: "#131313",

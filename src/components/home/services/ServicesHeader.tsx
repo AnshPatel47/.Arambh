@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function ServicesHeader() {
   return (
@@ -24,7 +25,8 @@ export default function ServicesHeader() {
 
         {/* CTA Button */}
         <div className="mt-6">
-          <button
+          <Link
+            href="/services"
             className="
               group
               flex
@@ -66,7 +68,7 @@ export default function ServicesHeader() {
             >
               <ArrowRight size={16} />
             </div>
-          </button>
+          </Link>
         </div>
       </div>
     </div>

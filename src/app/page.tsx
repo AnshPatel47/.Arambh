@@ -79,10 +79,10 @@ export default function Page() {
         <Blogs />
       </div>
 
-      {/* FAQ Section: -mt-28 (-112px) mobile / -mt-16 (-64px) desktop 
-          adjusts Blogs' pb-24 (96px) and FAQ's pt-24 (96px) 
+      {/* FAQ Section: -mt-8 (-32px) mobile / -mt-12 (-48px) desktop 
+          adjusts Blogs' pb-12 (48px) and FAQ's pt-16 (64px) 
           to yield exactly 80px mobile / 128px desktop gap. */}
-      <div className="-mt-28 lg:-mt-16">
+      <div className="-mt-8 lg:-mt-12">
         <SectionErrorBoundary sectionName="FAQ">
           <FAQ />
         </SectionErrorBoundary>

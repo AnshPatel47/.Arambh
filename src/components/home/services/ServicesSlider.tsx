@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { services } from "./service.data";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ServicesSlider() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -55,8 +56,8 @@ export default function ServicesSlider() {
                   </span>
                 </div>
                 <div className={`flex h-7 w-7 items-center justify-center rounded-full border shrink-0 transition-all duration-300 ${isActive
-                    ? "border-white/20 bg-white/10 text-white rotate-180"
-                    : "border-neutral-300 bg-neutral-50 text-neutral-500"
+                  ? "border-white/20 bg-white/10 text-white rotate-180"
+                  : "border-neutral-300 bg-neutral-50 text-neutral-500"
                   }`}>
                   <ChevronDown size={14} />
                 </div>
@@ -73,9 +74,13 @@ export default function ServicesSlider() {
                   <p className="text-[13px] leading-relaxed text-white/80 line-clamp-4">
                     {service.description}
                   </p>
-                  <button className="flex items-center gap-1.5 text-[12px] font-semibold text-white/90 hover:text-white transition-colors mt-1">
+                  <Link
+                    href={service.link}
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1.5 text-[12px] font-semibold text-white/90 hover:text-white transition-colors mt-1"
+                  >
                     See details <ArrowRight size={12} />
-                  </button>
+                  </Link>
                 </motion.div>
               )}
             </div>
@@ -122,10 +127,14 @@ export default function ServicesSlider() {
                   0{index + 1}
                 </span>
 
-                <div className={`h-8 w-8 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-300 rotate-0 group-hover:-rotate-45 ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
-                  }`}>
+                <Link
+                  href={service.link}
+                  onClick={(e) => e.stopPropagation()}
+                  className={`h-8 w-8 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm flex items-center justify-center text-white transition-all duration-300 rotate-0 group-hover:-rotate-45 ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+                  }`}
+                >
                   <ArrowRight size={14} />
-                </div>
+                </Link>
               </div>
 
               {/* BOTTOM CONTENT / VERTICAL TEXT */}

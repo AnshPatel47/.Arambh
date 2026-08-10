@@ -21,10 +21,10 @@ export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: Sched
   const timeZone = typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "Asia/Kolkata";
 
   return (
-    <div className="flex flex-col text-left gap-6 p-6 md:p-8 text-neutral-200 border-r border-[#2A2925] h-full bg-[#131210] md:max-w-[340px] w-full shrink-0">
+    <div className="flex flex-col text-left gap-4 md:gap-6 p-5 md:p-8 text-neutral-200 border-r border-[#2A2925] h-full bg-[#131210] md:max-w-[340px] w-full shrink-0">
       {/* Brand Header */}
-      <motion.div {...fadeUp(0.06)} className="flex items-center gap-3">
-        <div className="relative h-10 w-10 shrink-0 flex items-center justify-center">
+      <motion.div {...fadeUp(0.06)} className="flex items-center gap-2.5 md:gap-3">
+        <div className="relative h-8 w-8 md:h-10 md:w-10 shrink-0 flex items-center justify-center">
           <Image
             src="/images/logo.svg"
             alt="Arambh Advisory Logo"
@@ -44,8 +44,8 @@ export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: Sched
       </motion.div>
 
       {/* Title & Description */}
-      <motion.div {...fadeUp(0.14)} className="flex flex-col gap-2">
-        <h2 className="text-xl font-bold text-white tracking-tight leading-snug">
+      <motion.div {...fadeUp(0.14)} className="flex flex-col gap-1.5 md:gap-2">
+        <h2 className="text-lg md:text-xl font-bold text-white tracking-tight leading-snug">
           Quick Intro Call
         </h2>
         <p className="text-[13px] text-neutral-400 leading-relaxed font-normal">
@@ -54,7 +54,7 @@ export default function ScheduleHeader({ selectedDate, selectedTimeSlot }: Sched
       </motion.div>
 
       {/* Details List */}
-      <motion.div {...fadeUp(0.22)} className="flex flex-col gap-3.5 pt-4">
+      <motion.div {...fadeUp(0.22)} className="flex flex-col gap-3 pt-2 md:pt-4">
         {/* Date and Time confirmation (only visible if selected) */}
         {selectedDate && selectedTimeSlot && (
           <div className="flex items-start gap-3 text-[13px] font-medium text-[#C2943A]">

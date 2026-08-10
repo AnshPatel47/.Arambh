@@ -78,9 +78,9 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
   };
 
   return (
-    <div className="flex flex-col text-left p-6 w-full md:max-w-[520px] select-none bg-[#131210]">
+    <div className="flex flex-col text-left p-4 md:p-6 w-full md:max-w-[520px] select-none bg-[#131210]">
       {/* Month Selection Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
         <h3 className="text-[15px] font-bold text-white tracking-wide">
           {MONTH_NAMES[currentMonth]} {currentYear}
         </h3>
@@ -122,7 +122,7 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
               initial={{ opacity: 0.4 }}
               animate={{ opacity: [0.4, 0.8, 0.4] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: index * 0.02 }}
-              className="w-[59px] h-[59px] rounded-xl bg-[#2A2925] mx-auto"
+              className="w-[42px] h-[42px] md:w-[59px] md:h-[59px] rounded-xl bg-[#2A2925] animate-pulse mx-auto"
             />
           ))
         ) : (
@@ -143,7 +143,7 @@ export default function ScheduleCalender({ selectedDate, onSelectDate, isLoading
                   disabled={past}
                   onClick={() => handleDayClick(day)}
                   className={`
-                    w-[59px] h-[59px] rounded-xl text-[13px] font-semibold transition-all flex items-center justify-center relative outline-none mx-auto
+                    w-[42px] h-[42px] md:w-[59px] md:h-[59px] rounded-xl text-[12px] md:text-[13px] font-semibold transition-all flex items-center justify-center relative outline-none mx-auto
                     ${past 
                       ? "text-neutral-700 cursor-not-allowed" 
                       : active
