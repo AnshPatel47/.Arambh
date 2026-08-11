@@ -6,46 +6,43 @@ import logo1 from "../../../public/assets/images/logo1.png";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50">
+    <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50 overflow-hidden">
       
       {/* ── LIGHT CONTAINER ON MOBILE TO FIX BLACK CORNER GAPS ── */}
       <div className="w-full bg-[#F8F4EC] md:bg-transparent pt-8 md:pt-0">
-
-        {/* ── WHITE OVERLAP SECTION (DESKTOP ONLY) ── */}
-        <section className="hidden md:block w-full bg-white text-zinc-900 md:pb-20 relative z-0"></section>
         
         {/* ── BOLD & PREMIUM GOLD CARD ── */}
-        <div className="sm:w-[96%] max-w-9xl mx-auto relative z-20 mt-0 md:-mt-56 mb-8 bg-gradient-to-r from-[#C2943A] to-[#72561d] py-6 px-5 sm:px-8 md:px-10 rounded-2xl overflow-hidden shadow-xl">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="w-[96%] sm:w-[96%] max-w-[1280px] mx-auto relative z-20 mt-0 md:-mt-0 mb-10 bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] py-10 px-5 sm:px-8 md:px-12 rounded-2xl overflow-hidden shadow-xl">
+          <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 lg:gap-12">
 
             {/* Left Side: Heading text */}
             <div className="w-full md:w-1/2 text-center md:text-left">
-              <h4 className="text-xl md:text-3xl font-DM sans font-bold text-white mt-2 md:mt-5 mb-3 tracking-tight">
+              <h4 className="text-xl md:text-3xl font-DM sans font-semibold text-white mt-1 md:mt-2 mb-2 tracking-tight">
                 Stay Connected With Us
               </h4>
-              <p className="font-DM sans text-white/90 md:text-lg mb-6 md:mb-8 font-normal leading-relaxed">
+              <p className="font-DM sans text-white/90 text-sm md:text-lg mb-6 md:mb-8 font-normal leading-relaxed">
                 Subscribe or reach out to our advisory team directly.
               </p>
             </div> 
 
             {/* Right Side: Input Field + Button Group */}
             <div className="w-full md:w-auto flex flex-col sm:flex-row items-center justify-center gap-3">
-              <div className="w-full sm:w-72 shadow-md rounded-full overflow-hidden">
+              <div className="w-full sm:w-64 lg:w-72 shadow-md rounded-lg sm:rounded-full overflow-hidden shrink-0">
                 <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="w-full bg-white text-zinc-900 rounded-lg px-5 py-3.5 text-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all"
-                />        
+                 type="email"
+                 placeholder="Enter your email address"
+                 className="w-full bg-white text-zinc-900 rounded-full sm:rounded-full px-7 py-3 text-sm font-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all appearance-none"
+                 />      
               </div> 
               <button 
                 type="submit"
-                className="w-full sm:w-auto text-center px-7 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 cursor-pointer shrink-0"
               >
                 Submit
               </button>
               <a
                 href="tel:+918866556327"
-                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 shrink-0"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#C2943A]">
                   <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
@@ -53,8 +50,9 @@ export default function Footer() {
                 Call Now
               </a>
             </div>
+
           </div>
-        </div>  
+        </div>
       </div>
 
       {/* Dark Footer Container */}
@@ -152,8 +150,8 @@ export default function Footer() {
 
           </div>
 
-          {/* BOTTOM PART */}
-          <div className="relative px-8 lg:px-0 pt-12 pb-10 w-full max-w-[1280px] mx-auto min-h-[340px]">
+          {/* BOTTOM PART (Parent container MUST have overflow-hidden & relative) */}
+          <div className="relative px-8 lg:px-0 pt-12 pb-10 w-full max-w-[1280px] mx-auto min-h-[340px] overflow-hidden">
 
             {/* CTA Content */}
             <div className="flex flex-col w-full lg:w-[477px] relative z-20 text-left">
@@ -170,32 +168,25 @@ export default function Footer() {
                 >
                   Schedule a Call
                 </a>
-              </div>
+              </div>            
+            </div>
 
-              <span className="text-DM sans text-[12px] text-white/60 mt-16 md:mt-20">
+            {/* Copyright Line */}
+            <div className="mt-6 sm:mt-10 relative z-20 text-left max-w-[65%] sm:max-w-none">
+              <span className="text-DM sans text-[12px] text-white/60 block">
                 © 2026 Arambh Advisory. All rights reserved.
               </span>
             </div>
 
-            {/* Desktop-only Logo Background */}
-            <div className="hidden lg:block absolute right-[80px] bottom-0 pointer-events-none select-none z-0">
+            {/* Flush Corner Logo Background */}
+            <div className="absolute right-0 bottom-0 pointer-events-none select-none z-10 leading-none">
               <Image
                 src={logo1}
                 alt="Arambh Advisory Logo Background"
-                className="w-[314px] h-[296px] object-contain object-bottom opacity-80"
-              />
-            </div>
-
-            {/* Mobile-only Logo */}
-            <div className="flex lg:hidden mt-12 mb-4 pointer-events-none select-none z-0 justify-center">
-              <Image
-                src={logo1}
-                alt="Arambh Advisory Logo Background"
-                className="w-[280px] h-auto object-contain opacity-50"
-              />
-            </div>
-
-          </div>
+                className="w-[180px] sm:w-[220px] lg:w-[280px] h-auto object-contain object-bottom opacity-70 lg:opacity-80 block"
+              />      
+            </div>                                                  
+          </div>          
         </div>
       </div>
     </footer>

@@ -308,13 +308,13 @@ isSavingRef.current = false;
 };
 
 return (
-<div className="max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10 px-6 md:px-10 lg:px-20 xl:px-20 pt-6 pb-36 md:pt-2 md:pb-44 flex-grow bg-white">
-{/* Left Column: Form Section */}
-<form onSubmit={handleSubmit} className="flex flex-col w-full lg:flex-1 justify-between bg-white" >
-<div className="flex flex-col w-full gap-[5px] opacity-1 mb-5">
-<h1 className="text-[#131313] flex items-end pb-2 font-semibold text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.03em]">
-Send Us a Message
-</h1>
+<div className="max-w-7xl w-full mx-auto flex flex-col lg:flex-row justify-between gap-8 lg:gap-10 px-4 sm:px-6 lg:px-8 pt-6 pb-8 md:pt-2 md:pb-12 flex-grow bg-white">
+    {/* Left Column: Form Section */}
+   <form onSubmit={handleSubmit} className="flex flex-col w-full lg:flex-1 justify-between bg-white" >
+    <div className="flex flex-col w-full gap-[5px] opacity-1 mb-5">
+      <h1 className="text-[#131313] flex items-end pb-2 font-semibold text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.03em]">
+        Send Us a Message
+      </h1>
 
       <div className="flex flex-col gap-[16px] w-full">
         {/* Row 1: Name and Email */}
@@ -539,7 +539,7 @@ Send Us a Message
 
   {/* Right Column: Map Section */}
   <div className="w-full lg:flex-1 flex flex-col justify-between opacity-1 bg-white">
-    <div className="w-full flex-grow md:flex-1 min-h-[350px] lg:min-h-[520px] rounded-[16px] border border-zinc-200 overflow-hidden mt-4 lg:mt-0">
+    <div className="w-full h-[420px] lg:h-[560px] rounded-[16px] border border-zinc-200 overflow-hidden mt-9 lg:mt-12">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117510.96395610817!2d72.43962804368149!3d23.02024368021966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fccd11d0872ee11!2sAhmedabad%2C%20Gujarat%20380009!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
         width="100%"

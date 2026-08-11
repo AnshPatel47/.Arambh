@@ -159,7 +159,7 @@ export default function ServicesManager() {
                     {/* <div className="text-xs text-DM sans text-zinc-500 font-mono mt-0.5">/{service.slug}</div> */}
                   </td>
                   <td className="px-6 py-4">
-                    <span className="px-2.5 py-1 bg-zinc-100 text-zinc-700 rounded-md text-s text-DM sans font-medium border border-zinc-200">
+                    <span className="px-3 py-1 bg-zinc-100 text-zinc-700 rounded-md text-[12px] text-DM sans font-medium border border-zinc-300 whitespace-nowrap">
                       {service.category}
                     </span>
                   </td>

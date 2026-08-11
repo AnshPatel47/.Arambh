@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
@@ -52,19 +52,19 @@ export default function ContactUs() {
         <div className="flex flex-col items-center">
           <p className="text-s font-DM sans text-gray-100 mb-3">Contact with social networks</p>
           <div className="flex items-center space-x-2">
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs">
+            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Facebook">
               <FaFacebookF />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs">
+            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Twitter">
               <FaTwitter />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs">
+            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="LinkedIn">
               <FaLinkedinIn />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs">
+            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Google Plus">
               <FaGooglePlusG />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs">
+            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Pinterest">
               <FaPinterestP />
             </a>
           </div>
@@ -73,8 +73,66 @@ export default function ContactUs() {
     },
   ];
 
+  // IntersectionObserver for Scroll-Reveal Animations
+  useEffect(() => {
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    };
+
+    const observerOptions: IntersectionObserverInit = {
+      threshold: 0.05,
+      rootMargin: "0px 0px 120px 0px",
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const targetElements = document.querySelectorAll(".reveal, .rv-up, .txt-up");
+
+    targetElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      targetElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white flex flex-col justify-between">
+    <div className="min-h-screen bg-white flex flex-col justify-between relative">
+      
+      {/* ── CSS ANIMATION STYLES ── */}
+      <style jsx global>{`
+        /* Whole Card Container Scroll Reveal Animation */
+        .reveal, .rv-up {
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+        .reveal.is-visible, .rv-up.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Outer Heading & Paragraph Reveal Animation */
+        .txt-up {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+        .txt-up.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Outer Text Delays */
+        .txt-delay-1 { transition-delay: 120ms; }
+        .txt-delay-2 { transition-delay: 240ms; }
+        .txt-delay-3 { transition-delay: 360ms; }
+      `}</style>
+
       {/* ── 1. HERO SECTION ── */}
       <section 
         id="hero-section" 
@@ -89,29 +147,29 @@ export default function ContactUs() {
         {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
-        <div className="max-w-[1440px] mx-auto w-full relative z-20">
+        <div className="max-w-[1440px] mx-auto w-full relative z-20 mb-3">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-8 uppercase" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-8 mt-20 uppercase txt-up" aria-label="Breadcrumb">      
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-white">Contact Us</span>
           </nav>
 
-          <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1
-              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4"
+          <div className="reveal max-w-2xl flex flex-col items-start text-left">
+            <h1 
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3 txt-up txt-delay-1"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 500,
               }}
-            >
+            > 
               {"Let's Start a"} <br />
               <span className="text-[#C2943A]">
                 Conversation.
               </span>
             </h1>
             <p
-              className="text-[18px] leading-[1.6] text-zinc-300 max-w-xl"
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 400,
@@ -121,7 +179,7 @@ export default function ContactUs() {
             </p>
 
             {/* Call Us Now Button */}
-            <div className="mt-8">
+            <div className="mt-8 txt-up txt-delay-3">
               <a
                 href="tel:+918866556327"
                 className="group flex items-center gap-3 bg-[#C2943A] hover:bg-[#a67c29] text-white px-8 py-3.5 rounded-full font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(194,148,58,0.25)] hover:shadow-[0_0_30px_rgba(194,148,58,0.4)] hover:-translate-y-1 text-DM sans"
@@ -138,9 +196,13 @@ export default function ContactUs() {
 
       {/* ── 2. CARDS SECTION ── */}
       <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 pt-8">
-          {cards.map((card) => (
-            <div key={card.id} className="relative bg-[#C2943A] text-white pt-16 pb-8 px-4 rounded-sm text-center shadow-xl flex flex-col items-center justify-between">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 pt-8">
+          {cards.map((card, idx) => (
+            <div 
+              key={card.id} 
+              className="rv-up relative bg-[#C2943A] text-white pt-16 pb-8 px-4 rounded-sm text-center shadow-xl flex flex-col items-center justify-between"
+              style={{ transitionDelay: `${idx * 100}ms` }}
+            >
               {/* Floating Top Image */}
               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg bg-gray-100">
                 <img
@@ -155,12 +217,13 @@ export default function ContactUs() {
                 {card.title}
               </h3>
 
-              {/* Card Content */}
+              {/* Card Content (Clean Static Inside) */}
               <div className="w-full">{card.content}</div>
             </div>
           ))}
         </div>
       </section>
+      
       <ScrollToTopButton heroSectionId="hero-section" />
       <ContactForm />
     </div>

@@ -152,12 +152,13 @@ export default function ResourcesBlogPage() {
   const [visibleCount, setVisibleCount] = useState(4);
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [isFiltering, setIsFiltering] = useState(false);
 
-  // Debouncing Search: Updates searchTerm only after user stops typing for 350ms
+  // Debouncing Search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setSearchTerm(searchInput);
-      setVisibleCount(4); // Reset pagination on search trigger
+      setVisibleCount(4);
     }, 350);
 
     return () => clearTimeout(delayDebounceFn);
@@ -177,6 +178,41 @@ export default function ResourcesBlogPage() {
       return matchesSearch && matchesCategory;
     });
   }, [searchTerm, activeCategory]);
+
+  // Handle Category Filter Switch with Animation State
+  const handleCategoryChange = (cat: string) => {
+    setIsFiltering(true);
+    setActiveCategory(cat);
+    setVisibleCount(4);
+    setTimeout(() => {
+      setIsFiltering(false);
+    }, 50);
+  };
+
+  // IntersectionObserver for Scroll-Reveal Animations
+  useEffect(() => {
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    };
+
+    const observerOptions: IntersectionObserverInit = {
+      threshold: 0.05,
+      rootMargin: "0px 0px 120px 0px",
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const targetElements = document.querySelectorAll(".reveal, .rv-up, .txt-up");
+
+    targetElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      targetElements.forEach((el) => observer.unobserve(el));
+    };
+  }, [filteredPosts, visibleCount, activeCategory, isFiltering]);
 
   const hasMore = filteredPosts.length > visibleCount;
 
@@ -201,12 +237,67 @@ export default function ResourcesBlogPage() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
+      
+      {/* ── CSS ANIMATION STYLES ── */}
+      <style jsx global>{`
+        /* Whole Card Container Scroll Reveal Animation */
+        .reveal, .rv-up {
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+        .reveal.is-visible, .rv-up.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Outer Heading & Paragraph Reveal Animation */
+        .txt-up {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: opacity, transform;
+        }
+        .txt-up.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Filter Switch Card Staggered Animation */
+        @keyframes filterCardUp {
+          0% {
+            opacity: 0;
+            transform: translateY(24px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .filter-animate {
+          animation: filterCardUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Stagger Delays for Cards */
+        .card-delay-0 { animation-delay: 0ms; }
+        .card-delay-1 { animation-delay: 90ms; }
+        .card-delay-2 { animation-delay: 180ms; }
+        .card-delay-3 { animation-delay: 270ms; }
+
+        /* Outer Text Delays */
+        .txt-delay-1 { transition-delay: 120ms; }
+        .txt-delay-2 { transition-delay: 240ms; }
+        .txt-delay-3 { transition-delay: 360ms; }
+      `}</style>
+
       {/* ── 1. HERO SECTION ── */}
       <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-60 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[620px] flex items-center">
         {/* Background Image Cover */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('/assets/images/blog_hero.webp')" }}
+          style={{ backgroundImage: "url('/assets/images/services_hero.webp')" }}
         />
 
         {/* Dark Gradient Overlay */}
@@ -214,7 +305,7 @@ export default function ResourcesBlogPage() {
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase txt-up" aria-label="Breadcrumb">
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-zinc-400">Resources</span>
@@ -222,9 +313,9 @@ export default function ResourcesBlogPage() {
             <span className="text-white">Blog</span>
           </nav>
 
-          <div className="max-w-2xl flex flex-col items-start text-left">
+          <div className="reveal max-w-2xl flex flex-col items-start text-left">
             <h1 
-              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3"
+              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3 txt-up txt-delay-1"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 500,
@@ -236,7 +327,7 @@ export default function ResourcesBlogPage() {
               </span>
             </h1>
             <p 
-              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl"
+              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 400,
@@ -250,15 +341,15 @@ export default function ResourcesBlogPage() {
 
       {/* ── 2. MAIN CONTENT SECTION ── */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow font-sans">
-        {/* Section Title & Horizontal Line */}
-        <div className="w-full mb-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-200">
+        {/* Section Title */}
+        <div className="reveal w-full mb-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-200 txt-up">
             All Articles
           </h2>
         </div>
 
         {/* Search Bar */}
-        <div className="relative w-full mb-4">
+        <div className="relative w-full mb-4 txt-up txt-delay-1">
           <span className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-zinc-400">
             <Search className="w-4 h-4 sm:w-5 sm:h-5" />          
           </span>
@@ -279,7 +370,8 @@ export default function ResourcesBlogPage() {
           )}
         </div>
 
-        <div className="text-sm text-zinc-500 font-medium mb-4 flex items-center gap-2">
+        {/* Sub-header Metadata Line */}
+        <div className="text-sm text-zinc-500 font-medium mb-4 flex items-center gap-2 txt-up txt-delay-2">
           <span>{filteredPosts.length} articles</span>
           <span>•</span>
           <span>{categories.length - 1} categories</span>
@@ -287,14 +379,12 @@ export default function ResourcesBlogPage() {
           <span>42 min total reading time</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 mb-8">
+        {/* Filter Category Pills Row */}
+        <div className="flex flex-wrap items-center gap-2.5 mb-8 txt-up txt-delay-3">
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setVisibleCount(4);
-              }}
+              onClick={() => handleCategoryChange(cat)}
               className={`px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
@@ -320,7 +410,7 @@ export default function ResourcesBlogPage() {
                 <button
                   onClick={() => {
                     setSearchTerm("");
-                    setActiveCategory("All Articles");
+                    handleCategoryChange("All Articles");
                   }}
                   className="mt-6 px-6 py-2.5 bg-black hover:bg-zinc-800 text-white rounded-full text-sm font-semibold transition-all"
                 >
@@ -329,12 +419,14 @@ export default function ResourcesBlogPage() {
               </div>
             ) : (
               <>
-                {/* 2-Column Cards Grid */}
+                {/* 2-Column Cards Grid (Whole card animates into view) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredPosts.slice(0, visibleCount).map((post) => (
+                  {filteredPosts.slice(0, visibleCount).map((post, idx) => (
                     <div
                       key={post.id}
-                      className="bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full"
+                      className={`rv-up bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 w-full ${
+                        !isFiltering ? `filter-animate card-delay-${idx % 4}` : ''
+                      }`}
                     >
                       <div>
                         {/* 1. Image Container */}
@@ -347,7 +439,7 @@ export default function ResourcesBlogPage() {
                           />
                         </div>
 
-                        {/* 2. Card Body Area */}
+                        {/* 2. Card Body Area (Static content inside) */}
                         <div className="p-5 sm:p-6 flex flex-col">
                           <div className="flex items-center gap-3 mb-3">
                             <span className="inline-block text-[12px] font-semibold px-3 py-1 rounded-full bg-[#F2E6CE] text-[#91671B]">
@@ -379,7 +471,7 @@ export default function ResourcesBlogPage() {
                             className="w-7 h-7 rounded-full object-cover border border-zinc-300"
                           />
                           <div>
-                            <p className="text-s font-semibold text-zinc-800">{post.author.name}</p>
+                            <p className="text-[11px] font-semibold text-zinc-800">{post.author.name}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
@@ -401,11 +493,11 @@ export default function ResourcesBlogPage() {
             )}
           </div>
 
-          {/* Right Sidebar Area (Fixed 320px width) */}
+          {/* Right Sidebar Area */}
           <div className="w-full lg:max-w-[320px] flex flex-col gap-5">
             <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
               {/* 1. Most Read Box */}
-              <div className="w-full bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
+              <div className="rv-up bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
                 <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
                   <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                     Most Read
@@ -434,7 +526,7 @@ export default function ResourcesBlogPage() {
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
-              <div className="w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden mb-3">
+              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden mb-3">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
                 <h3 className="text-xl font-bold text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
                 <p className="text-[14px] text-zinc-900 mt-1 leading-relaxed mb-3">
@@ -465,7 +557,7 @@ export default function ResourcesBlogPage() {
               </div>
 
               {/* 3. Core Offerings Links */}
-              <div className="w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
+              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
                 <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
                   Core Offerings
                 </h3>
@@ -507,14 +599,18 @@ export default function ResourcesBlogPage() {
       {/* ── 3. INTERLINKS SECTION ── */}
       <section className="bg-white py-16 px-4 sm:px-6 md:px-8">
         <div className="max-w-[1440px] mx-auto">
-          <div className="mb-10 text-left">
-            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900">How We Can Help You Succeed</h2>
-            <p className="text-zinc-900 text-m mt-2">Explore the primary advisory solutions featured in the articles above.</p>
+          <div className="reveal mb-10 text-left">
+            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 txt-up">How We Can Help You Succeed</h2>
+            <p className="text-zinc-900 text-m mt-2 txt-up txt-delay-1">Explore the primary advisory solutions featured in the articles above.</p>
             <div className="w-full border-t border-zinc-300 mt-7 pt-0 flex justify-center mb-2"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            {/* Card 1 */}
+            <div 
+              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+              style={{ transitionDelay: "100ms" }}
+            >
               <div>
                 <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
                   <Globe className="w-5 h-5" />
@@ -530,7 +626,11 @@ export default function ResourcesBlogPage() {
               </a>
             </div>
 
-            <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            {/* Card 2 */}
+            <div 
+              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+              style={{ transitionDelay: "200ms" }}
+            >
               <div>
                 <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <TrendingUp className="w-5 h-5" />
@@ -546,7 +646,11 @@ export default function ResourcesBlogPage() {
               </a>
             </div>
 
-            <div className="bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
+            {/* Card 3 */}
+            <div 
+              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 mb-0"
+              style={{ transitionDelay: "300ms" }}
+            >
               <div>
                 <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
                   <FileText className="w-5 h-5" />

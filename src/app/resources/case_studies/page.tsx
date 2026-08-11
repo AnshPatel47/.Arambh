@@ -24,7 +24,7 @@ import {
   ArrowUp,
   ArrowDown
 } from "lucide-react";
-
+import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
 
 // Interface for Case Study Structure
 interface CaseStudy {
@@ -250,7 +250,7 @@ export default function CaseStudies() {
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-white">Case Studies</span>
           </nav>
-          <div className="max-w-2xl flex flex-col items-start text-left">
+          <div className=" reveal max-w-2xl flex flex-col items-start text-left">
             <h1 
               className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3"
                 style={{
@@ -280,7 +280,7 @@ export default function CaseStudies() {
       <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow">
 
         {/* Section Title & Horizontal Line */}
-        <div className="w-full mb-4 sm:mb-6">
+        <div className="reveal w-full mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-200">
             All Case Studies
           </h2>
@@ -366,7 +366,7 @@ export default function CaseStudies() {
                   {filteredCaseStudies.slice(0, visibleCount).map((study) => (
                     <div
                       key={study.id}
-                      className="bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full"
+                      className="rv-up bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full"
                     >
                       <div>
                         {/* 1. Image Container — Full landscape widescreen ratio on desktop */}
@@ -428,7 +428,7 @@ export default function CaseStudies() {
             <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
 
               {/* 1. Most Read Box */}
-              <div className="w-full bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
+              <div className="rv-up w-full bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
                 <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
                   <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                     Most Read
@@ -470,7 +470,7 @@ export default function CaseStudies() {
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
-              <div className="w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden">
+              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
 
                 <h3 className="text-xl font-semibold text-DM sans text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
@@ -502,7 +502,7 @@ export default function CaseStudies() {
               </div>
 
               {/* 3. Core Offerings Links */}
-              <div className="w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
+              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
                 <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-200 pb-2 mb-2.5">
                   Core Offerings
                 </h3>
@@ -550,7 +550,7 @@ export default function CaseStudies() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-0">
-            <div className="bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div className="reveal bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
               <div>
                 <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -566,7 +566,7 @@ export default function CaseStudies() {
               </a>
             </div>
 
-            <div className="bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div className="rv-up bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
               <div>
                 <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -582,7 +582,7 @@ export default function CaseStudies() {
               </a>
             </div>
 
-            <div className="bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
+            <div className="rv-up bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
               <div>
                 <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -689,12 +689,10 @@ export default function CaseStudies() {
                 Close Story
               </button>
             </div>
-          </div>
-          
+          </div>         
         </div>
       )}
-      <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"> 
-      </section>   
+      <ScrollToTopButton heroSectionId="hero-section" />  
     </div>
   );
 }
