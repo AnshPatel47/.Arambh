@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   Search,
@@ -25,6 +25,7 @@ import {
   ArrowDown
 } from "lucide-react";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
+import '@/app/globals.css';
 
 // Interface for Case Study Structure
 interface CaseStudy {
@@ -175,6 +176,9 @@ export default function CaseStudies() {
   const [emailInput, setEmailInput] = useState("");
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
 
+  // Reference directly targeting the Cards Container Grid for auto-scroll
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+
   // Debouncing Search: Updates searchTerm only after user stops typing for 350ms
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -200,6 +204,47 @@ export default function CaseStudies() {
       return matchesSearch && matchesCategory;
     });
   }, [searchTerm, activeCategory]);
+
+  // Handle Category Filter Switch with Correct Header Offset & Auto-Scroll
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+    setVisibleCount(4);
+
+    // Scroll down to bring the Cards Grid into view below the fixed header
+    setTimeout(() => {
+      if (cardsContainerRef.current) {
+        // Offset accounts for sticky navbar height so category pills are fully visible
+        const yOffset = -80; 
+        const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 50);
+  };
+
+  // IntersectionObserver for Scroll-Reveal Animations
+  useEffect(() => {
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    };
+
+    const observerOptions: IntersectionObserverInit = {
+      threshold: 0.05,
+      rootMargin: "0px 0px 120px 0px",
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const targetElements = document.querySelectorAll(".reveal, .rv-up, .txt-up");
+
+    targetElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      targetElements.forEach((el) => observer.unobserve(el));
+    };
+  }, [filteredCaseStudies, visibleCount, activeCategory]);
 
   const hasMore = filteredCaseStudies.length > visibleCount;
 
@@ -229,7 +274,7 @@ export default function CaseStudies() {
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
       {/* ── 1. HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[620px] flex items-center">
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-55 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex items-center">
 
         {/* Background Image Cover */}
         <div
@@ -237,7 +282,7 @@ export default function CaseStudies() {
           style={{ backgroundImage: "url('/assets/images/case_studies_hero.webp')" }}
         />
 
-        {/* Dark Gradient Overlay (the "shadow") */}
+        {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
@@ -253,7 +298,7 @@ export default function CaseStudies() {
           <div className=" reveal max-w-2xl flex flex-col items-start text-left">
             <h1 
               className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3"
-                style={{
+              style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 500,
               }}
@@ -281,7 +326,7 @@ export default function CaseStudies() {
 
         {/* Section Title & Horizontal Line */}
         <div className="reveal w-full mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-200">
+          <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300">
             All Case Studies
           </h2>
         </div>
@@ -296,7 +341,7 @@ export default function CaseStudies() {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by topic, keyword, or question..."
-            className="w-full bg-white text-zinc-900 placeholder-zinc-400 py-3 sm:py-3.5 pl-10 sm:pl-12 pr-10 sm:pr-12 rounded-full border border-zinc-200 focus:border-zinc-400 focus:outline-none text-sm sm:text-base transition-all shadow-xs"
+            className="w-full bg-white text-zinc-900 placeholder-zinc-400 py-3 sm:py-3.5 pl-10 sm:pl-12 pr-10 sm:pr-12 rounded-full border border-zinc-300 focus:border-zinc-400 focus:outline-none text-sm sm:text-base transition-all shadow-xs"
           />
           {searchInput && (
             <button
@@ -322,14 +367,11 @@ export default function CaseStudies() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => {
-                setActiveCategory(cat);
-                setVisibleCount(4);
-              }}
-              className={`px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
+              onClick={() => handleCategoryChange(cat)}
+              className={`px-1 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
-                  : "bg-white border border-zinc-200 text-zinc-800 hover:border-zinc-400"
+                  : "bg-white border border-zinc-300 text-zinc-800 hover:border-zinc-400"
               }`}
             >
               {cat}
@@ -337,13 +379,13 @@ export default function CaseStudies() {
           ))}
         </div>
 
-        {/* MAIN GRID + SIDEBAR LAYOUT (Left column takes 1fr to expand cards, right sidebar fixed 320px) */}
+        {/* MAIN GRID + SIDEBAR LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 lg:gap-14 items-start">
 
-          {/* Main Grid Column (Expands cards to fill available space) */}
-          <div className="w-full flex flex-col">
+          {/* Main Grid Column - Targeted for Auto Scroll */}
+          <div ref={cardsContainerRef} className="w-full flex flex-col">
             {filteredCaseStudies.length === 0 ? (
-              <div className="text-center py-20 bg-[#F6F4F0] rounded-2xl border border-zinc-200 p-8">
+              <div className="text-center py-20 bg-[#F6F4F0] rounded-2xl border border-zinc-300 p-8">
                 <Info className="w-12 h-12 text-[#BD8E32] mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-zinc-800">No case studies found</h3>
                 <p className="text-zinc-500 text-sm mt-2 max-w-md mx-auto">
@@ -352,7 +394,7 @@ export default function CaseStudies() {
                 <button
                   onClick={() => {
                     setSearchTerm("");
-                    setActiveCategory("All Topics");
+                    handleCategoryChange("All Topics");
                   }}
                   className="mt-6 px-6 py-2.5 bg-black hover:bg-zinc-800 text-white rounded-full text-sm font-semibold transition-all"
                 >
@@ -361,15 +403,15 @@ export default function CaseStudies() {
               </div>
             ) : (
               <>
-                {/* 2-Column Cards Grid (Cards expand dynamically) */}
+                {/* 2-Column Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredCaseStudies.slice(0, visibleCount).map((study) => (
+                  {filteredCaseStudies.slice(0, visibleCount).map((study, idx) => (
                     <div
-                      key={study.id}
-                      className="rv-up bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full"
+                      key={`${activeCategory}-${searchTerm}-${study.id}`}
+                      className={`card-pop-up card-delay-${idx % 4} bg-white border border-zinc-300 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full`}
                     >
                       <div>
-                        {/* 1. Image Container — Full landscape widescreen ratio on desktop */}
+                        {/* 1. Image Container */}
                         <div className="relative w-full aspect-[16/9] sm:aspect-[16/9.5] overflow-hidden bg-zinc-100 rounded-t-[18px]">
                           <img
                             src={study.image}
@@ -381,7 +423,7 @@ export default function CaseStudies() {
 
                         {/* 2. Card Body Area */}
                         <div className="p-4 sm:p-6 flex flex-col">
-                          {/* Arambh Category Badge & Meta Line */}
+                          {/* Category Badge & Meta Line */}
                           <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 mb-3 w-full">
                             <span className="inline-block text-[11px] sm:text-[16px] font-semibold px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[#BD8E32] shrink-0">
                               {study.category}
@@ -403,11 +445,10 @@ export default function CaseStudies() {
                         </div>
                       </div>
 
-                      {/* 3. Card Footer (Metrics & Action Button) */}
+                      {/* 3. Card Footer */}
                       <div className="px-2 sm:px-3 pb-5 sm:pb-6 pt-0 flex items-center gap-4 mt-auto w-full">
                         <div className="flex items-center gap-1.5">
                         </div>
-                        {/* Arambh Gold Pill Button */}
                         <button
                           onClick={() => setSelectedCaseStudy(study)}
                           className=" self-start inline-flex items-center text-s font-semibold  text-[#BD8E32] transition-all duration-200 cursor-pointer shrink-0"
@@ -422,14 +463,14 @@ export default function CaseStudies() {
             )}
           </div>
 
-          {/* Right Sidebar Area (Fixed 320px width on desktop) */}
+          {/* Right Sidebar Area */}
           <div className="w-full lg:max-w-[320px] flex flex-col gap-5">
 
             <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
 
               {/* 1. Most Read Box */}
-              <div className="rv-up w-full bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
-                <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+              <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs relative">
+                <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
                   <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                     Most Read
                   </h3>
@@ -442,7 +483,7 @@ export default function CaseStudies() {
                         const found = caseStudiesData.find((c) => c.id === pop.id);
                         if (found) setSelectedCaseStudy(found);
                       }}
-                      className="p-3.5 border-b border-zinc-200 last:border-none flex gap-3 hover:bg-zinc-50 transition-colors cursor-pointer"
+                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-3 hover:bg-zinc-50 transition-colors cursor-pointer"
                     >
                       <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-2">
                         0{idx + 1}
@@ -458,19 +499,10 @@ export default function CaseStudies() {
                     </div>
                   ))}
                 </div>
-
-                {/* Floating scroll action icon with Arambh Gold */}
-                {/* <button
-                  onClick={scrollToTop}
-                  className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-[#BD8E32] hover:bg-[#764A04] text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
-                  title="Scroll to top"
-                >
-                  <ArrowUp className="w-6 h-6" />
-                </button> */}
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
-              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden">
+              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
 
                 <h3 className="text-xl font-semibold text-DM sans text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
@@ -484,7 +516,7 @@ export default function CaseStudies() {
                     onChange={(e) => setEmailInput(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-200 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
+                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-300 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
                   />
                   <button
                     type="submit"
@@ -502,8 +534,8 @@ export default function CaseStudies() {
               </div>
 
               {/* 3. Core Offerings Links */}
-              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
-                <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-200 pb-2 mb-2.5">
+              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs">
+                <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
                   Core Offerings
                 </h3>
                 <div className="flex flex-col gap-0.5">
@@ -526,7 +558,7 @@ export default function CaseStudies() {
               </div>
             </div>
           </div>
-        </div>
+        
         {hasMore && (
           <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
             <button
@@ -537,13 +569,13 @@ export default function CaseStudies() {
             </button>
            </div>
         )}
+        </div>
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
       <section className="bg-white py-10 sm:py-16 px-4 sm:px-12 md:px-8 ">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-6 sm:mb-10 text-left">
-           
             <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 mt-0">How We Can Help You Succeed</h2>
             <p className="text-zinc-900 text-m text-DM sans mt-1 sm:mt-2">Explore the primary advisory solutions featured in the case studies above.</p>
              <div className="w-full border-t border-zinc-300 mt-7 pt-0 flex justify-center mb-2"></div>
@@ -561,12 +593,12 @@ export default function CaseStudies() {
                   Set up your business to secure major taxation exemptions, seed grants, intellectual property rebates, and self-compliance benefits.
                 </p>
               </div>
-              <a href="/services/dpiit" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-200">
+              <a href="/services/dpiit" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
                 Explore DPIIT Benefits <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
             </div>
 
-            <div className="rv-up bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+            <div className="rv-up bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
               <div>
                 <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -577,12 +609,12 @@ export default function CaseStudies() {
                   Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
                 </p>
               </div>
-              <a href="/services/funding" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-200">
+              <a href="/services/funding" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
                 Explore Funding Options <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
             </div>
 
-            <div className="rv-up bg-white border border-zinc-200 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
+            <div className="rv-up bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
               <div>
                 <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
                   <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -593,7 +625,7 @@ export default function CaseStudies() {
                   Maintain immaculate corporate logs, clean cap tables, monthly tax filings, and full regulatory conformity to stay investor-ready.
                 </p>
               </div>
-              <a href="/services/compliance" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-200">
+              <a href="/services/compliance" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
                 Explore Compliance Services <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </a>
             </div>
@@ -689,7 +721,7 @@ export default function CaseStudies() {
                 Close Story
               </button>
             </div>
-          </div>         
+          </div>        
         </div>
       )}
       <ScrollToTopButton heroSectionId="hero-section" />  

@@ -317,149 +317,154 @@ return (
       </h1>
 
       <div className="flex flex-col gap-[16px] w-full">
-        {/* Row 1: Name and Email */}
-        <div className="flex flex-col sm:flex-row w-full gap-[16px] items-start">
-          <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
-            <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                />
-              </svg>
-            </span>
-
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Enter your name"
-              className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
+  {/* Row 1: Name and Email */}
+  <div className="flex flex-col sm:flex-row w-full gap-[16px] items-start">
+    {/* 1. Name */}
+    <div className="w-full sm:flex-1 min-w-0">
+      <div className="w-full h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
+        <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
             />
-          </div>
+          </svg>
+        </span>
 
-          <div className="w-full sm:flex-1">
-            <div className="h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
-              <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                  />
-                </svg>
-              </span>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Enter your name"
+          className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base min-w-0"
+        />
+      </div>
+    
+    </div>
 
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter your email"
-                required
-                aria-invalid={!!errors.email}
-                className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
-              />
-            </div>
-
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.email}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Row 2: Phone and Company */}
-        <div className="flex flex-col sm:flex-row w-full gap-[16px] items-start">
-          <div className="w-full sm:flex-1">
-            <div className="h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
-              <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z"
-                  />
-                </svg>
-              </span>
-
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="Enter your phone no."
-                inputMode="numeric"
-                maxLength={10}
-                required
-                aria-invalid={!!errors.phone}
-                className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
-              />
-            </div>
-
-            {errors.phone && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.phone}
-              </p>
-            )}
-          </div>
-
-          <div className="w-full sm:flex-1 h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
-            <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"
-                />
-              </svg>
-            </span>
-
-            <input
-              type="text"
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="Enter your company name"
-              className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base"
+    {/* 2. Email */}
+    <div className="w-full sm:flex-1 min-w-0">
+      <div className="w-full h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
+        <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
             />
-          </div>
-        </div>
+          </svg>
+        </span>
+
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Enter your email"
+          required
+          aria-invalid={!!errors.email}
+          className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base min-w-0"
+        />
+      </div>
+
+      {errors.email && (
+        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+      )}
+    </div>
+  </div>
+
+  {/* Row 2: Phone and Company */}
+  <div className="flex flex-col sm:flex-row w-full gap-[16px] items-start">
+    {/* 3. Phone */}
+    <div className="w-full sm:flex-1 min-w-0">
+      <div className="w-full h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
+        <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z"
+            />
+          </svg>
+        </span>
+
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Enter your phone no."
+          inputMode="numeric"
+          maxLength={10}
+          required
+          aria-invalid={!!errors.phone}
+          className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base min-w-0"
+        />
+      </div>
+
+      {errors.phone && (
+        <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+      )}
+    </div>
+
+    {/* 4. Company */}
+    <div className="w-full sm:flex-1 min-w-0">
+      <div className="w-full h-[52px] flex items-center gap-[8px] px-[16px] border border-[#DDD5C9] rounded-[12px] bg-[#F6F4F0] focus-within:border-zinc-400 focus-within:ring-1 focus-within:ring-zinc-400 transition-all duration-200">
+        <span className="flex items-center pointer-events-none text-[#666665]/60 flex-shrink-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"
+            />
+          </svg>
+        </span>
+
+        <input
+          type="text"
+          name="company"
+          value={formData.company}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="Enter your company name"
+          className="w-full bg-transparent text-[#666665] placeholder-[#666665]/60 outline-none border-0 p-0 text-base min-w-0"
+        />
+      </div>
+    </div>
+  </div>
 
         {/* Message Field */}
         <div className="w-full">
@@ -474,8 +479,8 @@ return (
         </div>
 
         {/* Dynamic Services Section (Fetching directly from DB) */}
-        <div className="flex flex-col gap-3 mt-1">
-          <label className="text-[#131313] font-semibold text-lg md:text-xl tracking-tight">
+        <div className="flex flex-col gap-2 mt-1">
+          <label className="text-[#131313] font-semibold text-lg md:text-xl tracking-tight mb-2">
             Services you are interested in
           </label>
 
@@ -486,7 +491,7 @@ return (
               <div className="h-9 w-24 bg-[#F6F4F0] rounded-full"></div>
             </div>
           ) : dbServices.length === 0 ? (
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-zinc-900">
               No services found in database.
             </p>
           ) : (
@@ -501,7 +506,7 @@ return (
                     key={service.id || service.slug}
                     type="button"
                     onClick={() => toggleService(service.title)}
-                    className={`flex items-center gap-2 px-2 py-1 text-sm md:text-base font-medium rounded-full border transition-all duration-200 cursor-pointer ${
+                    className={`flex items-center gap-2 px-1 py-0 text-sm md:text-base font-medium rounded-full border transition-all duration-200 cursor-pointer ${
                       isSelected
                         ? "bg-[#EAF3EA] text-[#C2943A] border-[#d4a038] shadow-sm"
                         : "bg-[#faf6ed] text-[#555554] border-[#DDD5C9] hover:border-zinc-400"

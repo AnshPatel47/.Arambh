@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
   Search,
   X,
@@ -11,10 +11,10 @@ import {
   FileText,
   Info,
   Clock,
-  ArrowUp,
   ArrowDown
 } from "lucide-react";
 import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
+import '@/app/globals.css';
 
 // Interface for Blog Post Structure
 interface BlogPost {
@@ -152,7 +152,9 @@ export default function ResourcesBlogPage() {
   const [visibleCount, setVisibleCount] = useState(4);
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
-  const [isFiltering, setIsFiltering] = useState(false);
+
+  // Reference directly targeting the Cards Container Grid
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
 
   // Debouncing Search
   useEffect(() => {
@@ -179,13 +181,18 @@ export default function ResourcesBlogPage() {
     });
   }, [searchTerm, activeCategory]);
 
-  // Handle Category Filter Switch with Animation State
+  // Handle Category Filter Switch with Smooth Scroll directly to Cards Grid
   const handleCategoryChange = (cat: string) => {
-    setIsFiltering(true);
     setActiveCategory(cat);
     setVisibleCount(4);
+
+    // Scroll down to bring the Cards Grid into view so the user sees the filtered cards pop up
     setTimeout(() => {
-      setIsFiltering(false);
+      if (cardsContainerRef.current) {
+        const yOffset = -90; // Leave comfortable space above for search/filter pills
+        const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
     }, 50);
   };
 
@@ -212,7 +219,7 @@ export default function ResourcesBlogPage() {
     return () => {
       targetElements.forEach((el) => observer.unobserve(el));
     };
-  }, [filteredPosts, visibleCount, activeCategory, isFiltering]);
+  }, [filteredPosts, visibleCount, activeCategory]);
 
   const hasMore = filteredPosts.length > visibleCount;
 
@@ -237,63 +244,9 @@ export default function ResourcesBlogPage() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
-      
-      {/* ── CSS ANIMATION STYLES ── */}
-      <style jsx global>{`
-        /* Whole Card Container Scroll Reveal Animation */
-        .reveal, .rv-up {
-          opacity: 0;
-          transform: translateY(32px);
-          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .reveal.is-visible, .rv-up.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Outer Heading & Paragraph Reveal Animation */
-        .txt-up {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .txt-up.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Filter Switch Card Staggered Animation */
-        @keyframes filterCardUp {
-          0% {
-            opacity: 0;
-            transform: translateY(24px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .filter-animate {
-          animation: filterCardUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        /* Stagger Delays for Cards */
-        .card-delay-0 { animation-delay: 0ms; }
-        .card-delay-1 { animation-delay: 90ms; }
-        .card-delay-2 { animation-delay: 180ms; }
-        .card-delay-3 { animation-delay: 270ms; }
-
-        /* Outer Text Delays */
-        .txt-delay-1 { transition-delay: 120ms; }
-        .txt-delay-2 { transition-delay: 240ms; }
-        .txt-delay-3 { transition-delay: 360ms; }
-      `}</style>
 
       {/* ── 1. HERO SECTION ── */}
-      <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-60 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[620px] flex items-center">
+       <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-55 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex items-center">
         {/* Background Image Cover */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
@@ -343,7 +296,7 @@ export default function ResourcesBlogPage() {
       <section className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow font-sans">
         {/* Section Title */}
         <div className="reveal w-full mb-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-200 txt-up">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300 txt-up">
             All Articles
           </h2>
         </div>
@@ -358,7 +311,7 @@ export default function ResourcesBlogPage() {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by topic, keyword, or question..."
-            className="w-full bg-white text-zinc-900 placeholder-zinc-400 py-3.5 pl-12 pr-12 rounded-full border border-zinc-200 focus:border-zinc-400 focus:outline-none text-base transition-all shadow-xs"
+            className="w-full bg-white text-zinc-900 placeholder-zinc-400 py-3.5 pl-12 pr-12 rounded-full border border-zinc-300 focus:border-zinc-400 focus:outline-none text-base transition-all shadow-xs"
           />
           {searchInput && (
             <button
@@ -388,7 +341,7 @@ export default function ResourcesBlogPage() {
               className={`px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
-                  : "bg-white border border-zinc-200 text-zinc-800 hover:border-zinc-400"
+                  : "bg-white border border-zinc-300 text-zinc-800 hover:border-zinc-400"
               }`}
             >
               {cat}
@@ -398,10 +351,11 @@ export default function ResourcesBlogPage() {
 
         {/* MAIN GRID + SIDEBAR LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 lg:gap-18 xl:gap-20 items-start">
-          {/* Main Grid Column */}
-          <div className="w-full flex flex-col">
+          
+          {/* Main Grid Column - Targeted for Auto Scroll */}
+          <div ref={cardsContainerRef} className="w-full flex flex-col">
             {filteredPosts.length === 0 ? (
-              <div className="text-center py-20 bg-[#F6F4F0] rounded-2xl border border-zinc-200 p-8">
+              <div className="text-center py-20 bg-[#F6F4F0] rounded-2xl border border-zinc-300 p-8">
                 <Info className="w-12 h-12 text-[#BD8E32] mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-zinc-800">No articles found</h3>
                 <p className="text-zinc-500 text-sm mt-2 max-w-md mx-auto">
@@ -419,14 +373,12 @@ export default function ResourcesBlogPage() {
               </div>
             ) : (
               <>
-                {/* 2-Column Cards Grid (Whole card animates into view) */}
+                {/* 2-Column Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {filteredPosts.slice(0, visibleCount).map((post, idx) => (
                     <div
-                      key={post.id}
-                      className={`rv-up bg-white border border-zinc-200 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 w-full ${
-                        !isFiltering ? `filter-animate card-delay-${idx % 4}` : ''
-                      }`}
+                      key={`${activeCategory}-${searchTerm}-${post.id}`}
+                      className={`card-pop-up card-delay-${idx % 4} bg-white border border-zinc-300 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 w-full`}
                     >
                       <div>
                         {/* 1. Image Container */}
@@ -439,7 +391,7 @@ export default function ResourcesBlogPage() {
                           />
                         </div>
 
-                        {/* 2. Card Body Area (Static content inside) */}
+                        {/* 2. Card Body Area */}
                         <div className="p-5 sm:p-6 flex flex-col">
                           <div className="flex items-center gap-3 mb-3">
                             <span className="inline-block text-[12px] font-semibold px-3 py-1 rounded-full bg-[#F2E6CE] text-[#91671B]">
@@ -497,8 +449,8 @@ export default function ResourcesBlogPage() {
           <div className="w-full lg:max-w-[320px] flex flex-col gap-5">
             <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
               {/* 1. Most Read Box */}
-              <div className="rv-up bg-white border border-zinc-200 rounded-[16px] overflow-hidden shadow-xs relative">
-                <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+              <div className="rv-up bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs relative">
+                <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
                   <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                     Most Read
                   </h3>
@@ -526,7 +478,7 @@ export default function ResourcesBlogPage() {
               </div>
 
               {/* 2. Monthly Insights Newsletter */}
-              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs relative overflow-hidden mb-3">
+              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs relative overflow-hidden mb-3">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
                 <h3 className="text-xl font-bold text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
                 <p className="text-[14px] text-zinc-900 mt-1 leading-relaxed mb-3">
@@ -539,7 +491,7 @@ export default function ResourcesBlogPage() {
                     onChange={(e) => setEmailInput(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-200 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
+                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-300 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
                   />
                   <button
                     type="submit"
@@ -557,7 +509,7 @@ export default function ResourcesBlogPage() {
               </div>
 
               {/* 3. Core Offerings Links */}
-              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-200 shadow-xs">
+              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs">
                 <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
                   Core Offerings
                 </h3>
@@ -608,7 +560,7 @@ export default function ResourcesBlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Card 1 */}
             <div 
-              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
               style={{ transitionDelay: "100ms" }}
             >
               <div>
@@ -621,14 +573,14 @@ export default function ResourcesBlogPage() {
                   Set up your business to secure major taxation exemptions, seed grants, intellectual property rebates, and self-compliance benefits.
                 </p>
               </div>
-              <a href="/services/dpiit" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
+              <a href="/services/dpiit" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-300">
                 Explore DPIIT Benefits <ArrowRight className="w-4 h-4" />
               </a>
             </div>
 
             {/* Card 2 */}
             <div 
-              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
               style={{ transitionDelay: "200ms" }}
             >
               <div>
@@ -641,14 +593,14 @@ export default function ResourcesBlogPage() {
                   Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
                 </p>
               </div>
-              <a href="/services/funding" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-200">
+              <a href="/services/funding" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-300">
                 Explore Funding Options <ArrowRight className="w-4 h-4" />
               </a>
             </div>
 
             {/* Card 3 */}
             <div 
-              className="rv-up bg-white border border-zinc-200 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 mb-0"
+              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 mb-0"
               style={{ transitionDelay: "300ms" }}
             >
               <div>
@@ -668,7 +620,6 @@ export default function ResourcesBlogPage() {
           </div>
         </div>
       </section>
-
       <section id="hero-section" className="hidden"></section>
       <ScrollToTopButton heroSectionId="hero-section" />
       <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>

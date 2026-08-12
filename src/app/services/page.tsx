@@ -70,7 +70,7 @@ export default function ServicesPage() {
     <div className={`min-h-screen bg-white ${dmSans.className}`}>
 
       {/* ── 1. HERO SECTION ── */}
-      <section id="hero-section" className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[620px] flex items-center mb-16">
+      <section id="hero-section" className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] flex items-center mb-16">
 
         {/* Background Image Cover */}
         <div
@@ -82,7 +82,7 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
-          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
+          <nav className="reveal flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span className="text-zinc-600">/</span>
             <span className="text-white">Services</span>
@@ -90,7 +90,7 @@ export default function ServicesPage() {
 
           <div className="max-w-2xl flex flex-col items-start text-left">
             <h1 
-              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4"
+              className="rv-up text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4"
               style={{ fontWeight: 500 }}
             >
               Explore Our <br />
@@ -98,7 +98,7 @@ export default function ServicesPage() {
                 Advisory Services.
               </span>
             </h1>
-            <p className="text-[18px] leading-[1.6] text-zinc-300 max-w-xl font-normal">
+            <p className="rv-up text-[18px] leading-[1.6] text-zinc-300 max-w-xl font-normal" style={{ transitionDelay: "150ms" }}>
               From business incorporation and DPIIT startup recognition to securing government seed grants and compliance audits—we provide end-to-end support for your corporate journey.
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function ServicesPage() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8">
 
         {/* Mobile Dropdown Menu (Scrollable) */}
-        <div className="lg:hidden mb-6">
+        <div className="lg:hidden mb-6 reveal">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="w-full bg-white border border-gray-300 rounded-lg p-4 flex items-center justify-between font-semibold text-[#C2943A] shadow-sm"
@@ -147,29 +147,29 @@ export default function ServicesPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Left Sidebar Navigation (Desktop Scrollable) */}
-          <div className="hidden lg:block lg:col-span-4">
+          <div className="hidden lg:block lg:col-span-4 rv-up">
             <div className="sticky top-8">
               
               {/* Header */}
-              <div className="bg-[#C2943A] font-DM sans text-white p-6 rounded-t-xl">
+              <div className="bg-[#C2943A] font-sans text-white p-6 rounded-t-xl">
                 <h2 className="font-bold text-xl">Available Services</h2>
-                <p className="text-amber-100 text-sm font-DM sans">{services.length} services available</p>
+                <p className="text-amber-100 text-sm">{services.length} services available</p>
               </div>
 
               {/* Scrollable Container */}
               <div className="bg-white border-x border-b border-zinc-300 rounded-b-xl shadow-sm overflow-hidden">
-                <div className="max-h-[340px] overflow-y-auto divide-y divide-zinc-200 font-DM sans">
+                <div className="max-h-[340px] overflow-y-auto divide-y divide-zinc-200 font-sans">
                   {services.map((service) => (
                     <button
                       key={service.id}
                       onClick={() => setActiveServiceId(service.id)}
-                      className={`w-full flex items-center justify-between font-DM sans px-6 py-4 text-left transition-all duration-200 border-l-4 ${
+                      className={`w-full flex items-center justify-between px-6 py-4 text-left transition-all duration-200 border-l-4 ${
                         activeServiceId === service.id
-                          ? "bg-[#f3f0eb] text-[#C2943A] font-bold "
-                          : "text-zinc-900 font-DM sans hover:bg-gray-50 hover:text-[#C2943A] border-transparent"
+                          ? "bg-[#f3f0eb] text-[#C2943A] font-bold"
+                          : "text-zinc-900 hover:bg-gray-50 hover:text-[#C2943A] border-transparent"
                       }`}
                     >
-                      <span className="pr-4 leading-snug font-DM sans">{service.title}</span>
+                      <span className="pr-4 leading-snug">{service.title}</span>
                     </button>
                   ))}
                 </div>
@@ -179,7 +179,7 @@ export default function ServicesPage() {
           </div>
 
           {/* Right Main Content Card */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 rv-up" style={{ transitionDelay: "150ms" }}>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-300 overflow-hidden flex flex-col md:flex-row min-h-[440px]">
 
               {/* Service Info */}
@@ -221,12 +221,12 @@ export default function ServicesPage() {
       {/* ── 3. FEATURES SECTION ── */}
       <section className="bg-white pt-16 pb-36 md:pb-44 px-6 sm:px-12 md:px-16 border-t border-zinc-300 mt-20">
         <div className="max-w-[1440px] mx-auto">
-          <div className="mb-12 text-center">
+          <div className="mb-12 text-center reveal">
             <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900">Why Partner With Arambh?</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <div className="rv-up bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col">
               <div className="relative w-full aspect-[2/1] overflow-hidden bg-neutral-100">
                 <img
                   src="/assets/images/why_advisory.png"
@@ -240,7 +240,7 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <div className="bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <div className="rv-up bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col" style={{ transitionDelay: "150ms" }}>
               <div className="relative w-full aspect-[2/1] overflow-hidden bg-neutral-100">
                 <img
                   src="/assets/images/why_delivery.png"
@@ -254,7 +254,7 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <div className="bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <div className="rv-up bg-white border border-zinc-300 rounded-3xl overflow-hidden shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col" style={{ transitionDelay: "300ms" }}>
               <div className="relative w-full aspect-[2/1] overflow-hidden bg-neutral-100">
                 <img
                   src="/assets/images/why_scaling.png"

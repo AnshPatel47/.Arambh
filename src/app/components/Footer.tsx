@@ -1,10 +1,63 @@
 "use client";
 
-import React from "react";
+import React ,{useState} from "react";
 import Image from "next/image";
 import logo1 from "../../../public/assets/images/logo1.png";
 
 export default function Footer() {
+    const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setStatusMessage({
+        type: "error",
+        text: "Please enter a valid email address.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatusMessage(null);
+
+    try {
+      const res = await fetch("/api/footer-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatusMessage({
+          type: "success",
+          text: "Thank you! We've received your request.",
+        });
+        setEmail("");
+      } else {
+        setStatusMessage({
+          type: "error",
+          text: data.error || "Something went wrong. Please try again.",
+        });
+      }
+    } catch (error) {
+      setStatusMessage({
+        type: "error",
+        text: "Network error. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50 overflow-hidden">
       
@@ -27,28 +80,51 @@ export default function Footer() {
 
             {/* Right Side: Input Field + Button Group */}
             <div className="w-full md:w-auto flex flex-col sm:flex-row items-center justify-center gap-3">
+               <form
+                onSubmit={handleSubmit}
+                className="w-full flex flex-col sm:flex-row items-center justify-center gap-3"
+               >
               <div className="w-full sm:w-64 lg:w-72 shadow-md rounded-lg sm:rounded-full overflow-hidden shrink-0">
                 <input
                  type="email"
+                 value={email}
+                 onChange={(e)=>setEmail(e.target.value)}
                  placeholder="Enter your email address"
+                 disabled = {isSubmitting}
                  className="w-full bg-white text-zinc-900 rounded-full sm:rounded-full px-7 py-3 text-sm font-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all appearance-none"
                  />      
               </div> 
               <button 
                 type="submit"
+                disabled ={isSubmitting}
                 className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 cursor-pointer shrink-0"
               >
-                Submit
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
               <a
                 href="tel:+918866556327"
                 className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 shrink-0"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#C2943A]">
-                  <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
+                 <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
                 </svg>
                 Call Now
               </a>
+            </form>
+
+              {/* Status Message Display */}
+              {statusMessage && (
+                <span
+                  className={`text-xs font-DM sans text-center md:text-right mt-1 ${
+                    statusMessage.type === "success"
+                      ? "text-green-300 font-medium"
+                      : "text-red-300 font-medium"
+                  }`}
+                >
+                  {statusMessage.text}
+                </span>
+              )}
+
             </div>
 
           </div>
