@@ -14,6 +14,7 @@ import {
   ArrowDown
 } from "lucide-react";
 import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
+import PageHeroHeader from "@/components/PageHeroHeader"; 
 import '@/app/globals.css';
 
 // Interface for Blog Post Structure
@@ -246,7 +247,7 @@ export default function ResourcesBlogPage() {
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
 
       {/* ── 1. HERO SECTION ── */}
-       <section className="relative overflow-hidden bg-[#120E07] text-white pt-24 pb-16 sm:pt-55 sm:pb-20 md:pt-44 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex items-center">
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex flex-col justify-start ">
         {/* Background Image Cover */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
@@ -257,8 +258,11 @@ export default function ResourcesBlogPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
-          {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase txt-up" aria-label="Breadcrumb">
+          {/* Breadcrumbs matching PageHeroHeader spacing */}
+          <nav 
+            className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 sm:mb-8 uppercase txt-up" 
+            aria-label="Breadcrumb"
+          >
             <a href="/" className="hover:text-white transition-colors">Home</a>
             <ChevronRight className="w-3 h-3 text-zinc-500" />
             <span className="text-zinc-400">Resources</span>
@@ -266,21 +270,22 @@ export default function ResourcesBlogPage() {
             <span className="text-white">Blog</span>
           </nav>
 
+          {/* Header Content matching PageHeroHeader typography */}
           <div className="reveal max-w-2xl flex flex-col items-start text-left">
             <h1 
-              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3 txt-up txt-delay-1"
+              className="text-[26px] xs:text-[30px] sm:text-[36px] md:text-[clamp(2rem,3.2vw,3.2rem)] leading-[1.2] md:leading-[1.05] tracking-[-0.04em] text-white mb-4 txt-up txt-delay-1"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 500,
               }}
             >
-              Insights & Guides. <br />
+              Insights &amp; Guides. <br />
               <span className="text-[#C2943A]">
                 For Corporate Leaders.
               </span>
             </h1>
             <p 
-              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
+              className="text-[14px] sm:text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
               style={{
                 fontFamily: "var(--font-dm), sans-serif",
                 fontWeight: 400,
@@ -322,9 +327,9 @@ export default function ResourcesBlogPage() {
             </button>
           )}
         </div>
-
+        
         {/* Sub-header Metadata Line */}
-        <div className="text-sm text-zinc-500 font-medium mb-4 flex items-center gap-2 txt-up txt-delay-2">
+        <div className="text-[12px] sm:text-sm text-DM sans px-2 text-zinc-500 font-medium mb-4 flex items-center gap-2 txt-up txt-delay-2">
           <span>{filteredPosts.length} articles</span>
           <span>•</span>
           <span>{categories.length - 1} categories</span>
@@ -338,7 +343,7 @@ export default function ResourcesBlogPage() {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
+              className={`px-3 py-1 text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
                   : "bg-white border border-zinc-300 text-zinc-800 hover:border-zinc-400"
@@ -440,7 +445,19 @@ export default function ResourcesBlogPage() {
                       </div>
                     </div>
                   ))}
-                </div>              
+                </div>
+
+                {/* Mobile-Only Pagination (Renders immediately after category cards) */}
+                {hasMore && (
+                  <div className="w-full border-t border-zinc-300 mt-8 pt-6 flex justify-center lg:hidden">
+                    <button
+                      onClick={loadMore}
+                      className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+                    >
+                      Load More Articles <ArrowDown className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -535,9 +552,9 @@ export default function ResourcesBlogPage() {
           </div>
         </div>
 
-        {/* Pagination */}
+        {/* Desktop-Only Pagination (Hidden on mobile) */}
         {hasMore && (
-          <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
+          <div className="w-full border-t border-zinc-300 mt-12 pt-8 justify-center hidden lg:flex">
             <button
               onClick={loadMore}
               className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
@@ -549,7 +566,7 @@ export default function ResourcesBlogPage() {
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <section className="bg-white py-16 px-4 sm:px-6 md:px-8">
+      <section className="bg-white pt-12 pb-6 sm:py-16 px-4 sm:px-6 md:px-8">
         <div className="max-w-[1440px] mx-auto">
           <div className="reveal mb-10 text-left">
             <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 txt-up">How We Can Help You Succeed</h2>
@@ -622,7 +639,7 @@ export default function ResourcesBlogPage() {
       </section>
       <section id="hero-section" className="hidden"></section>
       <ScrollToTopButton heroSectionId="hero-section" />
-      <section className="w-full bg-white text-zinc-900 pt-8 sm:pt-12 pb-20 sm:pb-32 md:pb-20 relative z-0"></section>
+      <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
     </div>
   );
 }

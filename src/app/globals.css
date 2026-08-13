@@ -255,6 +255,9 @@ body {
   }
 }
 
+/* =========================================
+   Footer Overrides (Workspace Rule Bypass)
+   ========================================= */
 
 @media (max-width: 639px) {
   /* Make the mobile container transparent */
@@ -277,79 +280,3 @@ body {
     background-color: transparent !important;
   }
 }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.rv-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.rv-up.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Whole Card Container Scroll Reveal Animation */
-.reveal, .rv-up {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal.is-visible, .rv-up.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Outer Heading & Paragraph Reveal Animation */
-.txt-up {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.txt-up.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Upward Pop-Up Animation when Filter applies */
-@keyframes filterCardUp {
-  0% {
-    opacity: 0;
-    transform: translateY(45px) scale(0.96);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.card-pop-up {
-  animation: filterCardUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: opacity, transform;
-}
-
-/* Stagger Delays for Cards */
-.card-delay-0 { animation-delay: 0ms; }
-.card-delay-1 { animation-delay: 80ms; }
-.card-delay-2 { animation-delay: 160ms; }
-.card-delay-3 { animation-delay: 240ms; }
-
-/* Outer Text Delays */
-.txt-delay-1 { transition-delay: 120ms; }
-.txt-delay-2 { transition-delay: 240ms; }
-.txt-delay-3 { transition-delay: 360ms; }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { DM_Sans } from "next/font/google";
 import { Menu, ChevronDown } from "lucide-react";
 import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
+import PageHeroHeader from "../../components/PageHeroHeader";
 import Link from "next/link";
 
 interface Service {
@@ -14,7 +15,6 @@ interface Service {
   image?: string;
 }
 
-// Configure font
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
@@ -70,8 +70,10 @@ export default function ServicesPage() {
     <div className={`min-h-screen bg-white ${dmSans.className}`}>
 
       {/* ── 1. HERO SECTION ── */}
-      <section id="hero-section" className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] flex items-center mb-16">
-
+      <section
+        id="hero-section"
+        className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] flex flex-col justify-start mb-16"
+      >
         {/* Background Image Cover */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
@@ -81,27 +83,19 @@ export default function ServicesPage() {
         {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
-        <div className="max-w-[1440px] mx-auto w-full relative z-20">
-          <nav className="reveal flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 uppercase" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <span className="text-zinc-600">/</span>
-            <span className="text-white">Services</span>
-          </nav>
-
-          <div className="max-w-2xl flex flex-col items-start text-left">
-            <h1 
-              className="rv-up text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-4"
-              style={{ fontWeight: 500 }}
-            >
-              Explore Our <br />
-              <span className="text-[#C2943A]">
-                Advisory Services.
-              </span>
-            </h1>
-            <p className="rv-up text-[18px] leading-[1.6] text-zinc-300 max-w-xl font-normal" style={{ transitionDelay: "150ms" }}>
-              From business incorporation and DPIIT startup recognition to securing government seed grants and compliance audits—we provide end-to-end support for your corporate journey.
-            </p>
-          </div>
+        <div className="max-w-[1440px] mx-auto w-full relative z-20 flex flex-col items-start">
+          <PageHeroHeader
+            breadcrumbCurrent="Services"
+            title={
+              <>
+                Explore Our <br />
+                <span className="text-[#C2943A]">
+                  Advisory Services.
+                </span>
+              </>
+            }
+            description="From business incorporation and DPIIT startup recognition to securing government seed grants and compliance audits—we provide end-to-end support for your corporate journey."
+          />
         </div>
       </section>
 
@@ -146,17 +140,14 @@ export default function ServicesPage() {
         {/* Desktop Layout Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-          {/* Left Sidebar Navigation (Desktop Scrollable) */}
+          {/* Left Sidebar Navigation */}
           <div className="hidden lg:block lg:col-span-4 rv-up">
             <div className="sticky top-8">
-              
-              {/* Header */}
               <div className="bg-[#C2943A] font-sans text-white p-6 rounded-t-xl">
                 <h2 className="font-bold text-xl">Available Services</h2>
                 <p className="text-amber-100 text-sm">{services.length} services available</p>
               </div>
 
-              {/* Scrollable Container */}
               <div className="bg-white border-x border-b border-zinc-300 rounded-b-xl shadow-sm overflow-hidden">
                 <div className="max-h-[340px] overflow-y-auto divide-y divide-zinc-200 font-sans">
                   {services.map((service) => (
@@ -174,7 +165,6 @@ export default function ServicesPage() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -182,7 +172,6 @@ export default function ServicesPage() {
           <div className="lg:col-span-8 rv-up" style={{ transitionDelay: "150ms" }}>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-300 overflow-hidden flex flex-col md:flex-row min-h-[440px]">
 
-              {/* Service Info */}
               <div className="p-8 md:p-12 md:w-3/5 flex flex-col justify-center">
                 <h2 className="text-3xl font-bold text-[#C2943A] mb-6 leading-tight">
                   {activeService.title}
@@ -203,7 +192,6 @@ export default function ServicesPage() {
                 </div>
               </div>
 
-              {/* Service Image */}
               <div className="md:w-2/5 relative min-h-[250px] md:min-h-full bg-gray-100">
                 <img
                   src={activeService.image || "/assets/images/service_registration.png"}

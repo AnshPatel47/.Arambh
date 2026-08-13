@@ -1,8 +1,9 @@
 "use client";
+
 import React, { useEffect } from "react";
-import { ChevronRight } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
+import PageHeroHeader from "@/components/PageHeroHeader";
 import {
   FaFacebookF,
   FaTwitter,
@@ -17,17 +18,21 @@ export default function ContactUs() {
     {
       id: 1,
       title: "Main Office",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=300",
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=300",
       content: (
         <p className="text-sm font-DM sans text-gray-100 leading-relaxed">
-          Ahmedabad, Gujarat, India<br />Mon – Sat, 9:30 AM – 6:30 PM
+          Ahmedabad, Gujarat, India
+          <br />
+          Mon – Sat, 9:30 AM – 6:30 PM
         </p>
       ),
     },
     {
       id: 2,
       title: "Email",
-      image: "https://images.unsplash.com/photo-1587560699334-bea93391dcef?auto=format&fit=crop&q=80&w=300",
+      image:
+        "https://images.unsplash.com/photo-1587560699334-bea93391dcef?auto=format&fit=crop&q=80&w=300",
       content: (
         <div className="text-m font-DM sans text-gray-100 space-y-1">
           <p>info@arambhservices.com</p>
@@ -37,7 +42,8 @@ export default function ContactUs() {
     {
       id: 3,
       title: "Reception",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300",
+      image:
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300",
       content: (
         <div className="text-m font-DM sans text-gray-100 space-y-1">
           <p>+91 88665 56327</p>
@@ -47,24 +53,47 @@ export default function ContactUs() {
     {
       id: 4,
       title: "Social Links",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=300",
+      image:
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=300",
       content: (
         <div className="flex flex-col items-center">
-          <p className="text-s font-DM sans text-gray-100 mb-3">Contact with social networks</p>
+          <p className="text-s font-DM sans text-gray-100 mb-3">
+            Contact with social networks
+          </p>
           <div className="flex items-center space-x-2">
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Facebook">
+            <a
+              href="#"
+              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+              aria-label="Facebook"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Twitter">
+            <a
+              href="#"
+              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+              aria-label="Twitter"
+            >
               <FaTwitter />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="LinkedIn">
+            <a
+              href="#"
+              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+              aria-label="LinkedIn"
+            >
               <FaLinkedinIn />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Google Plus">
+            <a
+              href="#"
+              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+              aria-label="Google Plus"
+            >
               <FaGooglePlusG />
             </a>
-            <a href="#" className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs" aria-label="Pinterest">
+            <a
+              href="#"
+              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+              aria-label="Pinterest"
+            >
               <FaPinterestP />
             </a>
           </div>
@@ -88,8 +117,13 @@ export default function ContactUs() {
       rootMargin: "0px 0px 120px 0px",
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    const targetElements = document.querySelectorAll(".reveal, .rv-up, .txt-up");
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions
+    );
+    const targetElements = document.querySelectorAll(
+      ".reveal, .rv-up, .txt-up"
+    );
 
     targetElements.forEach((el) => observer.observe(el));
 
@@ -100,17 +134,19 @@ export default function ContactUs() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-between relative">
-      
       {/* ── CSS ANIMATION STYLES ── */}
       <style jsx global>{`
         /* Whole Card Container Scroll Reveal Animation */
-        .reveal, .rv-up {
+        .reveal,
+        .rv-up {
           opacity: 0;
           transform: translateY(32px);
-          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
-        .reveal.is-visible, .rv-up.is-visible {
+        .reveal.is-visible,
+        .rv-up.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
@@ -119,7 +155,8 @@ export default function ContactUs() {
         .txt-up {
           opacity: 0;
           transform: translateY(20px);
-          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
         .txt-up.is-visible {
@@ -128,68 +165,67 @@ export default function ContactUs() {
         }
 
         /* Outer Text Delays */
-        .txt-delay-1 { transition-delay: 120ms; }
-        .txt-delay-2 { transition-delay: 240ms; }
-        .txt-delay-3 { transition-delay: 360ms; }
+        .txt-delay-1 {
+          transition-delay: 120ms;
+        }
+        .txt-delay-2 {
+          transition-delay: 240ms;
+        }
+        .txt-delay-3 {
+          transition-delay: 360ms;
+        }
       `}</style>
 
       {/* ── 1. HERO SECTION ── */}
-      <section 
-       id="hero-section" 
-       className="relative overflow-hidden bg-[#120E07] text-white pt-16 pb-12 md:pt-24 md:pb-20 px-6 sm:px-12 md:px-16 min-h-[300px] md:min-h-[450px] flex items-center"
-       >
+      <section
+        id="hero-section"
+        className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-20 lg:pb-24 px-6 sm:px-12 md:px-16 min-h-[440px] lg:min-h-[480px] flex items-center"
+      >
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('/assets/images/contact_hero_netbounce.webp')" }}
+          style={{
+            backgroundImage:
+              "url('/assets/images/contact_hero_netbounce.webp')",
+          }}
         />
 
         {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
-        <div className="max-w-[1440px] mx-auto w-full relative z-20 mb-3">
-          {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-8 mt-20 uppercase txt-up" aria-label="Breadcrumb">      
-            <a href="/" className="hover:text-white transition-colors">Home</a>
-            <ChevronRight className="w-3 h-3 text-zinc-500" />
-            <span className="text-white">Contact Us</span>
-          </nav>
+        <div className="max-w-[1440px] mx-auto w-full relative z-20 flex flex-col justify-center items-start">
+          {/* Reusable Hero Header */}
+          <PageHeroHeader
+            breadcrumbCurrent="Contact Us"
+            title={
+              <>
+                Let's Start a <br />
+                <span className="text-[#C2943A]">Conversation.</span>
+              </>
+            }
+            description="Whether you need expert advice on corporate compliance, startup registration, or business structuring, our advisory team is ready to guide you."
+          />
 
-          <div className="reveal max-w-2xl flex flex-col items-start text-left">
-            <h1 
-              className="text-[26px] leading-[1.2] md:text-[clamp(2rem,3.2vw,3.2rem)] md:leading-[1.05] tracking-[-0.04em] text-white mb-3 txt-up txt-delay-1"
-              style={{
-                fontFamily: "var(--font-dm), sans-serif",
-                fontWeight: 500,
-              }}
-            > 
-              {"Let's Start a"} <br />
-              <span className="text-[#C2943A]">
-                Conversation.
-              </span>
-            </h1>
-            <p
-              className="text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
-              style={{
-                fontFamily: "var(--font-dm), sans-serif",
-                fontWeight: 400,
-              }}
+          {/* Call Us Now Button */}
+          <div className="mt-8 txt-up txt-delay-3">
+            <a
+              href="tel:+918866556327"
+              className="group flex items-center gap-3 bg-[#C2943A] hover:bg-[#a67c29] text-white px-8 py-3.5 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 text-DM sans"
             >
-              Whether you need expert advice on corporate compliance, startup registration, or business structuring, our advisory team is ready to guide you.
-            </p>
-
-            {/* Call Us Now Button */}
-            <div className="mt-8 txt-up txt-delay-3">
-              <a
-                href="tel:+918866556327"
-                className="group flex items-center gap-3 bg-[#C2943A] hover:bg-[#a67c29] text-white px-8 py-3.5 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 text-DM sans"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
-                </svg>
-                Call Us Now
-              </a>
-            </div>
+                <path
+                  fillRule="evenodd"
+                  d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Call Us Now
+            </a>
           </div>
         </div>
       </section>
@@ -198,8 +234,8 @@ export default function ContactUs() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 pt-8">
           {cards.map((card, idx) => (
-            <div 
-              key={card.id} 
+            <div
+              key={card.id}
               className="rv-up relative bg-[#C2943A] text-white pt-16 pb-8 px-4 rounded-sm text-center shadow-xl flex flex-col items-center justify-between"
               style={{ transitionDelay: `${idx * 100}ms` }}
             >
@@ -223,7 +259,7 @@ export default function ContactUs() {
           ))}
         </div>
       </section>
-      
+
       <ScrollToTopButton heroSectionId="hero-section" />
       <ContactForm />
     </div>
