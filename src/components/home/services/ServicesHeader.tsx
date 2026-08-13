@@ -1,17 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import SectionHeader from "@/components/SectionHeader";
 
 export default function ServicesHeader() {
   return (
     <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-8 lg:gap-16 w-full mb-10 text-center lg:text-left">
-      {/* LEFT COLUMN: Heading */}
-      <div className="w-full lg:max-w-[550px] flex flex-col items-center lg:items-start">
-        {/* Heading */}
-        <h2 className="text-[32px] md:text-[40px] lg:text-[45px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#131313]">
-          What we can do
-          <br />
-          for you
-        </h2>
+      {/* LEFT COLUMN: Uses unified SectionHeader */}
+      <div className="w-full lg:max-w-[550px]">
+        <SectionHeader
+          align="left"
+          title={<>What we can do<br />for you</>}
+        />
       </div>
 
       {/* RIGHT COLUMN: Description + CTA Button */}
@@ -21,7 +20,6 @@ export default function ServicesHeader() {
           government recognition, compliance support, and funding assistance —
           all under one roof.
         </p>
-
 
         {/* CTA Button */}
         <div className="mt-6">

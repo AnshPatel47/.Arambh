@@ -1,5 +1,7 @@
 import dynamic from "next/dynamic";
 import SectionErrorBoundary from "@/components/ui/SectionErrorBoundary";
+import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
+
 
 const Hero = dynamic(() => import("@/components/home/hero/Hero"), {
   ssr: false,
@@ -87,6 +89,7 @@ export default function Page() {
           <FAQ />
         </SectionErrorBoundary>
       </div>
+      <ScrollToTopButton heroSectionId="hero-section" />
     </main>
   );
 }

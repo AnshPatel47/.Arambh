@@ -1,7 +1,10 @@
+import Link from "next/link";
+
 export default function BlogButton() {
   return (
     <div className="flex justify-center">
-      <button
+      <Link
+        href="/resources/blogs"
         style={{ fontFamily: "var(--font-dm), sans-serif" }}
         className="
           inline-flex
@@ -26,10 +29,11 @@ export default function BlogButton() {
           transition-colors
           duration-300
           hover:bg-[#00000014]
+          cursor-pointer
         "
       >
         Read All
-      </button>
+      </Link>
     </div>
   );
 }

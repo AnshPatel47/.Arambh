@@ -1,3 +1,5 @@
+import SectionHeader from "@/components/SectionHeader";
+
 export default function BlogsHeader() {
   return (
     <div
@@ -10,19 +12,10 @@ export default function BlogsHeader() {
       "
     >
       {/* Heading */}
-      <h2
-        className="
-          text-center
-          text-[32px]
-          lg:text-[48px]
-          font-medium
-          leading-[120%]
-          tracking-[-0.02em]
-          text-[#131313]
-        "
-      >
-        Insights &amp; Guides
-      </h2>
+      <SectionHeader
+        align="center"
+        title="Insights & Guides"
+      />
 
       {/* Horizontal divider line (width matches card row) */}
       <div className="w-full h-px bg-[#E6DFD4]" />

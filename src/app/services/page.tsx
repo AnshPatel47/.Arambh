@@ -77,7 +77,7 @@ export default function ServicesPage() {
         {/* Background Image Cover */}
         <div
           className="absolute inset-0 bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('/assets/images/services_hero.webp')" }}
+          style={{ backgroundImage: "url('/images/new.webp')" }}
         />
 
         {/* Dark Gradient Overlay */}

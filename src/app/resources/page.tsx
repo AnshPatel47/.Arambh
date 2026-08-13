@@ -254,8 +254,8 @@ export default function ResourcesBlogPage() {
           style={{ backgroundImage: "url('/assets/images/services_hero.webp')" }}
         />
 
-        {/* Dark Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
+  {/* Dark Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
           {/* Breadcrumbs matching PageHeroHeader spacing */}

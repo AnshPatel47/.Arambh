@@ -5,17 +5,9 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const { name, email, date, time, notes, guests } = body;
 
-    const {
-      name,
-      email,
-      date,
-      time,
-      notes,
-      guests,
-    } = body;
-
-    // Required fields validation
+    // Validation
     if (!name || !email || !date || !time) {
       return NextResponse.json(
         {
@@ -26,12 +18,24 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create a NEW Contact document for this Schedule Booking
+    // Safely parse date
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid date format provided",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Create a Contact entry with schedule fields
     const booking = await prisma.contact.create({
       data: {
         name,
         email,
-        scheduleDate: new Date(date),
+        scheduleDate: parsedDate,
         scheduleTime: time,
         scheduleNotes: notes || null,
         scheduleGuests: Array.isArray(guests) ? guests : [],

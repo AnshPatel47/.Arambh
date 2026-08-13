@@ -8,13 +8,21 @@ interface CaseStudiesListProps {
   onSelectStudy: (study: CaseStudy) => void;
 }
 
-export default function CaseStudiesList({ onSelectStudy }: CaseStudiesListProps) {
-  // Duplicate data to ensure infinite loop functions seamlessly on all screen sizes
+export default function CaseStudiesList({
+  onSelectStudy,
+}: CaseStudiesListProps) {
   const doubledCaseStudies = [...caseStudiesData, ...caseStudiesData];
 
   return (
-    <div className="overflow-hidden w-full reveal">
-      {/* CSS infinite scrolling marquee */}
+    <div
+      className="overflow-hidden w-full reveal"
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent 0%, black 2.5%, black 97.5%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0%, black 2.5%, black 97.5%, transparent 100%)",
+      }}
+    >
       <div className="animate-marquee flex gap-0">
         {doubledCaseStudies.map((study, index) => (
           <CaseStudyCard

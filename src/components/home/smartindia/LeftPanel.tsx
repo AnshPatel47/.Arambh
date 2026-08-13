@@ -1,6 +1,7 @@
 "use client";
 
 import { useScheduleCallModal } from "../../schedule-call/ScheduleCallContext";
+import SectionHeader from "@/components/SectionHeader"; 
 
 const STATS = [
   { value: "₹50 CR+", label: "FUNDING OPPORTUNITIES FACILITATED" },
@@ -14,19 +15,19 @@ export default function LeftPanel() {
   return (
     <div className="flex-shrink-0 w-full max-w-[396.32px] flex flex-col gap-10 items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0">
 
-      {/* Tag removed + heading + subtitle */}
-      <div className="w-full flex flex-col gap-3 items-center lg:items-start">
-        <h2 className="text-[32px] lg:text-[33px] font-semibold leading-[120%] tracking-[-0.02em] m-0">
-          <span className="text-[#131313]">Empowering</span>
-          <br />
-          <span className="text-[#C2943A]">Businesses Across India</span>
-        </h2>
-
-
-        <p className="text-[16px] leading-[1.6] text-[#666665] m-0 max-w-[340px] mx-auto lg:mx-0">
-          Growing our network of successful businesses, one state at a time.
-        </p>
-      </div>
+      {/* Reusable Section Header with exact match styling */}
+      <SectionHeader
+        align="left"
+        alignMobile="center"
+        title={
+          <>
+            <span className="text-[#131313]">Empowering </span>
+            <span className="text-[#C2943A] block lg:inline">Businesses Across India</span>
+          </>
+        }
+        description="Growing our network of successful businesses, one state at a time."
+        className="w-full"
+      />
 
       {/* Stat cards wrapped in one bordered container */}
       <div
