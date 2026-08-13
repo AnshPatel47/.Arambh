@@ -273,56 +273,56 @@ export default function CaseStudies() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
-     {/* ── 1. HERO SECTION ── */}
-<section className="relative overflow-hidden bg-[#120E07] text-white pt-36 sm:pt-40 md:pt-44 pb-20 sm:pb-24 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex flex-col justify-start ">
-  {/* Background Image Cover */}
-  <div
-    className="absolute inset-0 bg-cover bg-center z-0"
-    style={{ backgroundImage: "url('/assets/images/case_studies_hero.webp')" }}
-  />
+      {/* ── 1. HERO SECTION ── */}
+      <section className="relative overflow-hidden bg-[#120E07] text-white pt-44 pb-20 sm:pb-24 md:pb-32 px-6 sm:px-12 md:px-16 min-h-[560px] md:min-h-[560px] flex flex-col justify-start ">
+        {/* Background Image Cover */}
+        <div
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: "url('/assets/images/case_studies_hero.webp')" }}
+        />
 
-  {/* Dark Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
+        {/* Dark Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#120E07] via-[#120E07]/90 to-transparent z-10" />
 
-  <div className="max-w-[1440px] mx-auto w-full relative z-20">
-    {/* Breadcrumbs */}
-    <nav 
-      className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 sm:mb-8 uppercase txt-up" 
-      aria-label="Breadcrumb"
-    >
-      <a href="/" className="hover:text-white transition-colors">Home</a>
-      <ChevronRight className="w-3 h-3 text-zinc-500" />
-      <span className="text-zinc-400">Resources</span>
-      <ChevronRight className="w-3 h-3 text-zinc-500" />
-      <span className="text-white">Case Studies</span>
-    </nav>
+        <div className="max-w-[1440px] mx-auto w-full relative z-20">
+          {/* Breadcrumbs */}
+          <nav 
+            className= "flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 sm:mb-8 uppercase txt-up" 
+            aria-label="Breadcrumb"
+          >
+            <a href="/" className="hover:text-white transition-colors">Home</a>
+            <ChevronRight className="w-3 h-3 text-zinc-500" />
+            <span className="text-zinc-400">Resources</span>
+            <ChevronRight className="w-3 h-3 text-zinc-500" />
+            <span className="text-white">Case Studies</span>
+          </nav>
 
-    {/* Header Content */}
-    <div className="reveal max-w-2xl flex flex-col items-start text-left">
-      <h1 
-        className="text-[26px] xs:text-[30px] sm:text-[36px] md:text-[clamp(2rem,3.2vw,3.2rem)] leading-[1.2] md:leading-[1.05] tracking-[-0.04em] text-white mb-4 txt-up txt-delay-1"
-        style={{
-          fontFamily: "var(--font-dm), sans-serif",
-          fontWeight: 500,
-        }}
-      >
-        Accelerating Growth. <br />
-        <span className="text-[#C2943A]">
-          Real Startup Success.
-        </span>
-      </h1>
-      <p 
-        className="text-[14px] sm:text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
-        style={{
-          fontFamily: "var(--font-dm), sans-serif",
-          fontWeight: 400,
-        }}
-      >
-        Explore how we guide startups and MSMEs through company registration, secure critical government grants, maximize taxation exemptions, and manage compliance audits to turn innovative visions into structured enterprises.
-      </p>
-    </div>
-  </div>
-</section>
+          {/* Header Content */}
+          <div className="reveal max-w-2xl flex flex-col items-start text-left">
+            <h1 
+              className="text-[26px] xs:text-[30px] sm:text-[36px] md:text-[clamp(2rem,3.2vw,3.2rem)] leading-[1.2] md:leading-[1.05] tracking-[-0.04em] text-white mb-4 txt-up txt-delay-1"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 500,
+              }}
+            >
+              Accelerating Growth. <br />
+              <span className="text-[#C2943A]">
+                Real Startup Success.
+              </span>
+            </h1>
+            <p 
+              className="text-[14px] sm:text-[16px] leading-[1.6] text-zinc-300 max-w-xl txt-up txt-delay-2"
+              style={{
+                fontFamily: "var(--font-dm), sans-serif",
+                fontWeight: 400,
+              }}
+            >
+              Explore how we guide startups and MSMEs through company registration, secure critical government grants, maximize taxation exemptions, and manage compliance audits to turn innovative visions into structured enterprises.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ── 2. MAIN CASE STUDY WORKSPACE ── */}
       <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow">
@@ -464,6 +464,18 @@ export default function CaseStudies() {
                 </div>
               </>
             )}
+
+            {/* Load More Button now directly sits underneath the Case Study Cards Column */}
+            {hasMore && (
+              <div className="w-full border-t border-zinc-300 mt-8 sm:mt-10 pt-6 sm:pt-8 flex justify-center">
+                <button
+                  onClick={loadMore}
+                  className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-xs"
+                >
+                  Load More Case Studies <ArrowDown className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Right Sidebar Area */}
@@ -562,16 +574,6 @@ export default function CaseStudies() {
             </div>
           </div>
         
-        {hasMore && (
-          <div className="w-full border-t border-zinc-300 mt-12 pt-8 flex justify-center">
-            <button
-              onClick={loadMore}
-              className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-xs"
-            >
-              Load More Case Studies <ArrowDown className="w-4 h-4" />
-            </button>
-           </div>
-        )}
         </div>
       </section>
 
