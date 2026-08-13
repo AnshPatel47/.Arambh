@@ -230,35 +230,42 @@ export default function ContactUs() {
         </div>
       </section>
 
-      {/* ── 2. CARDS SECTION ── */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 pt-8">
-          {cards.map((card, idx) => (
-            <div
-              key={card.id}
-              className="rv-up relative bg-[#C2943A] text-white pt-16 pb-8 px-4 rounded-sm text-center shadow-xl flex flex-col items-center justify-between"
-              style={{ transitionDelay: `${idx * 100}ms` }}
-            >
-              {/* Floating Top Image */}
-              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg bg-gray-100">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Title */}
-              <h3 className="text-lg font-semibold mb-3 tracking-wide">
-                {card.title}
-              </h3>
-
-              {/* Card Content (Clean Static Inside) */}
-              <div className="w-full">{card.content}</div>
-            </div>
-          ))}
+     {/* ── 2. CARDS SECTION ── */}
+<section className="py-12 sm:py-20 bg-white">
+  {/* Container aligned with ContactForm */}
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 sm:gap-10 lg:gap-6 pt-10 sm:pt-12">
+    {cards.map((card, idx) => (
+      <div
+        key={card.id}
+        /* 
+          Fixed uniform height on mobile: h-[165px] 
+          Resets back to flex height on desktop: sm:h-auto sm:min-h-[220px]
+        */
+        className="rv-up relative bg-[#C2943A] text-white pt-10 pb-4 px-4 sm:pt-14 sm:pb-8 sm:px-5 rounded-2xl text-center shadow-lg flex flex-col items-center justify-between h-[165px] sm:h-auto sm:min-h-[220px]"
+        style={{ transitionDelay: `${idx * 100}ms` }}
+      >
+        {/* Floating Top Image */}
+        <div className="absolute -top-10 sm:-top-12 left-1/2 transform -translate-x-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
+          <img
+            src={card.image}
+            alt={card.title}
+            className="w-full h-full object-cover"
+          />
         </div>
-      </section>
+
+        {/* Title */}
+        <h3 className="text-lg sm:text-xl font-bold mb-1 tracking-tight text-white mt-1 sm:mt-0">
+          {card.title}
+        </h3>
+
+        {/* Card Content (Centered cleanly) */}
+        <div className="w-full text-amber-50 text-xs sm:text-sm leading-relaxed flex-1 flex flex-col items-center justify-center">
+          {card.content}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
       <ScrollToTopButton heroSectionId="hero-section" />
       <ContactForm />
