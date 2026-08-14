@@ -52,9 +52,24 @@ export default function DashboardClient({
     }
   }, [dbError]);
 
-  const handleLogout = () => {
-    router.push("/admin/login");
-  };
+  // (Cookie-based Logout)
+const handleLogout = async () => {
+  try {
+    // 1. Call API to clear the HTTP-only cookie
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    // 2. Clear any leftover user state if present
+    localStorage.removeItem("admin_user");
+
+    // 3. Redirect to login page
+    router.push("/login"); // or "/admin/login" depending on your route
+    router.refresh();
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
 
   const formatValue = (val: string | null | undefined) => {
     if (val === null || val === undefined || val.trim() === "") {

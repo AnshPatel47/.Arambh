@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/services";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"; 
+
+const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret_for_dev";
 
 export async function POST(req: Request) {
   try {
@@ -17,88 +20,104 @@ export async function POST(req: Request) {
     const cleanEmail = String(email).toLowerCase().trim();
     const cleanPassword = String(password).trim();
 
-    // 1. Direct Demo Admin Check (Fast path)
+    let authenticatedUser = null;
+
+    // 1. Demo Admin Check
     if (cleanEmail === "admin@admin.com" && cleanPassword === "admin123") {
-      return NextResponse.json({
-        success: true,
-        message: "Admin authentication successful",
-        user: {
-          id: "admin-id",
-          name: "System Admin",
-          email: "admin@admin.com",
-          role: "ADMIN",
-        },
-      });
+      authenticatedUser = {
+        id: "admin-id",
+        name: "System Admin",
+        email: "admin@admin.com",
+        role: "ADMIN",
+      };
     }
 
-    // 2. Direct Non-Admin Check for demo user accounts
-    if (cleanEmail.includes("user") || cleanPassword === "user123") {
-      return NextResponse.json(
-        { success: false, error: "You are not admin" },
-        { status: 403 }
-      );
-    }
-
-    // 3. Database User Lookup
-    let user = null;
-    try {
-      if (prisma && prisma.user) {
-        user = await prisma.user.findUnique({
-          where: { email: cleanEmail },
-        });
+    // 2. Database User Lookup
+    if (!authenticatedUser) {
+      let user = null;
+      try {
+        if (prisma && prisma.user) {
+          user = await prisma.user.findUnique({
+            where: { email: cleanEmail },
+          });
+        }
+      } catch (dbError) {
+        console.warn("DB query error:", dbError);
       }
-    } catch (dbError) {
-      console.warn("DB user query warning:", dbError);
-    }
 
-    if (!user) {
-      return NextResponse.json(
-        { success: false, error: "Invalid credentials" },
-        { status: 401 }
-      );
-    }
+      if (!user) {
+        return NextResponse.json(
+          { success: false, error: "Invalid credentials" },
+          { status: 401 }
+        );
+      }
 
-    // 4. Role Verification: Must be ADMIN
-    const userRoleStr = String(user.role || "").toUpperCase();
-    if (userRoleStr !== "ADMIN") {
-      return NextResponse.json(
-        { success: false, error: "You are not admin" },
-        { status: 403 }
-      );
-    }
+      const userRoleStr = String(user.role || "").toUpperCase();
+      if (userRoleStr !== "ADMIN") {
+        return NextResponse.json(
+          { success: false, error: "You are not admin" },
+          { status: 403 }
+        );
+      }
 
-    // 5. Password Verification
-    let isValidPassword = false;
-    try {
-      if (user.password && user.password.startsWith("$2")) {
-        isValidPassword = await bcrypt.compare(cleanPassword, user.password);
-      } else {
+      let isValidPassword = false;
+      try {
+        if (user.password && user.password.startsWith("$2")) {
+          isValidPassword = await bcrypt.compare(cleanPassword, user.password);
+        } else {
+          isValidPassword = user.password === cleanPassword;
+        }
+      } catch (e) {
         isValidPassword = user.password === cleanPassword;
       }
-    } catch (e) {
-      isValidPassword = user.password === cleanPassword;
-    }
 
-    if (!isValidPassword) {
-      return NextResponse.json(
-        { success: false, error: "Invalid credentials" },
-        { status: 401 }
-      );
-    }
+      if (!isValidPassword) {
+        return NextResponse.json(
+          { success: false, error: "Invalid credentials" },
+          { status: 401 }
+        );
+      }
 
-    return NextResponse.json({
-      success: true,
-      user: {
+      authenticatedUser = {
         id: user.id,
         name: user.name || "Admin User",
         email: user.email,
         role: user.role,
+      };
+    }
+
+    // 🔑 3. Generate Real JWT Payload
+    const token = jwt.sign(
+      {
+        id: authenticatedUser.id,
+        email: authenticatedUser.email,
+        role: authenticatedUser.role,
       },
+      JWT_SECRET,
+      { expiresIn: "7d" } // Token expires in 7 days
+    );
+
+    const response = NextResponse.json({
+      success: true,
+      message: "Admin authentication successful",
+      user: authenticatedUser,
     });
+
+    // 🔐 4. Store Real JWT inside HTTP-Only Cookie
+    response.cookies.set("admin_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return response;
+
   } catch (error) {
     console.error("Login API Error:", error);
     return NextResponse.json(
-      { success: false, error: "Authentication server error. Please try again." },
+      { success: false, error: "Authentication server error." },
       { status: 500 }
     );
   }
