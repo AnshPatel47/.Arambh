@@ -7,6 +7,7 @@ import {
   Search,
   X,
   ArrowRight,
+  CheckCircle2,
   ChevronRight,
   Info,
   Clock,
