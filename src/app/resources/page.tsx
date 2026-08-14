@@ -5,6 +5,7 @@ import {
   Search,
   X,
   ArrowRight,
+  CheckCircle2,
   ChevronRight,
   Globe,
   TrendingUp,
@@ -153,6 +154,7 @@ export default function ResourcesBlogPage() {
   const [visibleCount, setVisibleCount] = useState(4);
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
 
   // Reference directly targeting the Cards Container Grid
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -300,11 +302,11 @@ export default function ResourcesBlogPage() {
       {/* ── 2. MAIN CONTENT SECTION ── */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow font-sans">
         {/* Section Title */}
-        <div className="reveal w-full mb-6">
+        {/* <div className="reveal w-full mb-6">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300 txt-up">
             All Articles
           </h2>
-        </div>
+        </div> */}
 
         {/* Search Bar */}
         <div className="relative w-full mb-4 txt-up txt-delay-1">
@@ -435,12 +437,12 @@ export default function ResourcesBlogPage() {
                           <span className="text-xs text-zinc-900 font-medium flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5 text-zinc-900" /> {post.readTime}
                           </span>
-                          <a
-                            href={`/resources/blogs/${post.id}`}
+                          <button
+                            onClick={() => setSelectedBlog(post)}
                             className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border border-[#BD8E32] text-[#BD8E32] hover:bg-[#BD8E32] hover:text-white transition-all duration-200 cursor-pointer"
                           >
                             Read Article <ArrowRight className="w-3.5 h-3.5" />
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -476,6 +478,10 @@ export default function ResourcesBlogPage() {
                   {popularPosts.map((pop, idx) => (
                     <div
                       key={pop.id}
+                      onClick={() => {
+                        const found = blogPostsData.find((c) => c.id === pop.id);
+                        if (found) setSelectedBlog(found);
+                      }}
                       className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
                     >
                       <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-1">
@@ -637,9 +643,124 @@ export default function ResourcesBlogPage() {
           </div>
         </div>
       </section>
-      <section id="hero-section" className="hidden"></section>
-      <ScrollToTopButton heroSectionId="hero-section" />
-      <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
+
+      {selectedBlog && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity">
+
+    {/* Modal Card Container */}
+    <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-900/50 max-h-[85vh] mt-12">
+
+      {/* Header Image Band */}
+      <div className="relative w-full h-[250px] sm:h-[220px] bg-neutral-100 flex-shrink-0">
+        <img
+          src={selectedBlog.image}
+          alt={selectedBlog.title}
+          className="object-cover w-full h-full"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+        {/* Close Button */}
+        <button
+          onClick={() => setSelectedBlog(null)}
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/20 text-white hover:bg-white hover:text-black p-1.5 sm:p-2 rounded-full backdrop-blur-sm transition-all focus:outline-none z-10"
+          aria-label="Close modal"
+        >
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+
+        {/* Header Content */}
+        <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 pr-10 sm:pr-6 text-white">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[#BD8E32] font-semibold text-xs sm:text-sm uppercase tracking-wider mb-1 sm:mb-2">
+            <span>{selectedBlog.category}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32] text-[8px] sm:text-[12px]" />
+            {/* <span className="text-zinc-300 text-DM sanstext-[8px] sm:text-[12px]">{selectedBlog.readTime} read</span> */}
+            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
+            <span className="text-zinc-300 text-[10px] sm:text-[12px] text-DM sans">{selectedBlog.date}</span>
+          </div>
+          <h3 className="text-[12px] sm:text-[22px] text-DM sans font-semibold tracking-tight line-clamp-2">
+            {selectedBlog.title}
+          </h3>
+        </div>
+      </div>
+
+      {/* Scrollable Blog Body */}
+      <div className="p-4 sm:p-6 overflow-y-auto space-y-5 sm:space-y-6 text-neutral-800">
+
+        {/* Author / Meta Strip */}
+        <div className="flex items-center justify-between pb-3 border-b border-zinc-300">
+          <div className="flex items-center gap-3">
+            {selectedBlog.author.avatar ? (
+              <img
+                src={selectedBlog.author.avatar}
+                alt={selectedBlog.author.name}
+                className="w-9 h-9 rounded-full object-cover border border-zinc-300"
+              />
+            ) : (
+              <div className="w-9 h-9 rounded-full bg-[#BD8E32]/20 text-[#BD8E32] font-bold flex items-center justify-center text-sm">
+                {selectedBlog.author.name?.charAt(0)}
+              </div>
+            )}
+            <div>
+              <p className="text-xs sm:text-sm font-semibold text-zinc-900 leading-tight">
+                {selectedBlog.author.name}
+              </p>
+              <p className="text-[13px] text-zinc-700">{selectedBlog.author.role || "Author"}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Key Takeaways / TL;DR Box */}
+        {selectedBlog.title && (
+          <div className="bg-[#F6F4F0] border-l-4 border-[#BD8E32] p-3.5 sm:p-4 rounded-r-xl flex items-start gap-3 sm:gap-4">
+            <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 flex-shrink-0" /> 
+              <h4 className="font-bold uppercase tracking-wider text-DM sans text-[10px] sm:text-[14px] text-[#764A04] mt-1">
+                title
+              </h4>
+              <p className="font-[12px] text-zinc-900 text-DM sans text-xs mt-1 leading-relaxed">
+                {selectedBlog.title}
+              </p>
+            </div>
+           
+        )}
+
+        {/* Blog Article Content */}
+        <div className="space-y-4 text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
+          {/* Main excerpt / content */}
+          <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
+               content
+          </h4>
+          {selectedBlog.content && (
+            <p className="text-zinc-900 tDM sans border-zinc-300">
+              {selectedBlog.content}
+            </p>
+          )}
+
+          {/* Body content */}
+          <div className="space-y-3">
+            <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
+              Article Overview
+            </h4>
+            <p>{selectedBlog.excerpt}</p>
+          </div>
+        </div>
+
+        {/* category Section */}
+        {/* {selectedBlog?.category && (
+           <span className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-neutral-100 text-zinc-900 border border-zinc-400 mt-3">
+               #{selectedBlog.category}
+            </span>
+         )} */}
+
+      </div>
+
+    </div>
+  </div>
+)}
+ <section id="hero-section" className="hidden"></section>
+  <ScrollToTopButton heroSectionId="hero-section" />
+  <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
     </div>
   );
 }

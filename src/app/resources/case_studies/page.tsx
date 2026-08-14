@@ -328,11 +328,11 @@ export default function CaseStudies() {
       <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow">
 
         {/* Section Title & Horizontal Line */}
-        <div className="reveal w-full mb-4 sm:mb-6">
+        {/* <div className="reveal w-full mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300">
             All Case Studies
           </h2>
-        </div>
+        </div> */}
 
         {/* Search Bar - Full width pill shaped input */}
         <div className="relative w-full mb-4">
@@ -566,7 +566,7 @@ export default function CaseStudies() {
                   <a href="/services/funding" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
                     <span>Funding Support</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
                   </a>
-                  <a href="/services/compliance" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-sm font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
+                  <a href="/services/compliance" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
                     <span>Compliance & Audit</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
                   </a>
                 </div>
@@ -642,10 +642,10 @@ export default function CaseStudies() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity">
 
           {/* Modal Card container */}
-          <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-900/50 max-h-[90vh]">
+          <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-900/50 max-h-[85vh] mt-12">
 
             {/* Header image band */}
-            <div className="relative w-full h-[180px] sm:h-[200px] bg-neutral-100 flex-shrink-0">
+            <div className="relative w-full h-[250px] sm:h-[200px] bg-neutral-100 flex-shrink-0">
               <img
                 src={selectedCaseStudy.image}
                 alt={selectedCaseStudy.title}
@@ -661,13 +661,13 @@ export default function CaseStudies() {
                 <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
-              <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 pr-10 sm:pr-6 text-white">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[#BD8E32] font-semibold text-xl text-DM sans mb-1 sm:mb-2">
+              <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 pr-10 sm:pr-6 text-white text-[18px] text-DM sans">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[#BD8E32] font-semibold text-[18px] text-DM sans mb-1 sm:mb-2">
                   <span>{selectedCaseStudy.category}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
                   <span>{selectedCaseStudy.location}</span>
                 </div>
-                <h3 className="text-lg sm:text-2xl font-bold tracking-tight line-clamp-2 sm:line-clamp-none">
+                <h3 className="text-s sm:text-2xl font-semibold tracking-tight line-clamp-2 sm:line-clamp-none">
                   {selectedCaseStudy.title}
                 </h3>
               </div>
@@ -690,7 +690,7 @@ export default function CaseStudies() {
                 <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Challenge
                 </h4>
-                <p className="text-xs sm:text-base text-zinc-700 leading-relaxed font-sans">
+                <p className="text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
                   {selectedCaseStudy.challenge}
                 </p>
               </div>
@@ -700,7 +700,7 @@ export default function CaseStudies() {
                 <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Solution
                 </h4>
-                <p className="text-xs sm:text-base text-zinc-700 leading-relaxed font-sans">
+                <p className="text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
                   {selectedCaseStudy.solution}
                 </p>
               </div>
@@ -710,21 +710,11 @@ export default function CaseStudies() {
                 <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Outcome
                 </h4>
-                <p className="text-xs text-DM sans text-zinc-900 leading-relaxed font-sans">
+                <p className="text-xs sm:text-base text-DM sans text-zinc-900 leading-relaxed font-sans">
                   {selectedCaseStudy.result}
                 </p>
               </div>
 
-            </div>
-
-            {/* Footer close button */}
-            <div className="p-3 sm:p-4 border-t border-zinc-100 flex justify-end bg-zinc-900 flex-shrink-0">
-              <button
-                onClick={() => setSelectedCaseStudy(null)}
-                className="px-4 sm:px-5 py-1.5 sm:py-2 bg-black hover:bg-zinc-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
-              >
-                Close Story
-              </button>
             </div>
           </div>        
         </div>
