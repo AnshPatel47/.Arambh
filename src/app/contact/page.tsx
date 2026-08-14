@@ -10,6 +10,7 @@ import {
   FaLinkedinIn,
   FaGooglePlusG,
   FaPinterestP,
+  FaInstagram,
 } from "react-icons/fa";
 
 export default function ContactUs() {
@@ -61,7 +62,7 @@ export default function ContactUs() {
             Contact with social networks
           </p>
           <div className="flex items-center space-x-2">
-            <a
+            {/* <a
               href="#"
               className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
               aria-label="Facebook"
@@ -74,15 +75,25 @@ export default function ContactUs() {
               aria-label="Twitter"
             >
               <FaTwitter />
-            </a>
+            </a> */}
             <a
-              href="#"
+              href="https://www.linkedin.com/company/aramabh-services-llp/posts/?feedView=all"
+              target="_blank"
               className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
               aria-label="LinkedIn"
             >
               <FaLinkedinIn />
             </a>
             <a
+               href="https://www.instagram.com/arambh_services?igsh=MW1iYjQ2cTVkM2Riag%3D%3D&igsi=MW1iYjQ2cTVkM2Riag%3D%3D&utm_source=qr"
+               target="_blank"
+               rel="noopener noreferrer"
+               className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
+               aria-label="Instagram"
+             >
+             <FaInstagram />
+            </a>
+            {/* <a
               href="#"
               className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
               aria-label="Google Plus"
@@ -95,7 +106,7 @@ export default function ContactUs() {
               aria-label="Pinterest"
             >
               <FaPinterestP />
-            </a>
+            </a> */}
           </div>
         </div>
       ),
@@ -233,7 +244,7 @@ export default function ContactUs() {
      {/* ── 2. CARDS SECTION ── */}
 <section className="py-12 sm:py-20 bg-white">
   {/* Container aligned with ContactForm */}
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 sm:gap-10 lg:gap-6 pt-10 sm:pt-12">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 sm:gap-16 lg:gap-6 pt-6 sm:pt-12">
     {cards.map((card, idx) => (
       <div
         key={card.id}
@@ -245,7 +256,7 @@ export default function ContactUs() {
         style={{ transitionDelay: `${idx * 100}ms` }}
       >
         {/* Floating Top Image */}
-        <div className="absolute -top-10 sm:-top-12 left-1/2 transform -translate-x-1/2 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
+        <div className="absolute -top-10 sm:-top-12 left-1/2 transform -translate-x-1/2 w-20 h-20 sm:w-28 sm:h-28 rounded-full border-4 border-white overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
           <img
             src={card.image}
             alt={card.title}
@@ -254,7 +265,7 @@ export default function ContactUs() {
         </div>
 
         {/* Title */}
-        <h3 className="text-lg sm:text-xl font-bold mb-1 tracking-tight text-white mt-1 sm:mt-0">
+        <h3 className="text-lg sm:text-xl font-bold mb-1 tracking-tight text-white mt-1 sm:mt-3">
           {card.title}
         </h3>
 
@@ -266,9 +277,8 @@ export default function ContactUs() {
     ))}
   </div>
 </section>
-
-      <ScrollToTopButton heroSectionId="hero-section" />
-      <ContactForm />
-    </div>
+  <ScrollToTopButton heroSectionId="hero-section" />
+  <ContactForm />
+</div>
   );
 }
