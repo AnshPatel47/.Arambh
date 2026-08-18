@@ -4,6 +4,12 @@ import React ,{useState} from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import logo1 from "../../../public/assets/images/logo1.png";
+import Link from "next/link";
+
+interface DynamicServiceLinkProps {
+  slug: string;
+  title: string;
+}
 
 const PAGE_BACKGROUND_MAP: Record<string, string> = {
   "/": "#FBF7EE",         // Home page bottom color
@@ -16,8 +22,12 @@ const PAGE_BACKGROUND_MAP: Record<string, string> = {
 
 
 export default function Footer() {
+<<<<<<< HEAD
   const pathname = usePathname();
     const [email, setEmail] = useState("");
+=======
+  const [email, setEmail] = useState("");
+>>>>>>> 39494f8 (new changes)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
@@ -114,13 +124,13 @@ export default function Footer() {
               <button 
                 type="submit"
                 disabled ={isSubmitting}
-                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 cursor-pointer shrink-0"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 cursor-pointer shrink-0"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
               <a
                 href="tel:+918866556327"
-                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 whitespace-nowrap active:scale-95 shrink-0"
+                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 shrink-0"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#C2943A]">
                  <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
@@ -158,7 +168,7 @@ export default function Footer() {
           <div className="w-full max-w-[1280px] mx-auto flex flex-col lg:flex-row justify-between pt-[40px] px-8 lg:px-0 pb-[16px] gap-12 lg:gap-0">
 
             {/* Col 1: Arambh Advisory Logo & Description */}
-            <div className="flex flex-col gap-6 w-full lg:w-[368px] text-left">
+            <div className="flex flex-col gap-6 w-full lg:w-[368px] text-left text-base">
               <div className="flex items-center gap-3">
                 <div className="text-white flex items-center">
                   <img
@@ -197,60 +207,93 @@ export default function Footer() {
             </div>
 
             {/* Col 2 & 3: Quick Links & Services */}
-            <div className="flex flex-row gap-[48px] w-[300px] lg:w-[386px] text-left">
+            <div className="flex flex-row gap-4 sm:gap-6 lg:gap-[48px] w-full max-w-[386px] text-left text-base">
               <div className="flex flex-col gap-5 w-1/2">
                 <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Quick Links</h3>
                 <ul className="flex flex-col gap-3 text-DM sans text-[14px] font-medium text-zinc-300">
                   <li><a href="/about" className="hover:text-amber-400 transition-colors">About Us</a></li>
-                  <li><a href="/schemes" className="hover:text-amber-400 transition-colors">Government Schemes</a></li>
-                  <li><a href="/blog" className="hover:text-amber-400 transition-colors">Blog</a></li>
-                  <li><a href="/faqs" className="hover:text-amber-400 transition-colors">FAQs</a></li>
+                  <li><a href="/" className="hover:text-amber-400 transition-colors">Government Schemes</a></li>
+                  <li><a href="/resources/blogs" className="hover:text-amber-400 transition-colors">Blog</a></li>
+                  <li><a href="/" className="hover:text-amber-400 transition-colors">FAQs</a></li>
                   <li><a href="/contact" className="hover:text-amber-400 transition-colors">Contact</a></li>
                 </ul>
               </div>
-              <div className="flex flex-col gap-5 w-1/2">
+              <div className="flex flex-col gap-5 w-1/2 ">
                 <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Services</h3>
-                <ul className="flex flex-col gap-3 text-DM sans text-[14px] font-medium text-zinc-300 whitespace-nowrap">
-                  <li><a href="/services/startup" className="hover:text-amber-400 transition-colors">Startup Registration</a></li>
-                  <li><a href="/services/dpiit" className="hover:text-amber-400 transition-colors">DPIIT Recognition</a></li>
-                  <li><a href="/services/msme" className="hover:text-amber-400 transition-colors">MSME Registration</a></li>
-                  <li><a href="/services/funding" className="hover:text-amber-400 transition-colors">Government Funding Support</a></li>
-                  <li><a href="/services/consulting" className="hover:text-amber-400 transition-colors">Business Consulting</a></li>
-                  <li><a href="/services/compliance" className="hover:text-amber-400 transition-colors">Compliance & Advisory</a></li>
+                <ul className="flex flex-col gap-3 text-DM sans text-[14px] font-medium text-zinc-300">
+                  <li><a href="/services/business-registration" className="hover:text-amber-400 transition-colors">Startup Registration</a></li>
+                  <li><a href="/services/dpiit-recognition" className="hover:text-amber-400 transition-colors">DPIIT Recognition</a></li>
+                  <li><a href="/services/msme-registration" className="hover:text-amber-400 transition-colors">MSME Registration</a></li>
+                  <li><a href="/services/government-funding" className="hover:text-amber-400 transition-colors">Government Funding Support</a></li>
+                  <li><a href="/services/business-consulting" className="hover:text-amber-400 transition-colors">Business Consulting</a></li>
+                  <li><a href="/services/compliance-regulatory-support" className="hover:text-amber-400 transition-colors">Compliance & Advisory</a></li>
                 </ul>
               </div>
             </div>
 
             {/* Col 4: Reach Out */}
-            <div className="flex flex-col gap-[20px] w-full lg:w-[236px] text-left">
-              <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Reach Out</h3>
-              <div className="flex flex-col gap-4 text-DM sans">
-                <div className="flex items-center gap-4 text-[14px]">
-                  <span className="text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z" /></svg>
-                  </span>
-                  <span className="font-medium text-white">+91 88665 56327</span>
-                </div>
-                <div className="flex items-center gap-4 text-[14px]">
-                  <span className="text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
-                  </span>
-                  <span className="font-medium text-white">info@arambhservices.com</span>
-                </div>
-                <div className="flex items-start gap-4 text-[14px]">
-                  <span className="text-white mt-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" /></svg>
-                  </span>
-                  <div className="flex flex-col text-DM sans">
-                    <span className="font-medium text-white">Ahmedabad, Gujarat, India</span>
-                    <span className="text-white/80 text-[12px] mt-0.5">Mon – Sat, 9:30 AM – 6:30 PM</span>
-                  </div>
-                </div>
-              </div>
+          <div className="flex flex-col gap-[20px] w-full lg:w-[236px] text-left text-base">
+            <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Reach Out</h3>
+            <div className="flex flex-col gap-4 text-DM sans">
+               <a
+                 href="tel:+918866556327"
+                 className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
+                 >
+                 <span className="text-white">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z" />
+                 </svg>
+                 </span>
+                 <span className="font-medium text-white hover:text-[#BD8E32] transition-colors">
+                 +91 88665 56327
+                 </span>
+                 </a>
+                 <a href="mailto:contact@arambhadvisory.com"
+                    className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
+                   >
+                   <span className="text-white">
+                    <svg 
+                     xmlns="http://www.w3.org/2000/svg" 
+                     fill="none" 
+                     viewBox="0 0 24 24" 
+                     strokeWidth={1.5} 
+                     stroke="currentColor" 
+                     className="w-5 h-5"
+                     >
+                     <path strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" 
+                     />
+                   </svg>
+                   </span>
+                    <span className="font-medium text-white hover:text-[#BD8E32] transition-colors whitespace-normal break-all lg:break-normal">
+                        @arambhadvisory.com
+                    </span>
+                  </a>   
+                   <a
+                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Ahmedabad, Gujarat, India")}`}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="flex items-start gap-4 text-[14px] group cursor-pointer"
+                    >
+                      <span className="text-white mt-0.5 group-hover:text-[#BD8E32] transition-colors">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
+                         </svg>
+                      </span>
+                       <div className="flex flex-col font-sans">
+                           <span className="font-medium text-white group-hover:text-[#BD8E32] transition-colors">
+                           Ahmedabad, Gujarat, India
+                           </span>
+                           <span className="text-white/80 text-[12px] mt-0.5">
+                            Mon – Sat, 9:30 AM – 6:30 PM
+                          </span>
+                       </div>
+                 </a>                 
             </div>
-
+           </div>
           </div>
-
           {/* BOTTOM PART (Parent container MUST have overflow-hidden & relative) */}
           <div className="relative px-8 lg:px-0 pt-12 pb-10 w-full max-w-[1280px] mx-auto min-h-[340px] overflow-hidden">
 
@@ -265,8 +308,9 @@ export default function Footer() {
               <div>
                 <a
                   href="tel:+918866556327"
-                  className="px-7 py-3.5 rounded-lg font-DM sans bg-white/20 text-white font-medium backdrop-blur-sm shadow-[0px_0px_10px_0px_#FFFFFF90_inset,0px_0px_4px_0px_#FFFFFF90] inline-block hover:bg-white/30 transition-all"
-                >
+                  // className="px-[clamp(16px,2vw,36px)] py-[clamp(8px,1vw,12px)]"
+                  className="py-[clamp(8px,1vw,12px)] px-[clamp(16px,2vw,28px)] break-words rounded-lg font-DM sans bg-white/20 text-white font-medium backdrop-blur-sm shadow-[0px_0px_10px_0px_#FFFFFF90_inset,0px_0px_4px_0px_#FFFFFF90] inline-block hover:bg-white/30 transition-all"
+                > 
                   Schedule a Call
                 </a>
               </div>            

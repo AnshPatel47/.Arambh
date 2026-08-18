@@ -35,7 +35,7 @@ export default function ContactUs() {
       image:
         "https://images.unsplash.com/photo-1587560699334-bea93391dcef?auto=format&fit=crop&q=80&w=300",
       content: (
-        <div className="text-m font-DM sans text-gray-100 space-y-1">
+        <div className="text-m font-DM sans text-gray-100 space-y-1 whitespace-normal break-all lg:break-normal">
           <p>info@arambhservices.com</p>
         </div>
       ),
@@ -62,20 +62,6 @@ export default function ContactUs() {
             Contact with social networks
           </p>
           <div className="flex items-center space-x-2">
-            {/* <a
-              href="#"
-              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
-              aria-label="Facebook"
-            >
-              <FaFacebookF />
-            </a>
-            <a
-              href="#"
-              className="w-7 h-7 rounded-full border border-zinc-100 text-zinc-100 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-colors text-xs"
-              aria-label="Twitter"
-            >
-              <FaTwitter />
-            </a> */}
             <a
               href="https://www.linkedin.com/company/aramabh-services-llp/posts/?feedView=all"
               target="_blank"
@@ -221,7 +207,7 @@ export default function ContactUs() {
           <div className="mt-8 txt-up txt-delay-3">
             <a
               href="tel:+918866556327"
-              className="group flex items-center gap-3 bg-[#C2943A] hover:bg-[#a67c29] text-white px-8 py-3.5 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 text-DM sans"
+              className="group flex items-center gap-3 bg-[#C2943A] hover:bg-[#a67c29] text-white py-[clamp(8px,1vw,12px)] px-[clamp(16px,2vw,28px)] rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 text-DM sans"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

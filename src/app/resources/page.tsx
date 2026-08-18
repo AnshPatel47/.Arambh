@@ -17,6 +17,10 @@ import {
 import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
 import PageHeroHeader from "@/components/PageHeroHeader"; 
 import '@/app/globals.css';
+import Interservices from "../components/blog&case_study/Innerservices";
+import { NewsletterCard } from "@/app/components/blog&case_study/Rightsidecards";
+import LoadMorePagination from "@/app/components/blog&case_study/loadmore";
+import BlogDetailModal from "../components/blog&case_study/BlogDetail";
 
 // Interface for Blog Post Structure
 interface BlogPost {
@@ -155,6 +159,16 @@ export default function ResourcesBlogPage() {
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
+   const [loading, setLoading] = useState(false);
+    // const [handleLoadMore, sethandleLoadMore] = useState(false);
+  
+    const handleLoadMore = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setVisibleCount((prev) => prev + 4);
+      setLoading(false);
+    }, 300);
+  };
 
   // Reference directly targeting the Cards Container Grid
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -358,7 +372,6 @@ export default function ResourcesBlogPage() {
 
         {/* MAIN GRID + SIDEBAR LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-16 lg:gap-18 xl:gap-20 items-start">
-          
           {/* Main Grid Column - Targeted for Auto Scroll */}
           <div ref={cardsContainerRef} className="w-full flex flex-col">
             {filteredPosts.length === 0 ? (
@@ -379,6 +392,7 @@ export default function ResourcesBlogPage() {
                 </button>
               </div>
             ) : (
+
               <>
                 {/* 2-Column Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -448,319 +462,82 @@ export default function ResourcesBlogPage() {
                     </div>
                   ))}
                 </div>
-
-                {/* Mobile-Only Pagination (Renders immediately after category cards) */}
-                {hasMore && (
-                  <div className="w-full border-t border-zinc-300 mt-8 pt-6 flex justify-center lg:hidden">
-                    <button
-                      onClick={loadMore}
-                      className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
-                    >
-                      Load More Articles <ArrowDown className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
               </>
-            )}
+            )}             
           </div>
-
+          {/* Load More Pagination - Mobile */}
+               <div className="block lg:hidden">
+                   <LoadMorePagination
+                    hasMore={hasMore}
+                    onLoadMore={handleLoadMore}
+                    isLoading={loading}
+                    />
+               </div>
           {/* Right Sidebar Area */}
-          <div className="w-full lg:max-w-[320px] flex flex-col gap-5">
-            <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
-              {/* 1. Most Read Box */}
-              <div className="rv-up bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs relative">
-                <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
-                    Most Read
-                  </h3>
-                </div>
-                <div className="flex flex-col">
-                  {popularPosts.map((pop, idx) => (
-                    <div
-                      key={pop.id}
-                      onClick={() => {
-                        const found = blogPostsData.find((c) => c.id === pop.id);
-                        if (found) setSelectedBlog(found);
-                      }}
-                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
-                    >
-                      <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-1">
-                        0{idx + 1}
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-bold text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-4">
-                          {pop.title}
-                        </h4>
-                        <span className="text-[13px] font-medium text-zinc-900">
-                          {pop.readTime} • {pop.category}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 2. Monthly Insights Newsletter */}
-              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs relative overflow-hidden mb-3">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
-                <h3 className="text-xl font-bold text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
-                <p className="text-[14px] text-zinc-900 mt-1 leading-relaxed mb-3">
-                  Receive curated articles on regulatory mandates, government schemes, and financial planning for Indian startups.
-                </p>
-                <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
-                  <input
-                    type="email"
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-300 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    disabled={emailStatus === "sending"}
-                    className="w-full bg-[#BD8E32] hover:bg-[#764A04] text-white py-2 rounded-lg font-semibold text-xs transition-all cursor-pointer"
-                  >
-                    {emailStatus === "sending" ? "Subscribing..." : "Subscribe Now"}
-                  </button>
-                </form>
-                {emailStatus === "success" && (
-                  <p className="text-[#BD8E32] text-xs font-semibold text-center mt-2">
-                    Thank you! You have subscribed successfully.
-                  </p>
-                )}
-              </div>
-
-              {/* 3. Core Offerings Links */}
-              <div className="rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs">
-                <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
-                  Core Offerings
+          <aside className="lg:sticky lg:top-28 lg:self-start">
+            
+            {/* 1. Most Read Box (Scrolls away naturally as you scroll down) */}
+            <div className="rv-up w-full bg-white border overflow-hidden border-zinc-300 rounded-[16px] shadow-xs">
+              <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
+                  Most Read
                 </h3>
-                <div className="flex flex-col gap-0.5">
-                  <a href="/services/startup" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-800 hover:text-[#C2943A] transition-all">
-                    <span>Startup Registration</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/dpiit" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-800 hover:text-[#C2943A] transition-all">
-                    <span>DPIIT Recognition</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/msme" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-800 hover:text-[#C2943A] transition-all">
-                    <span>MSME Registration</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/funding" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-800 hover:text-[#C2943A] transition-all">
-                    <span>Funding Support</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/compliance" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-800 hover:text-[#C2943A] transition-all">
-                    <span>Compliance & Audit</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                </div>
+              </div>
+              <div className="flex flex-col">
+                {popularPosts.map((pop, idx) => (
+                  <div
+                    key={pop.id}
+                    onClick={() => {
+                      const found = blogPostsData.find((c) => c.id === pop.id);
+                      if (found) setSelectedBlog(found);
+                    }}
+                    className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
+                  >
+                    <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-1">
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-4">
+                        {pop.title}
+                      </h4>
+                      <span className="text-[13px] font-medium text-zinc-900">
+                        {pop.readTime} • {pop.category}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Desktop-Only Pagination (Hidden on mobile) */}
-        {hasMore && (
-          <div className="w-full border-t border-zinc-300 mt-12 pt-8 justify-center hidden lg:flex">
-            <button
-              onClick={loadMore}
-              className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
-            >
-              Load More Articles <ArrowDown className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-      </section>
+            {/* 2 & 3. Sticky Container: Only Monthly Insights + Core Offerings */}
+             <div className="lg:sticky lg:top-28 lg:self-start w-full overflow-hidden">
+              {/* <div className="flex flex-col gap-6"> */}
+              <NewsletterCard />
+              {/* </div> */}
+            </div>
+            </aside>
+         </div>
+
+         {/* Load More Pagination - Desktop */}
+            <div className="hidden lg:block">
+               <LoadMorePagination
+                hasMore={hasMore}
+                onLoadMore={handleLoadMore}
+                isLoading={loading}
+              />
+            </div>
+     </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <section className="bg-white pt-12 pb-6 sm:py-16 px-4 sm:px-6 md:px-8">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="reveal mb-10 text-left">
-            <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 txt-up">How We Can Help You Succeed</h2>
-            <p className="text-zinc-900 text-m mt-2 txt-up txt-delay-1">Explore the primary advisory solutions featured in the articles above.</p>
-            <div className="w-full border-t border-zinc-300 mt-7 pt-0 flex justify-center mb-2"></div>
-          </div>
+      <Interservices/>
+     <BlogDetailModal
+     post={selectedBlog}
+     onClose={() => setSelectedBlog(null)}
+     /> 
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* Card 1 */}
-            <div 
-              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
-              style={{ transitionDelay: "100ms" }}
-            >
-              <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
-                  <Globe className="w-5 h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Growth Engine</span>
-                <h4 className="text-lg font-bold text-zinc-900 mt-0 mb-2">DPIIT & Startup India</h4>
-                <p className="text-m text-zinc-900 leading-relaxed mb-3">
-                  Set up your business to secure major taxation exemptions, seed grants, intellectual property rebates, and self-compliance benefits.
-                </p>
-              </div>
-              <a href="/services/dpiit" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-300">
-                Explore DPIIT Benefits <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Card 2 */}
-            <div 
-              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
-              style={{ transitionDelay: "200ms" }}
-            >
-              <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
-                  <TrendingUp className="w-5 h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Financial Fuel</span>
-                <h4 className="text-lg font-bold text-zinc-900 mt-0 mb-2">Government Funding</h4>
-                <p className="text-m text-zinc-900 leading-relaxed mb-3">
-                  Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
-                </p>
-              </div>
-              <a href="/services/funding" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-300">
-                Explore Funding Options <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Card 3 */}
-            <div 
-              className="rv-up bg-white border border-zinc-300 p-8 rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 mb-0"
-              style={{ transitionDelay: "300ms" }}
-            >
-              <div>
-                <span className="w-10 h-10 rounded-xl bg-[#F6F4F0] text-[#C2943A] flex items-center justify-center mb-3">
-                  <FileText className="w-5 h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>
-                <h4 className="text-lg font-bold text-zinc-900 mt-0 mb-2">Corporate Advisory</h4>
-                <p className="text-m text-zinc-900 leading-relaxed mb-3">
-                  Maintain immaculate corporate logs, clean cap tables, monthly tax filings, and full regulatory conformity to stay investor-ready.
-                </p>
-              </div>
-              <a href="/services/compliance" className="flex items-center gap-2 text-m font-bold text-[#BD8E32] transition-colors pt-4 border-t border-zinc-300">
-                Explore Compliance Services <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {selectedBlog && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity">
-
-    {/* Modal Card Container */}
-    <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-900/50 max-h-[85vh] mt-12">
-
-      {/* Header Image Band */}
-      <div className="relative w-full h-[250px] sm:h-[220px] bg-neutral-100 flex-shrink-0">
-        <img
-          src={selectedBlog.image}
-          alt={selectedBlog.title}
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-
-        {/* Close Button */}
-        <button
-          onClick={() => setSelectedBlog(null)}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/20 text-white hover:bg-white hover:text-black p-1.5 sm:p-2 rounded-full backdrop-blur-sm transition-all focus:outline-none z-10"
-          aria-label="Close modal"
-        >
-          <X className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-
-        {/* Header Content */}
-        <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 pr-10 sm:pr-6 text-white">
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[#BD8E32] font-semibold text-xs sm:text-sm uppercase tracking-wider mb-1 sm:mb-2">
-            <span>{selectedBlog.category}</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32] text-[8px] sm:text-[12px]" />
-            {/* <span className="text-zinc-300 text-DM sanstext-[8px] sm:text-[12px]">{selectedBlog.readTime} read</span> */}
-            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
-            <span className="text-zinc-300 text-[10px] sm:text-[12px] text-DM sans">{selectedBlog.date}</span>
-          </div>
-          <h3 className="text-[12px] sm:text-[22px] text-DM sans font-semibold tracking-tight line-clamp-2">
-            {selectedBlog.title}
-          </h3>
-        </div>
-      </div>
-
-      {/* Scrollable Blog Body */}
-      <div className="p-4 sm:p-6 overflow-y-auto space-y-5 sm:space-y-6 text-neutral-800">
-
-        {/* Author / Meta Strip */}
-        <div className="flex items-center justify-between pb-3 border-b border-zinc-300">
-          <div className="flex items-center gap-3">
-            {selectedBlog.author.avatar ? (
-              <img
-                src={selectedBlog.author.avatar}
-                alt={selectedBlog.author.name}
-                className="w-9 h-9 rounded-full object-cover border border-zinc-300"
-              />
-            ) : (
-              <div className="w-9 h-9 rounded-full bg-[#BD8E32]/20 text-[#BD8E32] font-bold flex items-center justify-center text-sm">
-                {selectedBlog.author.name?.charAt(0)}
-              </div>
-            )}
-            <div>
-              <p className="text-xs sm:text-sm font-semibold text-zinc-900 leading-tight">
-                {selectedBlog.author.name}
-              </p>
-              <p className="text-[13px] text-zinc-700">{selectedBlog.author.role || "Author"}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Key Takeaways / TL;DR Box */}
-        {selectedBlog.title && (
-          <div className="bg-[#F6F4F0] border-l-4 border-[#BD8E32] p-3.5 sm:p-4 rounded-r-xl flex items-start gap-3 sm:gap-4">
-            <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 flex-shrink-0" /> 
-              <h4 className="font-bold uppercase tracking-wider text-DM sans text-[10px] sm:text-[14px] text-[#764A04] mt-1">
-                title
-              </h4>
-              <p className="font-[12px] text-zinc-900 text-DM sans text-xs mt-1 leading-relaxed">
-                {selectedBlog.title}
-              </p>
-            </div>
-           
-        )}
-
-        {/* Blog Article Content */}
-        <div className="space-y-4 text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
-          {/* Main excerpt / content */}
-          <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
-               content
-          </h4>
-          {selectedBlog.content && (
-            <p className="text-zinc-900 tDM sans border-zinc-300">
-              {selectedBlog.content}
-            </p>
-          )}
-
-          {/* Body content */}
-          <div className="space-y-3">
-            <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
-              Article Overview
-            </h4>
-            <p>{selectedBlog.excerpt}</p>
-          </div>
-        </div>
-
-        {/* category Section */}
-        {/* {selectedBlog?.category && (
-           <span className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-neutral-100 text-zinc-900 border border-zinc-400 mt-3">
-               #{selectedBlog.category}
-            </span>
-         )} */}
-
-      </div>
-
-    </div>
-  </div>
-)}
- <section id="hero-section" className="hidden"></section>
-  <ScrollToTopButton heroSectionId="hero-section" />
-  <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
+     <section id="hero-section" className="hidden"></section>
+      <ScrollToTopButton heroSectionId="hero-section" />
+      <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
     </div>
   );
 }

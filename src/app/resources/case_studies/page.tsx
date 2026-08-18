@@ -26,6 +26,10 @@ import {
 } from "lucide-react";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
 import '@/app/globals.css';
+import Interservices from "@/app/components/blog&case_study/Innerservices";
+import { NewsletterCard } from "@/app/components/blog&case_study/Rightsidecards";
+import LoadMorePagination from "@/app/components/blog&case_study/loadmore";
+import CaseStudyDetailModal from "@/app/components/blog&case_study/CasestudiesDetail";
 
 // Interface for Case Study Structure
 interface CaseStudy {
@@ -175,6 +179,16 @@ export default function CaseStudies() {
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
+  const [loading, setLoading] = useState(false);
+  // const [handleLoadMore, sethandleLoadMore] = useState(false);
+
+  const handleLoadMore = () => {
+  setLoading(true);
+  setTimeout(() => {
+    setVisibleCount((prev) => prev + 4);
+    setLoading(false);
+  }, 300);
+};
 
   // Reference directly targeting the Cards Container Grid for auto-scroll
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -205,7 +219,6 @@ export default function CaseStudies() {
     });
   }, [searchTerm, activeCategory]);
 
-  // Handle Category Filter Switch with Correct Header Offset & Auto-Scroll
   const handleCategoryChange = (cat: string) => {
     setActiveCategory(cat);
     setVisibleCount(4);
@@ -213,7 +226,7 @@ export default function CaseStudies() {
     // Scroll down to bring the Cards Grid into view below the fixed header
     setTimeout(() => {
       if (cardsContainerRef.current) {
-        // Offset accounts for sticky navbar height so category pills are fully visible
+        
         const yOffset = -80; 
         const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -221,7 +234,6 @@ export default function CaseStudies() {
     }, 50);
   };
 
-  // IntersectionObserver for Scroll-Reveal Animations
   useEffect(() => {
     const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
@@ -270,6 +282,7 @@ export default function CaseStudies() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
@@ -325,7 +338,7 @@ export default function CaseStudies() {
       </section>
 
       {/* ── 2. MAIN CASE STUDY WORKSPACE ── */}
-      <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow">
+      <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full">
 
         {/* Section Title & Horizontal Line */}
         {/* <div className="reveal w-full mb-4 sm:mb-6">
@@ -383,7 +396,7 @@ export default function CaseStudies() {
         </div>
 
         {/* MAIN GRID + SIDEBAR LAYOUT */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 lg:gap-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 lg:gap-14 xl:gap-20 items-start">
 
           {/* Main Grid Column - Targeted for Auto Scroll */}
           <div ref={cardsContainerRef} className="w-full flex flex-col">
@@ -462,29 +475,22 @@ export default function CaseStudies() {
                     </div>
                   ))}
                 </div>
-              </>
-            )}
-
-            {/* Load More Button now directly sits underneath the Case Study Cards Column */}
-            {hasMore && (
-              <div className="w-full border-t border-zinc-300 mt-8 sm:mt-10 pt-6 sm:pt-8 flex justify-center">
-                <button
-                  onClick={loadMore}
-                  className="px-9 py-3 rounded-full bg-white hover:border-[#BD8E32] hover:text-[#BD8E32] text-zinc-900 font-semibold text-sm border border-zinc-300 transition-all flex items-center gap-2 cursor-pointer shadow-xs"
-                >
-                  Load More Case Studies <ArrowDown className="w-4 h-4" />
-                </button>
-              </div>
+             </>            
             )}
           </div>
-
+          {/* Load More Pagination - Mobile */}
+                <div className="block lg:hidden">
+                    <LoadMorePagination
+                      hasMore={hasMore}
+                      onLoadMore={handleLoadMore}
+                      isLoading={loading}
+                     />
+               </div>
           {/* Right Sidebar Area */}
-          <div className="w-full lg:max-w-[320px] flex flex-col gap-5">
-
-            <div className="lg:sticky lg:top-8 flex flex-col gap-5 w-full relative">
+          <aside className="lg:sticky lg:top-28 lg:self-start">
 
               {/* 1. Most Read Box */}
-              <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs relative">
+              <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs">
                 <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
                   <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                     Most Read
@@ -498,7 +504,7 @@ export default function CaseStudies() {
                         const found = caseStudiesData.find((c) => c.id === pop.id);
                         if (found) setSelectedCaseStudy(found);
                       }}
-                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-3 hover:bg-zinc-50 transition-colors cursor-pointer"
+                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
                     >
                       <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-2">
                         0{idx + 1}
@@ -515,210 +521,30 @@ export default function CaseStudies() {
                   ))}
                 </div>
               </div>
+             {/* 2 & 3. Monthly Insights Newsletter */}
+             <div className="lg:sticky lg:top-28 lg:self-start w-full">
+             <NewsletterCard/>   
+             </div>        
+          </aside>
+        </div>
 
-              {/* 2. Monthly Insights Newsletter */}
-              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl" />
-
-                <h3 className="text-xl font-semibold text-DM sans text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">Monthly Insights</h3>
-                <p className="text-[15px] text-DM sans text-zinc-900 mt-1 leading-relaxed mb-3">
-                  Receive curated articles on regulatory mandates, government schemes, and financial planning for Indian startups.
-                </p>
-                <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
-                  <input
-                    type="email"
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    className="w-full bg-zinc-100 text-zinc-900 placeholder-zinc-400 py-2 px-3 rounded-lg border border-zinc-300 focus:outline-none focus:border-[#BD8E32] text-xs transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    disabled={emailStatus === "sending"}
-                    className="w-full bg-[#BD8E32] hover:bg-[#764A04] text-white py-2 rounded-lg font-semibold text-xs transition-all cursor-pointer"
-                  >
-                    {emailStatus === "sending" ? "Subscribing..." : "Subscribe Now"}
-                  </button>
-                </form>
-                {emailStatus === "success" && (
-                  <p className="text-[#BD8E32] text-xs font-semibold text-center mt-2">
-                    Thank you! You have subscribed successfully.
-                  </p>
-                )}
-              </div>
-
-              {/* 3. Core Offerings Links */}
-              <div className="rv-up w-full bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs">
-                <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
-                  Core Offerings
-                </h3>
-                <div className="flex flex-col gap-0.5">
-                  <a href="/services/startup" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
-                    <span>Startup Registration</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700 " />
-                  </a>
-                  <a href="/services/dpiit" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
-                    <span>DPIIT Recognition</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/msme" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
-                    <span>MSME Registration</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/funding" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
-                    <span>Funding Support</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                  <a href="/services/compliance" className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50 text-m font-medium text-zinc-900 hover:text-[#C2943A] transition-all">
-                    <span>Compliance & Audit</span> <ChevronRight className="w-3.5 h-3.5 text-zinc-700" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        
+        {/* Load More Pagination - Desktop */}
+        <div className="hidden lg:block">
+          <LoadMorePagination
+             hasMore={hasMore}
+             onLoadMore={handleLoadMore}
+             isLoading={loading}
+           />
         </div>
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <section className="bg-white py-10 sm:py-16 px-4 sm:px-12 md:px-8 ">
-        <div className="max-w-[1440px] mx-auto">
-          <div className="mb-6 sm:mb-10 text-left">
-            <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 mt-0">How We Can Help You Succeed</h2>
-            <p className="text-zinc-900 text-m text-DM sans mt-1 sm:mt-2">Explore the primary advisory solutions featured in the case studies above.</p>
-             <div className="w-full border-t border-zinc-300 mt-7 pt-0 flex justify-center mb-2"></div>
-          </div>
+      <Interservices/>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-0">
-            <div className="reveal bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
-              <div>
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Growth Engine</span>
-                <h4 className="text-DM sans text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-2">DPIIT & Startup India</h4>
-                <p className="text-DM sans text-m text-zinc-900 leading-relaxed mb-3">
-                  Set up your business to secure major taxation exemptions, seed grants, intellectual property rebates, and self-compliance benefits.
-                </p>
-              </div>
-              <a href="/services/dpiit" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
-                Explore DPIIT Benefits <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </a>
-            </div>
-
-            <div className="rv-up bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
-              <div>
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Financial Fuel</span>
-                <h4 className="text-DM sans sm:text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-2">Government Funding</h4>
-                <p className="text-m text-zinc-900 leading-relaxed mb-3">
-                  Navigate state seed funds, priority financing schemes, and interest subsidies with expert audits and optimized project proposals.
-                </p>
-              </div>
-              <a href="/services/funding" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
-                Explore Funding Options <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </a>
-            </div>
-
-            <div className="rv-up bg-white border border-zinc-300 p-5 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xs flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 mb-0">
-              <div>
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#F6F4F0] text-[#BD8E32] flex items-center justify-center mb-3">
-                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-bold text-[#BD8E32] uppercase tracking-widest mb-0">Operational Guard</span>
-                <h4 className="text-DM sans text-lg font-bold text-zinc-900 mt-1 sm:mt-0 mb-2">Corporate Advisory</h4>
-                <p className="text-DM sans text-m text-zinc-900 leading-relaxed mb-3">
-                  Maintain immaculate corporate logs, clean cap tables, monthly tax filings, and full regulatory conformity to stay investor-ready.
-                </p>
-              </div>
-              <a href="/services/compliance" className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#BD8E32] transition-colors pt-3 sm:pt-4 border-t border-zinc-300">
-                Explore Compliance Services <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {selectedCaseStudy && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity">
-
-          {/* Modal Card container */}
-          <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-900/50 max-h-[85vh] mt-12">
-
-            {/* Header image band */}
-            <div className="relative w-full h-[250px] sm:h-[200px] bg-neutral-100 flex-shrink-0">
-              <img
-                src={selectedCaseStudy.image}
-                alt={selectedCaseStudy.title}
-                className="object-cover w-full h-full"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-
-              <button
-                onClick={() => setSelectedCaseStudy(null)}
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/20 text-white hover:bg-white hover:text-black p-1.5 sm:p-2 rounded-full backdrop-blur-sm transition-all focus:outline-none z-10"
-                aria-label="Close"
-              >
-                <X className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-
-              <div className="absolute bottom-3 sm:bottom-4 left-4 sm:left-6 pr-10 sm:pr-6 text-white text-[18px] text-DM sans">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[#BD8E32] font-semibold text-[18px] text-DM sans mb-1 sm:mb-2">
-                  <span>{selectedCaseStudy.category}</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" />
-                  <span>{selectedCaseStudy.location}</span>
-                </div>
-                <h3 className="text-s sm:text-2xl font-semibold tracking-tight line-clamp-2 sm:line-clamp-none">
-                  {selectedCaseStudy.title}
-                </h3>
-              </div>
-            </div>
-
-            {/* Scrollable details body */}
-            <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 text-neutral-800">
-
-              {/* Highlight metrics banner */}
-              <div className="bg-[#F6F4F0] border-l-4 border-[#BD8E32] p-3.5 sm:p-4 rounded-r-xl flex items-center gap-3 sm:gap-4">
-                <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 flex-shrink-0" />
-                <div>
-                  <h4 className="font-bold uppercase tracking-wider text-[10px] sm:text-xs text-[#764A04]">Key Outcome achieved</h4>
-                  <p className="font-bold text-zinc-900 text-sm sm:text-base mt-0.5">{selectedCaseStudy.metrics}</p>
-                </div>
-              </div>
-
-              {/* Challenge section */}
-              <div className="space-y-1.5 sm:space-y-2">
-                <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Challenge
-                </h4>
-                <p className="text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
-                  {selectedCaseStudy.challenge}
-                </p>
-              </div>
-
-              {/* Solution section */}
-              <div className="space-y-1.5 sm:space-y-2">
-                <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Solution
-                </h4>
-                <p className="text-xs sm:text-base text-zinc-900 leading-relaxed font-sans">
-                  {selectedCaseStudy.solution}
-                </p>
-              </div>
-
-              {/* Result section */}
-              <div className="space-y-1.5 sm:space-y-2 pb-2">
-                <h4 className="font-bold uppercase tracking-wider text-[11px] sm:text-xs text-zinc-900 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#BD8E32]" /> The Outcome
-                </h4>
-                <p className="text-xs sm:text-base text-DM sans text-zinc-900 leading-relaxed font-sans">
-                  {selectedCaseStudy.result}
-                </p>
-              </div>
-
-            </div>
-          </div>        
-        </div>
-      )}
+      <CaseStudyDetailModal
+      study={selectedCaseStudy}
+      onClose={() => setSelectedCaseStudy(null)}
+      />
       <ScrollToTopButton heroSectionId="hero-section" />  
     </div>
   );
