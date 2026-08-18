@@ -2,15 +2,29 @@
 
 import React ,{useState} from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import logo1 from "../../../public/assets/images/logo1.png";
 
+const PAGE_BACKGROUND_MAP: Record<string, string> = {
+  "/": "#FBF7EE",         // Home page bottom color
+  "/about": "#F8F4EC",    // About page bottom color
+  "/services": "#ffffff", // Services page bottom color
+  "/contact": "#ffffff",  // Contact page bottom color
+  "/resources/blogs": "#ffffff",// Resources page bottom color
+  "/resources/case_studies": "#ffffff"   // Resources page bottom color
+};
+
+
 export default function Footer() {
+  const pathname = usePathname();
     const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
+
+  const topBgColor = PAGE_BACKGROUND_MAP[pathname] || "#ffffff"; 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,9 +75,12 @@ export default function Footer() {
   return (
     <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50 overflow-hidden">
       
-      {/* ── LIGHT CONTAINER ON MOBILE TO FIX BLACK CORNER GAPS ── */}
-      <div className="w-full bg-[#F8F4EC] md:bg-transparent pt-8 md:pt-0">
-        
+   {/* ── DYNAMIC CONTAINER MATCHING PREVIOUS SECTION ── */}
+<div 
+  style={{ backgroundColor: topBgColor }} 
+  className="w-full transition-colors duration-300 pt-6 pb-12"
+>
+
         {/* ── BOLD & PREMIUM GOLD CARD ── */}
         <div className="w-[96%] sm:w-[96%] max-w-[1280px] mx-auto relative z-20 mt-0 md:-mt-0 mb-10 bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] py-10 px-5 sm:px-8 md:px-12 rounded-2xl overflow-hidden shadow-xl">
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 lg:gap-12">

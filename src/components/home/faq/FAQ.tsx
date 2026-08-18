@@ -4,11 +4,11 @@ import FAQList from "./FAQList";
 
 export default function FAQ() {
   return (
-    <section className="w-full bg-[#FBF7EE] pt-16 pb-20 lg:pt-20 lg:pb-56 min-h-[calc(100vh-60px)] flex items-center">
-      <div className="mx-auto flex flex-col lg:flex-row h-auto lg:h-[392px] w-full max-w-[1120px] justify-between gap-8 px-6 lg:px-0">
+    <section id="faq" className="w-full bg-[#FBF7EE] py-12 lg:py-20 flex items-center">
+     <div className="mx-auto flex flex-col lg:flex-row w-full max-w-[1440px] justify-between gap-10 lg:gap-16 px-6 lg:px-20">
         {/* LEFT */}
 
-        <div className="flex flex-col items-center lg:items-start justify-between w-full lg:w-[457px] h-auto lg:h-[392px] gap-6 lg:gap-0">
+        <div className="flex flex-col items-center lg:items-start justify-between w-full lg:w-1/2 max-w-[480px] gap-8 lg:gap-12">
           <FAQHeader />
 
           <FAQCTA />
@@ -16,7 +16,7 @@ export default function FAQ() {
 
         {/* RIGHT */}
 
-        <div className="w-full lg:w-[647px] h-auto lg:h-[392px]">
+        <div className="w-full lg:w-1/2 lg:max-w-[640px]">
           <FAQList />
         </div>
       </div>

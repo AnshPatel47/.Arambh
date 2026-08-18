@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import SectionErrorBoundary from "@/components/ui/SectionErrorBoundary";
+import SectionErrorBoundary from "@/components/SectionErrorBoundary";
 
 const Hero = dynamic(() => import("./Hero"), {
   ssr: false,

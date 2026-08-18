@@ -19,8 +19,11 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Arambh Advisory",
+  title: "Arambh Advisory Services LLP",
   description: "Business Growth & Startup Consulting",
+  icons: {
+    icon: "/images/logo.svg",
+  },
 };
 
 import ScrollRevealProvider from "@/components/layout/ScrollRevealProvider";

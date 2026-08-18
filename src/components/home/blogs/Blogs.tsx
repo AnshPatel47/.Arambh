@@ -8,19 +8,7 @@ export default function Blogs() {
       id="blogs"
       className="w-full bg-[#FBF7EE] py-12 sm:py-24"
     >
-      <div
-        className="
-          mx-auto
-          max-w-[1136px]
-          px-6
-          lg:px-0
-          flex
-          flex-col
-          gap-8
-          sm:gap-16
-          w-full
-        "
-      >
+    <div className="mx-auto max-w-[1440px] px-6 lg:px-20 flex flex-col gap-8 sm:gap-12 w-full">
         {/* Header */}
         <BlogsHeader />
 

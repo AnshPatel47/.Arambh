@@ -6,8 +6,10 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { services } from "./service.data";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ServicesSlider() {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   return (
@@ -20,7 +22,7 @@ export default function ServicesSlider() {
           return (
             <div
               key={service.id}
-              onClick={() => setActiveIndex(index)}
+        onClick={() => setActiveIndex(isActive ? -1 : index)}
               className={`relative w-full overflow-hidden rounded-[20px] border border-[#E6DFD4] bg-white transition-all duration-500 ease-in-out cursor-pointer ${isActive ? "h-[300px]" : "h-[68px]"
                 }`}
             >
@@ -96,12 +98,13 @@ export default function ServicesSlider() {
           const isActive = activeIndex === index;
 
           return (
-            <div
-              key={service.id}
-              onMouseEnter={() => setActiveIndex(index)}
-              className={`relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#E6DFD4] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer bg-white group ${isActive ? "flex-[3.5]" : "flex-[0.7]"
-                }`}
-            >
+           <div
+  key={service.id}
+  onMouseEnter={() => setActiveIndex(index)}
+  onClick={() => router.push(service.link)}
+  className={`relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#E6DFD4] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer bg-white group ${isActive ? "flex-[3.5]" : "flex-[0.7]"
+    }`}
+>
               {/* Cover Image */}
               <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
                 <div className="absolute inset-y-0 left-0 w-[50vw] xl:w-[640px] h-full">

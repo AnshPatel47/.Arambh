@@ -10,9 +10,7 @@ export default function AboutPage() {
   return (
     <>
       <About />
-     
       <ScrollToTopButton heroSectionId="hero-section" />
-     
     </>
   );
 }

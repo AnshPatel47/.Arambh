@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { ServiceType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,6 @@ async function main() {
   // ==========================================
   // ADMIN USER
   // ==========================================
-
   const adminEmail = "admin@arambh.com";
   const rawPassword = "AdminPassword123";
   const hashedPassword = await bcrypt.hash(rawPassword, 10);
@@ -28,138 +28,196 @@ async function main() {
   });
 
   console.log("Admin user seeded successfully!");
-  console.log(`Email:    ${adminUser.email}`);
-  console.log(`Password: ${rawPassword}`);
-  console.log(`Role:     ${adminUser.role}`);
 
   // ==========================================
-  // SERVICES
+  // SERVICES & SCHEMES
   // ==========================================
-
   const services = [
+    // --- REGULAR SERVICES (type: "SERVICE") ---
     {
       slug: "business-registration",
       title: "Business Registration",
       description:
-        "Transform your idea into a legally recognized business with expert guidance at every step. We help you choose the right business structure, manage documentation, and complete the registration process efficiently.",
+        "Transform your idea into a legally recognized business with expert guidance at every step.",
       category: "Registration",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Business structure guidance",
         "Documentation support",
         "Registration process assistance",
       ],
       icon: "/images/business-registration.svg",
-      image: "/images/business-registration.png",
       status: "active",
     },
     {
       slug: "startup-india-government-recognition",
       title: "Startup India & Government Recognition",
       description:
-        "Government recognition can open doors to funding, tax benefits, and valuable support programs. Our team assists you in obtaining Startup India, DPIIT, MSME, and other relevant registrations.",
+        "Government recognition can open doors to funding, tax benefits, and valuable support programs.",
       category: "Government Recognition",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Startup India assistance",
         "DPIIT recognition",
         "MSME registration",
       ],
       icon: "/images/startup-india.svg",
-      image: "/images/startup-india.png",
       status: "active",
     },
     {
       slug: "government-funding",
       title: "Government Funding",
       description:
-        "Navigating government schemes can be overwhelming. We identify funding opportunities that match your business and guide you through documentation and application processes.",
+        "Navigating government schemes can be overwhelming. We identify funding opportunities matching your business.",
       category: "Funding",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Funding opportunity identification",
         "Scheme guidance",
         "Documentation support",
-        "Application assistance",
       ],
       icon: "/images/government-funding.svg",
-      image: "/images/government-funding.png",
       status: "active",
     },
     {
       slug: "business-growth-strategy",
       title: "Business Growth Strategy",
       description:
-        "Whether you're launching a new venture or scaling an existing business, we provide strategic guidance tailored to your goals, helping you make informed business decisions.",
+        "Strategic guidance tailored to your goals, helping you make informed business decisions.",
       category: "Business Strategy",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Business strategy planning",
         "Growth guidance",
         "Strategic decision support",
       ],
       icon: "/images/business-strategy.svg",
-      image: "/images/business-growth-strategy.png",
       status: "active",
     },
     {
       slug: "compliance-regulatory-support",
       title: "Compliance & Regulatory Support",
       description:
-        "Managing legal and regulatory requirements shouldn't slow your business down. We ensure ongoing compliance, helping you meet statutory obligations and reduce risks.",
+        "Managing legal and regulatory requirements cleanly without slowing your business down.",
       category: "Compliance",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Regulatory guidance",
         "Compliance support",
-        "Statutory obligation assistance",
         "Risk reduction",
       ],
       icon: "/images/compliance-support.svg",
-      image: "/images/compliance-support.png",
       status: "active",
     },
     {
       slug: "end-to-end-advisory-services",
       title: "End-to-End Advisory Services",
       description:
-        "From company registration and government recognition to funding support and long-term business advisory, Arambh Advisory provides comprehensive solutions under one roof.",
+        "Comprehensive solutions under one roof from registration to long-term growth.",
       category: "Advisory",
       price: null,
+      type: ServiceType.SERVICE,
       features: [
         "Company registration",
         "Government recognition",
-        "Funding support",
         "Long-term business advisory",
       ],
       icon: "/images/end-to-end-advisory.svg",
-      image: "/images/end-to-end-advisory.png",
+      status: "active",
+    },
+
+    // --- GOVERNMENT SCHEMES (type: "SCHEME") ---
+    {
+      slug: "naif-scheme",
+      title: "NAIF Scheme",
+      description:
+        "The Agriculture Infrastructure Fund (AIF), also called NAIF, funds post-harvest infrastructure like cold storage, warehouses and processing units.",
+      category: "Government Scheme",
+      price: "UP TO ₹2 CRORE",
+      type: ServiceType.SCHEME,
+      bgColor: "#EAF5EA",
+      features: [
+        "Post-harvest infrastructure",
+        "Cold storage & warehouses",
+        "Processing unit grants",
+      ],
+      icon: "/images/naif.svg",
+      status: "active",
+    },
+    {
+      slug: "startup-india-seed-fund",
+      title: "Startup India Seed Fund (SISFS)",
+      description:
+        "Access milestone-based grants for proof of concept and debt/convertible funding for market entry and scale.",
+      category: "Government Scheme",
+      price: "UP TO ₹500 LAKHS",
+      type: ServiceType.SCHEME,
+      bgColor: "#FDF2F2",
+      features: [
+        "Proof of concept grants",
+        "Debt/Convertible funding",
+        "Market entry support",
+      ],
+      icon: "/images/sisfs.svg",
+      status: "active",
+    },
+    {
+      slug: "real-time-performance-visibility",
+      title: "Real-Time Performance Visibility",
+      description:
+        "Track how work progresses as it happens. OptiCore updates continuously, allowing leaders to spot shifts in productivity.",
+      category: "Government Scheme",
+      price: "UP TO ₹500 LAKHS",
+      type: ServiceType.SCHEME,
+      bgColor: "#EFF6FF",
+      features: [
+        "Real-time tracking",
+        "Productivity updates",
+        "Leadership analytics",
+      ],
+      icon: "/images/real-time.svg",
       status: "active",
     },
   ];
 
   for (const service of services) {
+    // 1. Destructure to remove bgColor and extract properties cleanly
+    const { bgColor, ...data } = service;
+
     const seededService = await prisma.service.upsert({
-      where: {
-        slug: service.slug,
-      },
+      where: { slug: data.slug },
       update: {
-        title: service.title,
-        description: service.description,
-        category: service.category,
-        price: service.price,
-        features: service.features,
-        icon: service.icon,
-        image: service.image,
-        status: service.status,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        price: data.price,
+        type: data.type as any,
+        features: data.features,
+        icon: data.icon,
+        status: data.status,
       },
-      create: service,
+      create: {
+        slug: data.slug,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        price: data.price,
+        type: data.type as any,
+        features: data.features,
+        icon: data.icon,
+        status: data.status,
+      },
     });
 
-    console.log(`Service seeded: ${seededService.title}`);
+    console.log(`Seeded [${seededService.type}]: ${seededService.title}`);
   }
 
-  console.log("All services seeded successfully!");
+  console.log("All services & schemes seeded successfully!");
 }
 
 main()

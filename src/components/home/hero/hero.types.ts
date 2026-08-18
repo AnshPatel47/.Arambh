@@ -6,4 +6,6 @@ export interface Scheme {
   description: string;
   icon: string;
   bgColor: string;
+  slug?: string; 
 }
+

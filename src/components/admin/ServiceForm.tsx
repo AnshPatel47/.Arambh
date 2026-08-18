@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export interface ServiceFormData {
   id?: string;
@@ -11,28 +12,35 @@ export interface ServiceFormData {
   features: string[];
   icon?: string | null;
   status: string;
-  
+  type?: "SERVICE" | "SCHEME";
 }
 
 interface ServiceFormProps {
   initialData?: ServiceFormData | null;
+  activeTypeFilter?: "ALL" | "SERVICE" | "SCHEME";
   onSubmitSuccess?: (service: ServiceFormData) => void;
   onCancel?: () => void;
 }
 
 export default function ServiceForm({
   initialData,
+  activeTypeFilter = "SERVICE",
   onSubmitSuccess,
   onCancel,
 }: ServiceFormProps) {
+  const router = useRouter();
+  const isScheme = activeTypeFilter === "SCHEME" || initialData?.type === "SCHEME";
+  const itemTypeLabel = isScheme ? "Scheme" : "Service";
+
   const [formData, setFormData] = useState<ServiceFormData>({
     title: "",
-    category: "Registration",
+    category: isScheme ? "Government Scheme" : "Registration",
     description: "",
     price: "",
     features: [],
     icon: "Briefcase",
     status: "active",
+    type: isScheme ? "SCHEME" : "SERVICE",
   });
 
   const [featuresInput, setFeaturesInput] = useState("");
@@ -41,33 +49,35 @@ export default function ServiceForm({
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (initialData) {
-      setFormData({
-        id: initialData.id,
-        title: initialData.title || "",
-        category: initialData.category || "Registration",
-        description: initialData.description || "",
-        price: initialData.price || "",
-        features: Array.isArray(initialData.features) ? initialData.features : [],
-        icon: initialData.icon || "Briefcase",
-        status: initialData.status || "active",
-      });
-      setFeaturesInput(
-        Array.isArray(initialData.features) ? initialData.features.join(", ") : ""
-      );
-    } else {
-      setFormData({
-        title: "",
-        category: "Registration",
-        description: "",
-        price: "",
-        features: [],
-        icon: "Briefcase",
-        status: "active",
-      });
-      setFeaturesInput("");
-    }
-  }, [initialData]);
+  if (initialData) {
+    setFormData({
+      id: initialData.id,
+      title: initialData.title || "",
+      category: initialData.category || (isScheme ? "Government Scheme" : "Registration"),
+      description: initialData.description || "",
+      price: initialData.price || "",
+      features: Array.isArray(initialData.features) ? initialData.features : [],
+      icon: initialData.icon || "Briefcase",
+      status: initialData.status || "active",
+      type: initialData.type || (isScheme ? "SCHEME" : "SERVICE"),
+    });
+    setFeaturesInput(
+      Array.isArray(initialData.features) ? initialData.features.join(", ") : ""
+    );
+  } else {
+    setFormData({
+      title: "",
+      category: isScheme ? "Government Scheme" : "Registration", // DYNAMIC CATEGORY
+      description: "",
+      price: "",
+      features: [],
+      icon: "Briefcase",
+      status: "active",
+      type: isScheme ? "SCHEME" : "SERVICE",
+    });
+    setFeaturesInput("");
+  }
+}, [initialData, isScheme]); 
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -83,7 +93,7 @@ export default function ServiceForm({
     setFeaturesInput(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMsg(null);
@@ -94,8 +104,10 @@ export default function ServiceForm({
       .map((f) => f.trim())
       .filter(Boolean);
 
+    // Explicitly pass type to backend payload
     const payload = {
       ...formData,
+      type: isScheme ? "SCHEME" : "SERVICE",
       features: parsedFeatures,
     };
 
@@ -117,14 +129,17 @@ export default function ServiceForm({
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setErrorMsg(data.error || "Failed to save service.");
+        setErrorMsg(data.error || `Failed to save ${itemTypeLabel.toLowerCase()}.`);
         setIsSubmitting(false);
         return;
       }
 
       setSuccessMsg(
-        formData.id ? "Service updated successfully!" : "Service created successfully!"
+        formData.id ? `${itemTypeLabel} updated successfully!` : `${itemTypeLabel} created successfully!`
       );
+
+      // Revalidate data on current route so UI updates in real-time
+      router.refresh();
 
       if (onSubmitSuccess) {
         onSubmitSuccess(data.service || payload);
@@ -138,14 +153,14 @@ export default function ServiceForm({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-8 border border-zinc-200 shadow-sm max-w-2xl w-full mx-auto">
+   <div className="w-full bg-white p-6 sm:p-8 rounded-2xl">
       <div className="flex items-center justify-between pb-4 mb-6 border-b border-zinc-100">
         <div>
           <h2 className="text-xl font-bold text-zinc-900">
-            {formData.id ? "Edit Service" : "Create New Service"}
+            {formData.id ? `Edit ${itemTypeLabel}` : `Create New ${itemTypeLabel}`}
           </h2>
-          <p className="text-xs text-zinc-900 mt-1">
-            Fill in the service information to publish or update in backend DB
+          <p className="text-xs text-zinc-500 mt-1">
+            Fill in the {itemTypeLabel.toLowerCase()} information to publish or update in backend DB
           </p>
         </div>
         {onCancel && (
@@ -180,127 +195,99 @@ export default function ServiceForm({
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Service Title */}
+       {/* Title */}
         <div>
           <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
-            Service Title *
-          </label>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </span>
-            <input
-              type="text"
-              name="title"
-              required
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="e.g. Business Registration"
-              className="w-full bg-zinc-50 border text-DM sans border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 pl-12 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
-            />
-          </div>
-        </div>
-
-        {/* Slug & Category */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-5"> */}
-          {/* <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
-              URL Slug
-            </label>
-            <input
-              type="text"
-              name="slug"
-              value={formData.slug}
-              onChange={handleChange}
-              placeholder="e.g. business-registration"
-              className="w-full bg-zinc-50 text-DM sans border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all font-mono"
-            />
-          </div> */}
-
-          {/* <div> */}
-            <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-900 mb-2">
-              Category *
-            </label>
-            <input
-              type="text"
-              name="category"
-              required
-              value={formData.category}
-              onChange={handleChange}
-              placeholder="e.g. Registration, Funding"
-              className="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
-            />
-          {/* </div> */}
-        {/* </div> */}
-
-        {/* Price & Status */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
-              Price ($)
-            </label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-bold">
-                $
-              </span>
-              <input
-                type="text"
-                name="price"
-                value={formData.price || ""}
-                onChange={handleChange}
-                placeholder="499"
-                className="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 pl-10 pr-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
-              Status
-            </label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
-            >
-              <option value="active">Active (Visible to Users)</option>
-              <option value="inactive">Inactive (Hidden)</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
-            Description *
-          </label>
-          <textarea
-            name="description"
-            required
-            rows={4}
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Write a clear overview of what this service offers..."
-            className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm resize-none transition-all"
-          />
-        </div>
-
-        {/* Features */}
-        <div>
-          <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
-            Features (Comma Separated)
+            {itemTypeLabel} Title *
           </label>
           <input
             type="text"
-            value={featuresInput}
-            onChange={handleFeaturesChange}
-            placeholder="e.g. 24/7 Support, Free Consultation, Tax Filing"
-            className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
+            name="title"
+            required
+            value={formData.title}
+            onChange={handleChange}
+            placeholder={isScheme ? "e.g. NAIF Scheme" : "e.g. Business Registration"}
+            className="w-full bg-zinc-50 border text-DM sans border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
           />
         </div>
+
+         {/* Category */}
+<div>
+  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
+    Category *
+  </label>
+  <input
+    type="text"
+    name="category"
+    required
+    value={formData.category}
+    onChange={handleChange}
+    placeholder={isScheme ? "e.g. Government Scheme, Subsidy" : "e.g. Registration, Compliance"}
+    className="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all font-normal"
+  />
+</div>
+
+{/* Price / Funding Field */}
+<div>
+  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
+    {isScheme ? "Funding / Grant Amount" : "Price ($)"}
+  </label>
+  <div className="relative">
+    {!isScheme && (
+      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-bold">
+        $
+      </span>
+    )}
+    <input
+      type="text"
+      name="price"
+      value={formData.price || ""}
+      onChange={handleChange}
+      placeholder={isScheme ? "e.g. Up to 50 Lakhs / Free" : "499"}
+      className={`w-full bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 ${
+        !isScheme ? "pl-10 pr-4" : "px-4"
+      } rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all`}
+    />
+  </div>
+</div>
+
+{/* Description Field */}
+<div>
+  <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
+    Description *
+  </label>
+  <textarea
+    name="description"
+    required
+    rows={4}
+    value={formData.description}
+    onChange={handleChange}
+    placeholder={
+      isScheme
+        ? "Write a clear overview of eligibility criteria and government scheme benefits..."
+        : "Write a clear overview of what this service offers..."
+    }
+    className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm resize-none transition-all"
+  />
+</div>
+
+{/* Features / Benefits Field */}
+<div>
+  <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
+    {isScheme ? "Key Scheme Benefits (Comma Separated)" : "Features (Comma Separated)"}
+  </label>
+  <input
+    type="text"
+    value={featuresInput}
+    onChange={handleFeaturesChange}
+    placeholder={
+      isScheme
+        ? "e.g. 100% Tax Exemption, Collateral Free Loan, Interest Subvention"
+        : "e.g. 24/7 Support, Free Consultation, Tax Filing"
+    }
+    className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
+  />
+</div>
 
         {/* Buttons */}
         <div className="pt-4 flex items-center justify-end gap-3 border-t border-zinc-100">
@@ -313,21 +300,15 @@ export default function ServiceForm({
               Cancel
             </button>
           )}
-          <button
+         <button
             type="submit"
             disabled={isSubmitting}
             className="px-6 py-3.5 bg-[#C2943A] hover:bg-[#b08432] text-zinc-950 font-bold text-sm rounded-xl shadow-md transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
           >
             {isSubmitting ? (
-              <>
-                <svg className="animate-spin h-4 w-4 text-zinc-950" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span>Saving Service...</span>
-              </>
+              <span>Saving {itemTypeLabel}...</span>
             ) : (
-              <span>{formData.id ? "Update Service" : "Publish Service"}</span>
+              <span>{formData.id ? `Update ${itemTypeLabel}` : `Publish ${itemTypeLabel}`}</span>
             )}
           </button>
         </div>

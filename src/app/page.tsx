@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
-import SectionErrorBoundary from "@/components/ui/SectionErrorBoundary";
+import SectionErrorBoundary from "@/components/SectionErrorBoundary";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
-
 
 const Hero = dynamic(() => import("@/components/home/hero/Hero"), {
   ssr: false,
@@ -45,51 +44,41 @@ const FAQ = dynamic(() => import("@/components/home/faq/FAQ"), {
 
 export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#FBF7EE]">
-      <SectionErrorBoundary sectionName="Hero">
-        <Hero />
-      </SectionErrorBoundary>
+    
+      <main className="flex min-h-screen flex-col w-full bg-[#FBF7EE]">
+        <SectionErrorBoundary sectionName="Hero">
+          <Hero />
+        </SectionErrorBoundary>
 
-      <SectionErrorBoundary sectionName="Hero Stats">
-        <HeroStats />
-      </SectionErrorBoundary>
+        <SectionErrorBoundary sectionName="Hero Stats">
+          <HeroStats />
+        </SectionErrorBoundary>
 
-      <SectionErrorBoundary sectionName="Services">
-        <Services />
-      </SectionErrorBoundary>
+        <SectionErrorBoundary sectionName="Services">
+          <Services />
+        </SectionErrorBoundary>
 
-      <SectionErrorBoundary sectionName="Smart India">
-        <SmartIndia />
-      </SectionErrorBoundary>
+        <SectionErrorBoundary sectionName="Smart India">
+          <SmartIndia />
+        </SectionErrorBoundary>
 
-      <SectionErrorBoundary sectionName="Testimonials">
-        <Testimonials />
-      </SectionErrorBoundary>
+        <SectionErrorBoundary sectionName="Testimonials">
+          <Testimonials />
+        </SectionErrorBoundary>
 
+        <SectionErrorBoundary sectionName="Case Studies">
+          <CaseStudies />
+        </SectionErrorBoundary>
 
-      {/* CaseStudies Section: -mt-30 (-120px) mobile / -mt-26 (-104px) desktop 
-          adjusts ContactForm's pb-36 (144px) / pb-44 (176px) and CaseStudies pt-14 (56px) 
-          to yield exactly 80px mobile / 128px desktop gap. */}
-      <div className="-mt-30 lg:-mt-26">
-        <CaseStudies />
-      </div>
+        <SectionErrorBoundary sectionName="Blogs">
+          <Blogs />
+        </SectionErrorBoundary>
 
-      {/* Blogs Section: -mt-18 (-72px) mobile / -mt-6 (-24px) desktop 
-          adjusts CaseStudies' pb-14 (56px) and Blogs' pt-24 (96px) 
-          to yield exactly 80px mobile / 128px desktop gap. */}
-      <div className="-mt-18 lg:-mt-6">
-        <Blogs />
-      </div>
-
-      {/* FAQ Section: -mt-8 (-32px) mobile / -mt-12 (-48px) desktop 
-          adjusts Blogs' pb-12 (48px) and FAQ's pt-16 (64px) 
-          to yield exactly 80px mobile / 128px desktop gap. */}
-      <div className="-mt-8 lg:-mt-12">
         <SectionErrorBoundary sectionName="FAQ">
           <FAQ />
         </SectionErrorBoundary>
-      </div>
-      <ScrollToTopButton heroSectionId="hero-section" />
-    </main>
+
+        <ScrollToTopButton heroSectionId="hero-section" />
+      </main>
   );
 }

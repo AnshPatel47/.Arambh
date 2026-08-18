@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/services";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    let services = await prisma.service.findMany({
+    const { searchParams } = new URL(req.url);
+    const typeParam = searchParams.get("type"); // "SERVICE" or "SCHEME"
+
+    const whereCondition = typeParam
+      ? { type: typeParam.toUpperCase() as "SERVICE" | "SCHEME" }
+      : {};
+
+    const services = await prisma.service.findMany({
+      where: whereCondition,
       orderBy: { createdAt: "desc" },
     });
-
-    // if (services.length === 0) {
-    //   try {
-    //     services = await prisma.service.findMany({
-    //       orderBy: { createdAt: "desc" },
-    //     });
-    //   } catch (seedErr) {
-    //     console.warn("Auto seed warning, returning memory fallback:", seedErr);
-    //     return NextResponse.json({ success: true, services });
-    //   }
-    // }
 
     return NextResponse.json({ success: true, services });
   } catch (error) {
@@ -28,7 +25,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, slug, category, description, price, features, icon, status } = body;
+    const { title, slug, category, description, price, features, icon, status, type } = body;
 
     if (!title || !category || !description) {
       return NextResponse.json(
@@ -58,6 +55,7 @@ export async function POST(req: Request) {
           : [],
         icon: icon || "Briefcase",
         status: status || "active",
+        type: type === "SCHEME" ? "SCHEME" : "SERVICE", // <-- Saves as SCHEME or SERVICE
       },
     });
 
@@ -66,12 +64,12 @@ export async function POST(req: Request) {
     console.error("Error creating service:", error);
     if (error.code === "P2002") {
       return NextResponse.json(
-        { success: false, error: "A service with this slug already exists." },
+        { success: false, error: "A record with this slug already exists." },
         { status: 409 }
       );
     }
     return NextResponse.json(
-      { success: false, error: "Failed to create service." },
+      { success: false, error: "Failed to create record." },
       { status: 500 }
     );
   }

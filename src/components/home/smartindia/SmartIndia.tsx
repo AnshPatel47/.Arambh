@@ -14,9 +14,7 @@ export default function SmartIndia() {
         fontFamily: "'DM Sans', sans-serif",
       }}
     >
-      <div
-        className="mx-auto max-w-[1440px] px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-10 lg:gap-[100px] py-10 lg:py-16 box-sizing-border-box"
-      >
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-20 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 py-12 lg:py-20">
         <LeftPanel />
         <MapSection show={show} />
       </div>

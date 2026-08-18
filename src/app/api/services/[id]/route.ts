@@ -8,7 +8,7 @@ export async function PUT(
   try {
     const { id } = params;
     const body = await req.json();
-    const { title, slug, category, description, price, features, icon, status } = body;
+    const { title, slug, category, description, price, features, icon, status, type } = body;
 
     const formattedFeatures = Array.isArray(features)
       ? features
@@ -27,6 +27,7 @@ export async function PUT(
         features: formattedFeatures,
         ...(icon && { icon }),
         ...(status && { status }),
+        ...(type && { type }), // <-- Allows updating type if passed
       },
     });
 
@@ -34,7 +35,7 @@ export async function PUT(
   } catch (error: any) {
     console.error("Error updating service:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update service." },
+      { success: false, error: "Failed to update record." },
       { status: 500 }
     );
   }
@@ -50,11 +51,11 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json({ success: true, message: "Service deleted successfully" });
+    return NextResponse.json({ success: true, message: "Deleted successfully" });
   } catch (error) {
-    console.error("Error deleting service:", error);
+    console.error("Error deleting item:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to delete service" },
+      { success: false, error: "Failed to delete item" },
       { status: 500 }
     );
   }

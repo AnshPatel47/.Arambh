@@ -6,8 +6,10 @@ import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScheduleCallModal } from "@/components/schedule-call/ScheduleCallContext";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { openModal } = useScheduleCallModal();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +55,7 @@ const buttonColor = "#ffffff";
         `}
      style={{
   maxWidth: isScrolled ? "100%" : "930px",
-  height: "60px",
+  height: "66px",
 
   paddingTop: "10px",
   paddingBottom: "10px",
@@ -111,85 +113,121 @@ style={{
           </div>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          <Link href="/services" className="text-[13px] font-medium transition-colors"
-style={{
-  color: secondaryColor,
-}}>
-            Consulting Services
-          </Link>
+      <div className="hidden lg:flex items-center gap-7" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+  {/* Consulting Services Link */}
+  <Link 
+    href="/services" 
+    className={`relative group py-1 text-[13px] font-semibold transition-colors ${
+      pathname === "/services" ? "text-[#C2943A]" : "text-[#666666] hover:text-[#1F1F1F]"
+    }`}
+  >
+    Consulting Services
+    <span className={`absolute bottom-0 left-0 h-[2px] bg-[#C2943A] transition-all duration-300 ease-out origin-left ${
+      pathname === "/services" ? "w-full" : "w-0 group-hover:w-full"
+    }`} />
+  </Link>
 
-          {/* Resources Dropdown */}
-          <div className="relative group">
-           <button
-  className="flex items-center gap-1 text-[13px] font-medium transition-colors py-2"
-  style={{
-    color: secondaryColor,
-  }}
->
-              Resources
-              <ChevronDown
-  size={13}
-  style={{ color: secondaryColor }}
-  className="group-hover:rotate-180 transition-transform duration-200"
-/>
-            </button>
-            <div className="absolute left-0 mt-0 pt-2 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 bg-transparent z-50">
-              <div className="bg-white border border-neutral-200/80 rounded-2xl shadow-xl p-2 w-[280px] flex flex-col gap-1">
-                <Link
-                  href="/resources/blogs"
-                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-neutral-50 transition-colors group/item"
-                >
-                  <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-100">
-                    <Image
-                      src="/assets/images/blog_hero.webp"
-                      alt="Blog"
-                      fill
-                      sizes="40px"
-                      className="object-cover group-hover/item:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[13px] font-semibold text-neutral-800 group-hover/item:text-black transition-colors">Blog & Articles</span>
-                    <span className="text-[11px] text-neutral-400 font-medium">Industry news and updates</span>
-                  </div>
-                </Link>
-                <Link
-                  href="/resources/case_studies"
-                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-neutral-50 transition-colors group/item"
-                >
-                  <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-100">
-                    <Image
-                      src="/assets/images/case_studies_hero.webp"
-                      alt="Case Studies"
-                      fill
-                      sizes="40px"
-                      className="object-cover group-hover/item:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[13px] font-semibold text-neutral-800 group-hover/item:text-black transition-colors">Case Studies</span>
-                    <span className="text-[11px] text-neutral-400 font-medium">Real outcomes for our clients</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
+ {/* Resources Dropdown */}
+  <div className="relative group">
+    <button
+      className={`relative flex items-center gap-1 text-[13px] font-semibold transition-colors py-1 ${
+        pathname.startsWith("/resources") ? "text-[#C2943A]" : "text-[#666666] hover:text-[#1F1F1F]"
+      }`}
+    >
+      Resources
+      <ChevronDown
+        size={13}
+        className={`group-hover:rotate-180 transition-transform duration-200 ${
+          pathname.startsWith("/resources") ? "text-[#C2943A]" : "text-[#666666]"
+        }`}
+      />
+      <span className={`absolute bottom-0 left-0 h-[2px] bg-[#C2943A] transition-all duration-300 ease-out origin-left ${
+        pathname.startsWith("/resources") ? "w-full" : "w-0 group-hover:w-full"
+      }`} />
+    </button>
+    
+    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-6 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 bg-transparent z-50">
+      <div className="bg-white border border-neutral-200/80 rounded-2xl shadow-xl p-2 w-[280px] flex flex-col gap-1">
+        
+        <Link
+          href="/resources/blogs"
+          className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors group/item ${
+            pathname === "/resources/blogs" ? "bg-amber-50/60" : "hover:bg-neutral-50"
+          }`}
+        >
+          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-100">
+            <Image
+              src="/assets/images/blog_hero.webp"
+              alt="Blog"
+              fill
+              sizes="40px"
+              className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+            />
           </div>
+          <div className="flex flex-col">
+            <span className={`text-[13px] font-semibold transition-colors ${
+              pathname === "/resources/blogs" ? "text-[#C2943A]" : "text-neutral-800 group-hover/item:text-black"
+            }`}>
+              Blog & Articles
+            </span>
+            <span className="text-[11px] text-neutral-400 font-medium">Industry news and updates</span>
+          </div>
+        </Link>
 
-          <Link href="/about" className="text-[13px] font-medium transition-colors"
-style={{
-  color: secondaryColor,
-}}>
-            About
-          </Link>
+        <Link
+          href="/resources/case_studies"
+          className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors group/item ${
+            pathname === "/resources/case_studies" ? "bg-amber-50/60" : "hover:bg-neutral-50"
+          }`}
+        >
+          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-100">
+            <Image
+              src="/assets/images/case_studies_hero.webp"
+              alt="Case Studies"
+              fill
+              sizes="40px"
+              className="object-cover group-hover/item:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className={`text-[13px] font-semibold transition-colors ${
+              pathname === "/resources/case_studies" ? "text-[#C2943A]" : "text-neutral-800 group-hover/item:text-black"
+            }`}>
+              Case Studies
+            </span>
+            <span className="text-[11px] text-neutral-400 font-medium">Real outcomes for our clients</span>
+          </div>
+        </Link>
+      </div>
+    </div>
+  </div>
 
-          <Link href="/contact" className="text-[13px] font-medium transition-colors"
-style={{
-  color: secondaryColor,
-}}>
-            Contact
-          </Link>
-        </div>
+  {/* About Link */}
+  <Link 
+    href="/about" 
+    className={`relative group py-1 text-[13px] font-semibold transition-colors ${
+      pathname === "/about" ? "text-[#C2943A]" : "text-[#666666] hover:text-[#1F1F1F]"
+    }`}
+  >
+    About
+    <span className={`absolute bottom-0 left-0 h-[2px] bg-[#C2943A] transition-all duration-300 ease-out origin-left ${
+      pathname === "/about" ? "w-full" : "w-0 group-hover:w-full"
+    }`} />
+  </Link>
+
+  {/* Contact Link */}
+  <Link 
+    href="/contact" 
+    className={`relative group py-1 text-[13px] font-semibold transition-colors ${
+      pathname === "/contact" ? "text-[#C2943A]" : "text-[#666666] hover:text-[#1F1F1F]"
+    }`}
+  >
+    Contact
+    <span className={`absolute bottom-0 left-0 h-[2px] bg-[#C2943A] transition-all duration-300 ease-out origin-left ${
+      pathname === "/contact" ? "w-full" : "w-0 group-hover:w-full"
+    }`} />
+  </Link>
+</div>
 
         <div style={{ fontFamily: "'DM Sans', sans-serif" }} className="hidden lg:block shrink-0">
           <button

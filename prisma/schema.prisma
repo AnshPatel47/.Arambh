@@ -24,21 +24,26 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// SERVICES MODEL
+enum ServiceType {
+  SERVICE
+  SCHEME
+}
 
+// 2. SERVICE MODEL
 model Service {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  slug        String   @unique
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String      @unique
   title       String
   description String
-  category    String   @default("General")
+  category    String      @default("General")
   price       String?
   features    String[]
-  icon        String?  @default("Briefcase")
+  icon        String?     @default("Briefcase")
   image       String?
-  status      String   @default("active")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      String      @default("active")
+  type        ServiceType @default(SERVICE) // 
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model ServiceDetail {

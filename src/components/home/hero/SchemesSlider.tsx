@@ -6,12 +6,48 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import { Search } from "lucide-react";
 import { schemes } from "./hero.data"; 
 import SchemeCard from "./SchemeCard";
+import Link from "next/link";
+import { schemes as initialSchemes } from "./hero.data";
 
 const TAGS = ["NAIF", "Startup India", "Performance"];
+const bgColors = ["#EAF5EA", "#FDF2F2", "#EFF6FF", "#FFFBEB", "#F3E8FF"];
 
 export default function SchemesSlider() {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [allSchemes, setAllSchemes] = useState(initialSchemes);
+
+  // Fetch DB Schemes and merge with local defaults
+  useEffect(() => {
+    async function loadSchemes() {
+      try {
+        const res = await fetch("/api/services?type=SCHEME");
+        const data = await res.json();
+        
+        if (data.success && data.services?.length > 0) {
+          const dbItems = data.services.map((item: any, idx: number) => ({
+            id: item.id || item.slug,
+            amount: item.price || "GOVT SUBSIDY",
+            title: item.title,
+            description: item.description,
+            icon: item.icon || "/images/naif.svg",
+            bgColor: item.bgColor || bgColors[(initialSchemes.length + idx) % bgColors.length],
+          }));
+
+          // Avoid duplicates by title
+          const existingTitles = new Set(initialSchemes.map((s) => s.title.toLowerCase()));
+          const newDbItems = dbItems.filter(
+            (item: any) => !existingTitles.has(item.title.toLowerCase())
+          );
+
+          setAllSchemes([...initialSchemes, ...newDbItems]);
+        }
+      } catch (err) {
+        console.error("Failed to load DB schemes:", err);
+      }
+    }
+    loadSchemes();
+  }, []);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -69,13 +105,21 @@ export default function SchemesSlider() {
   }
 
   // Which schemes match the current query?
-  const isMatch = (s: (typeof schemes)[0]) => {
+  const isMatch = (s: (typeof allSchemes)[0]) => {
     if (!query) return true;
     return (
       s.title.toLowerCase().includes(query) ||
       s.description.toLowerCase().includes(query)
     );
   };
+
+  // Find exact scheme for the Explore link
+  const matchedScheme = allSchemes.find((s) =>
+    s.title.toLowerCase().includes(query)
+  );
+  const targetSlug = matchedScheme
+    ? matchedScheme.id
+    : query.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
   return (
     <div
@@ -138,17 +182,26 @@ export default function SchemesSlider() {
 
         {/* Dynamic search context link */}
         {debouncedSearchQuery && (
-          <div className="mt-4 w-full p-4 border border-[#E0DAD2] rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-between cursor-pointer hover:bg-white hover:shadow-sm transition-all group">
-            <div className="flex flex-col">
-              <span className="text-[14px] font-semibold text-[#131313]">Explore {debouncedSearchQuery} Services</span>
-              <span className="text-[12px] text-neutral-500 mt-0.5">Click to view all details and requirements.</span>
-            </div>
-            <span className="text-[#131313] text-lg font-light group-hover:translate-x-1 transition-transform">→</span>
+        <Link
+          href={`/schemes/${targetSlug}`}
+        className="mt-4 w-full p-4 border border-[#E0DAD2] rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-between cursor-pointer hover:bg-white hover:shadow-sm transition-all group"
+        >
+          <div className="flex flex-col">
+            <span className="text-[14px] font-semibold text-[#131313]">
+              Explore {debouncedSearchQuery} Services
+            </span>
+            <span className="text-[12px] text-neutral-500 mt-0.5">
+              Click to view all details and requirements.
+            </span>
           </div>
-        )}
+          <span className="text-[#131313] text-lg font-light group-hover:translate-x-1 transition-transform">
+            →
+          </span>
+        </Link>
+      )}
       </div>
 
-      {/* Cards — duplicated 4× so Embla always has enough for infinite loop */}
+     {/* Render allSchemes in the Carousel loop */}
       <div
         className="mt-5 w-full flex-1 overflow-hidden relative"
         style={{
@@ -159,9 +212,8 @@ export default function SchemesSlider() {
       >
         <div className="embla h-full w-full overflow-hidden" ref={emblaRef}>
           <div className="embla__container flex h-full flex-nowrap items-stretch ml-[-14px]">
-            {/* Render copies so loop never runs out of slides, but only if not searching */}
             {(debouncedSearchQuery ? [0] : [0, 1, 2, 3]).flatMap((copyIdx) =>
-              schemes.filter(isMatch).map((scheme) => (
+              allSchemes.filter(isMatch).map((scheme) => (
                 <div
                   className="embla__slide h-full shrink-0 min-w-0 pl-[14px] transition-opacity duration-300 flex-[0_0_254px] sm:flex-[0_0_294px]"
                   key={`copy-${copyIdx}-${scheme.id}`}

@@ -9,18 +9,19 @@ export default function Hero() {
   const { openModal } = useScheduleCallModal();
   return (
     <section
+      id="hero-section"
       className="relative w-full pt-24 lg:pt-28 pb-10 overflow-hidden flex items-center min-h-[480px]"
       style={{ background: "#FBF7EE" }}
     >
-      {/* Centered vertical line spanning to hero ends */}
-      <div className="hidden lg:block absolute left-1/2 top-[80px] bottom-0 w-px bg-[#E6DFD4] -translate-x-1/2 z-0 reveal" />
+      {/* Centered vertical line */}
+           <div className="hidden lg:block absolute left-1/2 top-[80px] bottom-0 w-px bg-[#E6DFD4] -translate-x-1/2 z-0 reveal" />
 
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 lg:px-20 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-12 w-full">
+   <div className="relative grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-12 w-full">
 
           {/* ══ LEFT PANEL ══ */}
-          <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:max-w-[500px] lg:mr-auto lg:ml-0 lg:self-start lg:sticky lg:top-[120px] reveal">
-
+       
+ <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:max-w-[500px] lg:mr-auto lg:ml-0 lg:self-start lg:sticky lg:top-[120px] reveal">
             <h1
               className="text-[#131313] tracking-[-0.04em] rv-up"
               style={{
@@ -31,13 +32,11 @@ export default function Hero() {
                 maxWidth: "100%",
               }}
             >
-              {/* Desktop heading */}
-              <span className="hidden md:inline">
-                Your Trusted Startup &amp;
-                <br />
-                Business Growth Partner
-              </span>
-              {/* Mobile heading (exactly 3 lines, slightly scaled down font size) */}
+             <span className="hidden md:inline">
+  <span className="whitespace-nowrap">Your Trusted Startup &amp;</span>
+  <br />
+  <span className="whitespace-nowrap">Business Growth Partner</span>
+</span>
               <span className="inline md:hidden text-[26px] leading-[1.2]">
                 Your Trusted
                 <br />
