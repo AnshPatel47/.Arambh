@@ -2,34 +2,47 @@
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   Search,
   X,
   ArrowRight,
-  Briefcase,
-  Landmark,
-  CheckCircle2,
   ChevronRight,
-  Award,
-  Globe,
-  TrendingUp,
-  FileCheck,
-  Building2,
-  Users,
-  Compass,
-  FileText,
-  Mail,
   Info,
-  Clock,
-  ArrowUp,
-  ArrowDown
 } from "lucide-react";
-import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
 import '@/app/globals.css';
-import Interservices from "@/app/components/blog&case_study/Innerservices";
-import { NewsletterCard } from "@/app/components/blog&case_study/Rightsidecards";
-import LoadMorePagination from "@/app/components/blog&case_study/loadmore";
-import CaseStudyDetailModal from "@/app/components/blog&case_study/CasestudiesDetail";
+
+// ── LAZY LOADED SUB-COMPONENTS ──
+const CaseStudyDetailModal = dynamic(
+  () => import("@/app/components/blog&case_study/CasestudiesDetail"),
+  { ssr: false }
+);
+
+const NewsletterCard = dynamic(
+  () => import("@/app/components/blog&case_study/Rightsidecards").then((mod) => mod.NewsletterCard),
+  {
+    ssr: false,
+    loading: () => <div className="h-64 bg-zinc-100 rounded-2xl animate-pulse w-full mt-6" />
+  }
+);
+
+const Interservices = dynamic(
+  () => import("@/app/components/blog&case_study/Innerservices"),
+  {
+    ssr: false,
+    loading: () => <div className="h-40 bg-zinc-50 animate-pulse w-full my-8" />
+  }
+);
+
+const LoadMorePagination = dynamic(
+  () => import("@/app/components/blog&case_study/loadmore"),
+  { ssr: false }
+);
+
+const ScrollToTopButton = dynamic(
+  () => import("@/components/scrollarrow/ScrollToTopButton"),
+  { ssr: false }
+);
 
 // Interface for Case Study Structure
 interface CaseStudy {
@@ -180,15 +193,14 @@ export default function CaseStudies() {
   const [emailInput, setEmailInput] = useState("");
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
   const [loading, setLoading] = useState(false);
-  // const [handleLoadMore, sethandleLoadMore] = useState(false);
 
   const handleLoadMore = () => {
-  setLoading(true);
-  setTimeout(() => {
-    setVisibleCount((prev) => prev + 4);
-    setLoading(false);
-  }, 300);
-};
+    setLoading(true);
+    setTimeout(() => {
+      setVisibleCount((prev) => prev + 4);
+      setLoading(false);
+    }, 300);
+  };
 
   // Reference directly targeting the Cards Container Grid for auto-scroll
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -226,7 +238,6 @@ export default function CaseStudies() {
     // Scroll down to bring the Cards Grid into view below the fixed header
     setTimeout(() => {
       if (cardsContainerRef.current) {
-        
         const yOffset = -80; 
         const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -282,7 +293,6 @@ export default function CaseStudies() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
@@ -300,7 +310,7 @@ export default function CaseStudies() {
         <div className="max-w-[1440px] mx-auto w-full relative z-20">
           {/* Breadcrumbs */}
           <nav 
-            className= "flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 sm:mb-8 uppercase txt-up" 
+            className="flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest text-[#C2943A] mb-6 sm:mb-8 uppercase txt-up" 
             aria-label="Breadcrumb"
           >
             <a href="/" className="hover:text-white transition-colors">Home</a>
@@ -315,7 +325,7 @@ export default function CaseStudies() {
             <h1 
               className="text-[26px] xs:text-[30px] sm:text-[36px] md:text-[clamp(2rem,3.2vw,3.2rem)] leading-[1.2] md:leading-[1.05] tracking-[-0.04em] text-white mb-4 txt-up txt-delay-1"
               style={{
-                fontFamily: "var(--font-dm), sans-serif",
+                fontFamily: "DM sans",
                 fontWeight: 500,
               }}
             >
@@ -339,13 +349,6 @@ export default function CaseStudies() {
 
       {/* ── 2. MAIN CASE STUDY WORKSPACE ── */}
       <section className="py-6 sm:py-10 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full">
-
-        {/* Section Title & Horizontal Line */}
-        {/* <div className="reveal w-full mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-3xl font-bold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300">
-            All Case Studies
-          </h2>
-        </div> */}
 
         {/* Search Bar - Full width pill shaped input */}
         <div className="relative w-full mb-4">
@@ -427,13 +430,15 @@ export default function CaseStudies() {
                       className={`card-pop-up card-delay-${idx % 4} bg-white border border-zinc-300 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 w-full`}
                     >
                       <div>
-                        {/* 1. Image Container */}
+                        {/* 1. Image Container (Native Lazy Loaded Next Image) */}
                         <div className="relative w-full aspect-[16/9] sm:aspect-[16/9.5] overflow-hidden bg-zinc-100 rounded-t-[18px]">
-                          <img
+                          <Image
                             src={study.image}
                             alt={study.title}
-                            className="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105"
+                            fill
                             loading="lazy"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                           />
                         </div>
 
@@ -467,7 +472,7 @@ export default function CaseStudies() {
                         </div>
                         <button
                           onClick={() => setSelectedCaseStudy(study)}
-                          className=" self-start inline-flex items-center text-s font-semibold  text-[#BD8E32] transition-all duration-200 cursor-pointer shrink-0"
+                          className="self-start inline-flex items-center text-s font-semibold text-[#BD8E32] transition-all duration-200 cursor-pointer shrink-0"
                         >
                           Read full Story <ArrowRight className="w-3.5 h-3.5" />
                         </button>
@@ -475,76 +480,79 @@ export default function CaseStudies() {
                     </div>
                   ))}
                 </div>
-             </>            
+              </>            
             )}
           </div>
+
           {/* Load More Pagination - Mobile */}
-                <div className="block lg:hidden">
-                    <LoadMorePagination
-                      hasMore={hasMore}
-                      onLoadMore={handleLoadMore}
-                      isLoading={loading}
-                     />
-               </div>
+          <div className="block lg:hidden">
+            <LoadMorePagination
+              hasMore={hasMore}
+              onLoadMore={handleLoadMore}
+              isLoading={loading}
+            />
+          </div>
+
           {/* Right Sidebar Area */}
           <aside className="lg:sticky lg:top-28 lg:self-start">
-
-              {/* 1. Most Read Box */}
-              <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs">
-                <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
-                  <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
-                    Most Read
-                  </h3>
-                </div>
-                <div className="flex flex-col">
-                  {popularCaseStudies.map((pop, idx) => (
-                    <div
-                      key={pop.id}
-                      onClick={() => {
-                        const found = caseStudiesData.find((c) => c.id === pop.id);
-                        if (found) setSelectedCaseStudy(found);
-                      }}
-                      className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
-                    >
-                      <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-2">
-                        0{idx + 1}
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-bold text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-2">
-                          {pop.title}
-                        </h4>
-                        <span className="text-[12px] font-medium text-zinc-800">
-                          {pop.readTime} • {pop.category}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            {/* 1. Most Read Box */}
+            <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs">
+              <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
+                <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
+                  Most Read
+                </h3>
               </div>
-             {/* 2 & 3. Monthly Insights Newsletter */}
-             <div className="lg:sticky lg:top-28 lg:self-start w-full">
-             <NewsletterCard/>   
-             </div>        
+              <div className="flex flex-col">
+                {popularCaseStudies.map((pop, idx) => (
+                  <div
+                    key={pop.id}
+                    onClick={() => {
+                      const found = caseStudiesData.find((c) => c.id === pop.id);
+                      if (found) setSelectedCaseStudy(found);
+                    }}
+                    className="p-3.5 border-b border-zinc-300 last:border-none flex gap-4 hover:bg-zinc-50 transition-colors cursor-pointer"
+                  >
+                    <span className="text-xl font-extrabold text-[#BD8E32] leading-none shrink-0 w-5 mt-2">
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-zinc-900 leading-snug hover:text-[#BD8E32] transition-colors mb-1 line-clamp-2">
+                        {pop.title}
+                      </h4>
+                      <span className="text-[12px] font-medium text-zinc-800">
+                        {pop.readTime} • {pop.category}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 2 & 3. Monthly Insights Newsletter */}
+            <div className="lg:sticky lg:top-28 lg:self-start w-full">
+              <NewsletterCard />   
+            </div>        
           </aside>
         </div>
 
         {/* Load More Pagination - Desktop */}
         <div className="hidden lg:block">
           <LoadMorePagination
-             hasMore={hasMore}
-             onLoadMore={handleLoadMore}
-             isLoading={loading}
-           />
+            hasMore={hasMore}
+            onLoadMore={handleLoadMore}
+            isLoading={loading}
+          />
         </div>
       </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <Interservices/>
+      <Interservices />
 
       <CaseStudyDetailModal
-      study={selectedCaseStudy}
-      onClose={() => setSelectedCaseStudy(null)}
+        study={selectedCaseStudy}
+        onClose={() => setSelectedCaseStudy(null)}
       />
+      
       <ScrollToTopButton heroSectionId="hero-section" />  
     </div>
   );

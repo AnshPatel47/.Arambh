@@ -1,26 +1,49 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   Search,
   X,
   ArrowRight,
-  CheckCircle2,
   ChevronRight,
-  Globe,
-  TrendingUp,
-  FileText,
   Info,
   Clock,
-  ArrowDown
 } from "lucide-react";
-import ScrollToTopButton from "../../components/scrollarrow/ScrollToTopButton";
-import PageHeroHeader from "@/components/PageHeroHeader"; 
 import '@/app/globals.css';
-import Interservices from "../components/blog&case_study/Innerservices";
-import { NewsletterCard } from "@/app/components/blog&case_study/Rightsidecards";
-import LoadMorePagination from "@/app/components/blog&case_study/loadmore";
-import BlogDetailModal from "../components/blog&case_study/BlogDetail";
+
+// ── LAZY LOADED SUB-COMPONENTS (Code-split to reduce compilation & bundle size) ──
+const BlogDetailModal = dynamic(
+  () => import("../components/blog&case_study/BlogDetail"),
+  { ssr: false }
+);
+
+const NewsletterCard = dynamic(
+  () => import("@/app/components/blog&case_study/Rightsidecards").then((mod) => mod.NewsletterCard),
+  {
+    ssr: false,
+    loading: () => <div className="h-64 bg-zinc-100 rounded-2xl animate-pulse w-full mt-6" />
+  }
+);
+
+const Interservices = dynamic(
+  () => import("../components/blog&case_study/Innerservices"),
+  {
+    ssr: false,
+    loading: () => <div className="h-40 bg-zinc-50 animate-pulse w-full my-8" />
+  }
+);
+
+const LoadMorePagination = dynamic(
+  () => import("@/app/components/blog&case_study/loadmore"),
+  { ssr: false }
+);
+
+const ScrollToTopButton = dynamic(
+  () => import("../../components/scrollarrow/ScrollToTopButton"),
+  { ssr: false }
+);
 
 // Interface for Blog Post Structure
 interface BlogPost {
@@ -159,10 +182,9 @@ export default function ResourcesBlogPage() {
   const [emailStatus, setEmailStatus] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
-   const [loading, setLoading] = useState(false);
-    // const [handleLoadMore, sethandleLoadMore] = useState(false);
-  
-    const handleLoadMore = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleLoadMore = () => {
     setLoading(true);
     setTimeout(() => {
       setVisibleCount((prev) => prev + 4);
@@ -206,7 +228,7 @@ export default function ResourcesBlogPage() {
     // Scroll down to bring the Cards Grid into view so the user sees the filtered cards pop up
     setTimeout(() => {
       if (cardsContainerRef.current) {
-        const yOffset = -90; // Leave comfortable space above for search/filter pills
+        const yOffset = -90;
         const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
@@ -315,12 +337,6 @@ export default function ResourcesBlogPage() {
 
       {/* ── 2. MAIN CONTENT SECTION ── */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 md:px-8 max-w-[1536px] mx-auto w-full flex-grow font-sans">
-        {/* Section Title */}
-        {/* <div className="reveal w-full mb-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-900 tracking-tight pb-3 sm:pb-4 border-b border-zinc-300 txt-up">
-            All Articles
-          </h2>
-        </div> */}
 
         {/* Search Bar */}
         <div className="relative w-full mb-4 txt-up txt-delay-1">
@@ -392,7 +408,6 @@ export default function ResourcesBlogPage() {
                 </button>
               </div>
             ) : (
-
               <>
                 {/* 2-Column Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -402,13 +417,15 @@ export default function ResourcesBlogPage() {
                       className={`card-pop-up card-delay-${idx % 4} bg-white border border-zinc-300 rounded-[18px] overflow-hidden shadow-xs flex flex-col justify-between group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 w-full`}
                     >
                       <div>
-                        {/* 1. Image Container */}
+                        {/* 1. Image Container (Native Lazy Loaded Next Image) */}
                         <div className="relative w-full aspect-[16/9] sm:aspect-[16/9.5] overflow-hidden bg-zinc-100 rounded-t-[18px]">
-                          <img
+                          <Image
                             src={post.image}
                             alt={post.title}
-                            className="object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105"
+                            fill
                             loading="lazy"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                           />
                         </div>
 
@@ -438,11 +455,16 @@ export default function ResourcesBlogPage() {
                       {/* 3. Card Footer */}
                       <div className="px-5 sm:px-6 pb-6 pt-0 flex items-center justify-between mt-auto">
                         <div className="flex items-center gap-2.5">
-                          <img
-                            src={post.author.avatar}
-                            alt={post.author.name}
-                            className="w-7 h-7 rounded-full object-cover border border-zinc-300"
-                          />
+                          <div className="relative w-7 h-7 rounded-full overflow-hidden border border-zinc-300">
+                            <Image
+                              src={post.author.avatar}
+                              alt={post.author.name}
+                              fill
+                              loading="lazy"
+                              className="object-cover"
+                              sizes="28px"
+                            />
+                          </div>
                           <div>
                             <p className="text-[11px] font-semibold text-zinc-800">{post.author.name}</p>
                           </div>
@@ -463,21 +485,23 @@ export default function ResourcesBlogPage() {
                   ))}
                 </div>
               </>
-            )}             
+            )}            
           </div>
+
           {/* Load More Pagination - Mobile */}
-               <div className="block lg:hidden">
-                   <LoadMorePagination
-                    hasMore={hasMore}
-                    onLoadMore={handleLoadMore}
-                    isLoading={loading}
-                    />
-               </div>
+          <div className="block lg:hidden">
+            <LoadMorePagination
+              hasMore={hasMore}
+              onLoadMore={handleLoadMore}
+              isLoading={loading}
+            />
+          </div>
+
           {/* Right Sidebar Area */}
           <aside className="lg:sticky lg:top-28 lg:self-start">
             
             {/* 1. Most Read Box (Scrolls away naturally as you scroll down) */}
-            <div className="rv-up w-full bg-white border overflow-hidden border-zinc-300 rounded-[16px] shadow-xs">
+            <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
               <div className="px-4 py-3 border-b border-zinc-300 flex items-center justify-between">
                 <h3 className="font-bold text-sm uppercase tracking-wider text-zinc-900">
                   Most Read
@@ -510,32 +534,32 @@ export default function ResourcesBlogPage() {
             </div>
 
             {/* 2 & 3. Sticky Container: Only Monthly Insights + Core Offerings */}
-             <div className="lg:sticky lg:top-28 lg:self-start w-full overflow-hidden">
-              {/* <div className="flex flex-col gap-6"> */}
+            <div className="lg:sticky lg:top-28 lg:self-start w-full overflow-hidden antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
               <NewsletterCard />
-              {/* </div> */}
             </div>
-            </aside>
-         </div>
+          </aside>
+        </div>
 
-         {/* Load More Pagination - Desktop */}
-            <div className="hidden lg:block">
-               <LoadMorePagination
-                hasMore={hasMore}
-                onLoadMore={handleLoadMore}
-                isLoading={loading}
-              />
-            </div>
-     </section>
+        {/* Load More Pagination - Desktop */}
+        <div className="hidden lg:block">
+          <LoadMorePagination
+            hasMore={hasMore}
+            onLoadMore={handleLoadMore}
+            isLoading={loading}
+          />
+        </div>
+      </section>
 
       {/* ── 3. INTERLINKS SECTION ── */}
-      <Interservices/>
-     <BlogDetailModal
-     post={selectedBlog}
-     onClose={() => setSelectedBlog(null)}
-     /> 
+      <div className="antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
+      <Interservices />
+      </div>
+      <BlogDetailModal
+        post={selectedBlog}
+        onClose={() => setSelectedBlog(null)}
+      /> 
 
-     <section id="hero-section" className="hidden"></section>
+      <section id="hero-section" className="hidden"></section>
       <ScrollToTopButton heroSectionId="hero-section" />
       <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
     </div>

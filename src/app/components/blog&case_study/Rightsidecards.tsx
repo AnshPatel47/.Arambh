@@ -32,7 +32,7 @@ export function NewsletterCard({ onSubscribe }: NewsletterCardProps) {
   return (
     <>
       {/* 1. Monthly Insights Newsletter */}
-      <div className="static rv-up bg-white rounded-[16px] p-4 border text-[18px] text-DM sans border-zinc-300 shadow-xs overflow-hidden mb-4 mt-3">
+      <div className="static rv-up bg-white rounded-[16px] p-4 border text-[18px] text-DM sans border-zinc-300 shadow-xs overflow-hidden mb-4 mt-3 antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
         <div className="absolute top-0 right-0 w-20 h-20 bg-[#BD8E32]/10 rounded-full blur-xl pointer-events-none" />
         <h3 className="text-xl font-bold text-zinc-900 border-b border-zinc-300 pb-2 mb-2.5">
           Monthly Insights
@@ -70,7 +70,7 @@ export function NewsletterCard({ onSubscribe }: NewsletterCardProps) {
       </div>
 
       {/* 2. Core Offerings Links */}
-      <div className=" static rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs text-DM sans mt-0">
+      <div className=" static rv-up bg-white rounded-[16px] p-4 border border-zinc-300 shadow-xs text-DM sans mt-0 antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
         <h3 className="font-bold uppercase tracking-wider text-zinc-900 text-[16px] border-b border-zinc-300 pb-2 mb-2.5">
           Core Offerings
         </h3>

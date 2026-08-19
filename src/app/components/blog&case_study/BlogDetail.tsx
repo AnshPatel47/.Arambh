@@ -49,12 +49,12 @@ export default function BlogDetailModal({ post, onClose }: BlogDetailModalProps)
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md transition-opacity"
       role="dialog"
       aria-modal="true"
     >
       {/* Modal Card Container */}
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-300 max-h-[85vh] mt-12">
+      <div className="relative w-full max-w-4xl bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden flex flex-col border border-zinc-300 max-h-[85vh] mt-12">
         {/* Header Image Band */}
         <div className="relative w-full h-[220px] sm:h-[260px] bg-neutral-100 flex-shrink-0">
           <img
@@ -128,6 +128,7 @@ export default function BlogDetailModal({ post, onClose }: BlogDetailModalProps)
                 {post.excerpt}
               </p>
             </div>
+            
           </div>
 
           {/* Full Article Body */}

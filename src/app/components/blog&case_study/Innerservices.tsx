@@ -36,7 +36,7 @@ const advisoryServices = [
 
 export default function Interservices() {
   return (
-    <section className="bg-white pt-12 pb-6 sm:py-16 px-4 sm:px-6 md:px-8">
+    <section className="bg-white pt-12 pb-6 sm:py-16 px-4 sm:px-6 md:px-8 ">
       <div className="max-w-[1440px] mx-auto">
         {/* Section Header */}
         <div className="reveal mb-10 text-left">
