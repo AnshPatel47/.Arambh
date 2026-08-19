@@ -3,15 +3,16 @@ import { prisma } from "@/lib/services";
 
 export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const typeParam = searchParams.get("type"); // "SERVICE" or "SCHEME"
-
-    const whereCondition = typeParam
-      ? { type: typeParam.toUpperCase() as "SERVICE" | "SCHEME" }
-      : {};
-
     const services = await prisma.service.findMany({
-      where: whereCondition,
+      where: { status: "active" },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        category: true,
+        image: true,
+      },
       orderBy: { createdAt: "desc" },
     });
 

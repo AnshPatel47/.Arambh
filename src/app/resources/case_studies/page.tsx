@@ -293,7 +293,6 @@ export default function CaseStudies() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-900 antialiased flex flex-col justify-between relative">
@@ -494,13 +493,14 @@ export default function CaseStudies() {
             />
           </div>
           {/* Load More Pagination - Mobile */}
-                <div className="block lg:hidden">
-                    <LoadMorePagination
-                      hasMore={hasMore}
-                      onLoadMore={handleLoadMore}
-                      isLoading={loading}
-                     />
-               </div>
+          <div className="block lg:hidden">
+            <LoadMorePagination
+              hasMore={hasMore}
+              onLoadMore={handleLoadMore}
+              isLoading={loading}
+            />
+          </div>
+
           {/* Right Sidebar Area */}
           <aside className="lg:sticky lg:top-28 lg:self-start">
             {/* 1. Most Read Box */}

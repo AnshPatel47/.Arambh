@@ -255,15 +255,45 @@ body {
   }
 }
 
-/* in globals.css / style.css */
+/* GPU performance layer */
 .gpu-layer {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-body, aside {
+body,
+aside {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 639px) {
+  /* Make the mobile container transparent */
+  footer.w-full > div.bg-\[\#F8F4EC\] {
+    background-color: transparent !important;
+  }
+
+  /* Shrink and center the gold card on mobile, and pull it up so it overlaps the last section */
+  footer.w-full .bg-gradient-to-r.from-\[\#C2943A\] {
+    width: 92% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: -96px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Make the desktop overlap section transparent */
+  footer.w-full section.bg-white {
+    background-color: transparent !important;
+  }
+}
+
+.rv-up.is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+  -webkit-font-smoothing: antialiased;
 }
