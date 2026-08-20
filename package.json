@@ -9,16 +9,16 @@
     "postinstall": "prisma generate",
     "build": "npx prisma generate && next build"
   },
-  "dependencies": {
-    "@base-ui/react": "^1.6.0",
-    "@fortawesome/fontawesome-svg-core": "^7.3.1",
-    "@fortawesome/free-brands-svg-icons": "^7.3.1",
-    "@fortawesome/free-regular-svg-icons": "^7.3.1",
-    "@fortawesome/free-solid-svg-icons": "^7.3.1",
-    "@fortawesome/react-fontawesome": "^3.5.0",
-    "@prisma/adapter-pg": "^6.19.3",
-    "@prisma/client": "^6.19.3",
-    "bcryptjs": "^3.0.3",
+"dependencies": {
+  "@base-ui/react": "^1.6.0",
+  "@fortawesome/fontawesome-svg-core": "^7.3.1",
+  "@fortawesome/free-brands-svg-icons": "^7.3.1",
+  "@fortawesome/free-regular-svg-icons": "^7.3.1",
+  "@fortawesome/free-solid-svg-icons": "^7.3.1",
+  "@fortawesome/react-fontawesome": "^3.5.0",
+  "@prisma/adapter-pg": "^6.19.3",
+  "@prisma/client": "^6.19.3",
+  "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-auto-scroll": "^8.6.0",
@@ -30,7 +30,6 @@
     "mongodb": "^7.5.0",
     "motion": "^12.42.2",
     "next": "^14.2.35",
-    "pg": "^8.22.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.7.0",
@@ -64,6 +63,6 @@
   "license": "ISC",
   "type": "module",
   "prisma": {
-  "seed": "npx tsx prisma/seed.ts"
+    "seed": "npx tsx prisma/seed.ts"
   }
 }
