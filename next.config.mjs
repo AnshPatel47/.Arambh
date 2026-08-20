@@ -12,7 +12,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Ignore TypeScript type errors during Vercel builds
   typescript: {
     ignoreBuildErrors: false,
     },
