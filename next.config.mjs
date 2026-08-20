@@ -8,15 +8,14 @@ const nextConfig = {
       },
     ],
   },
-<<<<<<< HEAD
   // Ignore ESLint errors during Vercel builds
   eslint: {
     ignoreDuringBuilds: true,
   },
   // Ignore TypeScript type errors during Vercel builds
   typescript: {
-    ignoreBuildErrors: true,
-=======
+    ignoreBuildErrors: false,
+    },
   experimental: {
     optimizePackageImports: [
       'lucide-react',
@@ -26,7 +25,6 @@ const nextConfig = {
       'date-fns',
       'lodash'
     ],
->>>>>>> 5711564 (last changes)
   },
 };
 

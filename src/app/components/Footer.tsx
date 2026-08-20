@@ -22,12 +22,8 @@ const PAGE_BACKGROUND_MAP: Record<string, string> = {
 
 
 export default function Footer() {
-<<<<<<< HEAD
   const pathname = usePathname();
-    const [email, setEmail] = useState("");
-=======
   const [email, setEmail] = useState("");
->>>>>>> 39494f8 (new changes)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
