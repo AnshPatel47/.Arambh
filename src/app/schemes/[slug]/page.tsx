@@ -17,7 +17,7 @@ import {
 import { notFound } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import ScrollToTopButton from "@/components/scrollarrow/ScrollToTopButton";
-import { prisma } from "@/lib/services";
+import { prisma } from "@/lib/prisma";
 import { schemes as initialSchemes } from "@/components/home/hero/hero.data";
 import Image from "next/image";
 

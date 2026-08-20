@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/services";
+import { prisma } from "@/lib/prisma";
 import DashboardClient from "./components/DashboardClient";
 import { ServiceType } from "@prisma/client";
 
