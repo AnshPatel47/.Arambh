@@ -2,10 +2,11 @@ import SectionHeader from "@/components/SectionHeader";
 
 export default function FAQHeader() {
   return (
-    <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+    <div className="w-full flex justify-center lg:justify-start">
       <SectionHeader
         align="left"
-        className="max-w-[302px] lg:w-[302px]"
+        alignMobile="center"
+        className="max-w-[302px] lg:w-[302px] ![text-align:center] lg:![text-align:left] [&_*]:![text-align:center] lg:[&_*]:![text-align:left] !mx-auto lg:!mx-0"
         title={
           <>
             Frequently

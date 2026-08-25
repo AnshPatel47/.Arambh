@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } // Await params for Next.js compatibility
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const { title, slug, category, description, price, features, icon, status, type } = body;
 
@@ -19,15 +19,15 @@ export async function PUT(
     const updatedService = await prisma.service.update({
       where: { id },
       data: {
-        ...(title && { title }),
-        ...(slug && { slug }),
-        ...(category && { category }),
-        ...(description && { description }),
+        title,
+        slug,
+        category,
+        description,
         price: price !== undefined ? price : null,
         features: formattedFeatures,
-        ...(icon && { icon }),
-        ...(status && { status }),
-        ...(type && { type }), // <-- Allows updating type if passed
+        icon: icon || "Briefcase",
+        status: status || "active",
+        type: type === "SCHEME" ? "SCHEME" : "SERVICE",
       },
     });
 

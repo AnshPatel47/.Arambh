@@ -42,42 +42,60 @@ export default function ServiceForm({
     status: "active",
     type: isScheme ? "SCHEME" : "SERVICE",
   });
-
-  const [featuresInput, setFeaturesInput] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [featureInput, setFeatureInput] = useState("");
 
-  useEffect(() => {
-  if (initialData) {
-    setFormData({
-      id: initialData.id,
-      title: initialData.title || "",
-      category: initialData.category || (isScheme ? "Government Scheme" : "Registration"),
-      description: initialData.description || "",
-      price: initialData.price || "",
-      features: Array.isArray(initialData.features) ? initialData.features : [],
-      icon: initialData.icon || "Briefcase",
-      status: initialData.status || "active",
-      type: initialData.type || (isScheme ? "SCHEME" : "SERVICE"),
-    });
-    setFeaturesInput(
-      Array.isArray(initialData.features) ? initialData.features.join(", ") : ""
-    );
-  } else {
-    setFormData({
-      title: "",
-      category: isScheme ? "Government Scheme" : "Registration", // DYNAMIC CATEGORY
-      description: "",
-      price: "",
-      features: [],
-      icon: "Briefcase",
-      status: "active",
-      type: isScheme ? "SCHEME" : "SERVICE",
-    });
-    setFeaturesInput("");
-  }
-}, [initialData, isScheme]); 
+  const defaultSuggestions = isScheme
+    ? ["100% Tax Exemption", "Collateral Free Loan", "Interest Subvention", "Subsidy Support"]
+    : ["24/7 Support", "Free Consultation", "Tax Filing", "Company Registration"];
+
+useEffect(() => {
+    if (initialData) {
+      setFormData({
+        id: initialData.id,
+        title: initialData.title || "",
+        category: initialData.category || (isScheme ? "Government Scheme" : "Registration"),
+        description: initialData.description || "",
+        price: initialData.price || "",
+        features: Array.isArray(initialData.features) ? initialData.features : [],
+        icon: initialData.icon || "Briefcase",
+        status: initialData.status || "active",
+        type: initialData.type || (isScheme ? "SCHEME" : "SERVICE"),
+      });
+    } else {
+      setFormData({
+        title: "",
+        category: isScheme ? "Government Scheme" : "Registration",
+        description: "",
+        price: "",
+        features: [],
+        icon: "Briefcase",
+        status: "active",
+        type: isScheme ? "SCHEME" : "SERVICE",
+      });
+    }
+    setFeatureInput("");
+  }, [initialData, isScheme]);
+
+  const handleAddFeature = (textToAdd?: string) => {
+    const val = (textToAdd || featureInput).trim();
+    if (val && !formData.features.includes(val)) {
+      setFormData((prev) => ({
+        ...prev,
+        features: [...prev.features, val],
+      }));
+      setFeatureInput("");
+    }
+  };
+
+  const handleRemoveFeature = (indexToRemove: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      features: prev.features.filter((_, index) => index !== indexToRemove),
+    }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -89,28 +107,20 @@ export default function ServiceForm({
     });
   };
 
-  const handleFeaturesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFeaturesInput(e.target.value);
-  };
-
- const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMsg(null);
     setSuccessMsg(null);
 
-    const parsedFeatures = featuresInput
-      .split(",")
-      .map((f) => f.trim())
-      .filter(Boolean);
-
-    // Explicitly pass type to backend payload
+    // Explicitly pass type and current array features to backend payload
     const payload = {
       ...formData,
+      status: formData.status || "active",
       type: isScheme ? "SCHEME" : "SERVICE",
-      features: parsedFeatures,
+      features: formData.features,
     };
-
+    
     try {
       let url = "/api/services";
       let method = "POST";
@@ -230,12 +240,12 @@ export default function ServiceForm({
 {/* Price / Funding Field */}
 <div>
   <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
-    {isScheme ? "Funding / Grant Amount" : "Price ($)"}
+    {isScheme ? "Funding / Grant Amount" : "Price (₹)"}
   </label>
   <div className="relative">
     {!isScheme && (
       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-bold">
-        $
+        ₹
       </span>
     )}
     <input
@@ -249,6 +259,22 @@ export default function ServiceForm({
       } rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all`}
     />
   </div>
+</div>
+
+{/* Status Field */}
+<div>
+  <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-2">
+    Status *
+  </label>
+  <select
+    name="status"
+    value={formData.status || "active"}
+    onChange={handleChange}
+    className="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all cursor-pointer font-medium"
+  >
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+  </select>
 </div>
 
 {/* Description Field */}
@@ -271,22 +297,82 @@ export default function ServiceForm({
   />
 </div>
 
-{/* Features / Benefits Field */}
-<div>
-  <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700 mb-2">
-    {isScheme ? "Key Scheme Benefits (Comma Separated)" : "Features (Comma Separated)"}
+{/* Features / Benefits Field (LinkedIn Style) */}
+<div className="flex flex-col gap-3">
+  <label className="block text-xs text-DM sans font-bold uppercase tracking-wider text-zinc-700">
+    {isScheme ? "Key Scheme Benefits" : "Features"}
   </label>
-  <input
-    type="text"
-    value={featuresInput}
-    onChange={handleFeaturesChange}
-    placeholder={
-      isScheme
-        ? "e.g. 100% Tax Exemption, Collateral Free Loan, Interest Subvention"
-        : "e.g. 24/7 Support, Free Consultation, Tax Filing"
-    }
-    className="w-full text-DM sans bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
-  />
+
+  {/* Active Features List (LinkedIn style: line with cross icon on left) */}
+  {formData.features.length > 0 && (
+    <div className="flex flex-col gap-2">
+      {formData.features.map((feat, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-3 p-3 bg-white border border-zinc-200 rounded-xl text-sm font-semibold text-zinc-900 shadow-sm"
+        >
+          <button
+            type="button"
+            onClick={() => handleRemoveFeature(index)}
+            className="text-zinc-400 hover:text-red-500 text-sm font-bold transition-colors cursor-pointer"
+          >
+            ✕
+          </button>
+          <span>{feat}</span>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {/* Input Field + Add Button */}
+  <div className="flex gap-2">
+    <input
+      type="text"
+      value={featureInput}
+      onChange={(e) => setFeatureInput(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleAddFeature();
+        }
+      }}
+      placeholder={
+        isScheme
+          ? "Benefit (ex: Collateral Free Loan)"
+          : "Feature (ex: 24/7 Support)"
+      }
+      className="flex-1 bg-zinc-50 border border-zinc-300 text-zinc-900 placeholder-zinc-500 py-3.5 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C2943A] text-sm transition-all"
+    />
+    <button
+      type="button"
+      onClick={() => handleAddFeature()}
+      className="px-5 py-3.5 bg-black hover:bg-zinc-800 text-white font-bold text-sm rounded-xl transition-all cursor-pointer"
+    >
+      Add
+    </button>
+  </div>
+
+  {/* Suggested Chips (+ to Add) */}
+  <div className="p-4 bg-[#F6F4F0] border border-[#E6E0D6] rounded-xl flex flex-col gap-2.5">
+    <span className="text-xs font-bold text-zinc-700">
+      Suggested based on {isScheme ? "schemes" : "services"}
+    </span>
+    <div className="flex flex-wrap gap-2">
+      {defaultSuggestions
+        .filter((s) => !formData.features.includes(s))
+        .map((suggestion) => (
+          <button
+            key={suggestion}
+            type="button"
+            onClick={() => handleAddFeature(suggestion)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-300 hover:border-zinc-400 rounded-full text-xs font-semibold text-zinc-800 transition-all cursor-pointer shadow-sm"
+          >
+            <span>{suggestion}</span>
+            <span className="text-sm font-bold text-zinc-500">+</span>
+          </button>
+        ))}
+    </div>
+  </div>
 </div>
 
         {/* Buttons */}

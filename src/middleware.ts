@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   if (isDashboardRoute) {
     if (!token) {
-      // 🔄 Redirect to /admin/login
+      // Redirect to /admin/login
       return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 

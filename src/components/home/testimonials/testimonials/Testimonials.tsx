@@ -40,16 +40,17 @@ export default function Testimonials() {
               justify-between
               gap-16
               lg:gap-32
-              items-start
+              items-center
+              lg:items-start
             "
           >
             {/* Left Side: Header */}
-            <div className="w-full lg:max-w-[500px]">
+            <div className="w-full lg:max-w-[500px] flex justify-center lg:justify-start">
               <TestimonialsHeader />
             </div>
 
             {/* Right Side: Animated Card Stack */}
-            <div className="w-full max-w-[531px]">
+            <div className="w-full max-w-[531px] mx-auto lg:mx-0">
               <TestimonialsList scrollYProgress={scrollYProgress} />
             </div>
           </div>

@@ -14,12 +14,12 @@ import '@/app/globals.css';
 
 // ── LAZY LOADED SUB-COMPONENTS ──
 const CaseStudyDetailModal = dynamic(
-  () => import("@/app/components/blog&case_study/CasestudiesDetail"),
+  () => import("@/components/blog&case_study/CasestudiesDetail"),
   { ssr: false }
 );
 
 const NewsletterCard = dynamic(
-  () => import("@/app/components/blog&case_study/Rightsidecards").then((mod) => mod.NewsletterCard),
+  () => import("@/components/blog&case_study/Rightsidecards").then((mod) => mod.NewsletterCard),
   {
     ssr: false,
     loading: () => <div className="h-64 bg-zinc-100 rounded-2xl animate-pulse w-full mt-6" />
@@ -27,7 +27,7 @@ const NewsletterCard = dynamic(
 );
 
 const Interservices = dynamic(
-  () => import("@/app/components/blog&case_study/Innerservices"),
+  () => import("@/components/blog&case_study/Innerservices"),
   {
     ssr: false,
     loading: () => <div className="h-40 bg-zinc-50 animate-pulse w-full my-8" />
@@ -35,7 +35,7 @@ const Interservices = dynamic(
 );
 
 const LoadMorePagination = dynamic(
-  () => import("@/app/components/blog&case_study/loadmore"),
+  () => import("@/components/blog&case_study/loadmore"),
   { ssr: false }
 );
 

@@ -218,6 +218,100 @@ async function main() {
   }
 
   console.log("All services & schemes seeded successfully!");
+
+
+  // BLOG POSTS
+
+  const blogPostsData = [
+    {
+      id: "how-to-register-startup-india",
+      title: "How to Register Your Startup in India: The Definitive Step-by-Step Guide",
+      category: "Startup Registration",
+      excerpt: "A complete walkthrough of incorporating a Private Limited or LLP company, structuring founder equity, and qualifying for DPIIT recognition.",
+      content: "Registering a startup in India involves key decisions about corporate structure, share capital, and director credentials. This article guides you from choosing between a Private Limited Company and an LLP to filing name approvals on the MCA portal, drafting the Memorandum of Association (MoA), obtaining GSTIN, and preparing the validation pitch deck required to unlock Startup India benefits.",
+      date: "July 2026",
+      readTime: "7 min read",
+      authorName: "Arambh Editorial Team",
+      authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Corporate Advisory Group",
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: "top-government-funding-schemes",
+      title: "Top Government Funding Schemes Indian Founders Should Leverage in 2026",
+      category: "Funding Support",
+      excerpt: "Understanding the Startup India Seed Fund (SISFS), priority sector credit lines, and technology development grants to fuel your business.",
+      content: "Securing initial capital is a major milestone. While venture capital grabs headlines, the Government of India provides massive non-dilutive funding lines. We break down the eligibility rules, proposal frameworks, and audit compliance benchmarks required to successfully secure up to ₹2 Crore under schemes like the SISFS and biotechnology initiatives.",
+      date: "July 2026",
+      readTime: "9 min read",
+      authorName: "Vikas Patel",
+      authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Senior Consultant, Funding",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: "corporate-governance-mistakes",
+      title: "5 Corporate Governance Mistakes That Can Kill Your Series-A Due Diligence",
+      category: "Business Consulting",
+      excerpt: "Unfiled returns, sloppy cap tables, and undocumented IP transfers are investor deal-breakers. Learn how to clean up your logs.",
+      content: "During due diligence, VC auditors inspect board minutes, statutory registers, and compliance logs. Simple oversights like late filings with the registrar, missing IP assignment agreements for co-founders, or loose freelance agreements can delay or cancel funding rounds. Learn how to run a corporate compliance check before your term sheet arrives.",
+      date: "June 2026",
+      readTime: "6 min read",
+      authorName: "Nisha Sharma",
+      authorAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Legal & Compliance Partner",
+      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: "dpiit-recognition-benefits",
+      title: "DPIIT Recognition Benefits: Beyond Just Capital Gains Tax Exemptions",
+      category: "Startup Registration",
+      excerpt: "Unlocking patent rebates, public procurement relaxations, and self-certification under labor and environmental laws.",
+      content: "While the 3-year income tax holiday under Section 80-IAC is popular, DPIIT recognition provides broader strategic leverage. Startups qualify for an 80% rebate on patents, priority bidding in public tenders with no prior experience requirements, and relaxed self-audits, shielding early-stage teams from labor and environmental compliance checks.",
+      date: "May 2026",
+      readTime: "5 min read",
+      authorName: "Arambh Editorial Team",
+      authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Corporate Advisory Group",
+      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: "msme-registration-udyam-benefits",
+      title: "MSME Registration Guide: Unlocking Collateral-Free Loans & Subsidies",
+      category: "MSME Benefits",
+      excerpt: "How registering on the Udyam portal unlocks lower interest rates, utility concessions, and protection against delayed payments.",
+      content: "The Udyam registration portal provides small and micro-businesses with powerful legal protections. Under the MSMED Act, clients are legally bound to pay within 45 days, or face compound interest. Udyam status also qualifies companies for interest rate concessions, collateral-free credit lines, and local electricity duty exemptions.",
+      date: "May 2026",
+      readTime: "8 min read",
+      authorName: "Rajesh Mehta",
+      authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Director, MSME Relations",
+      image: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: "crossborder-saas-billing-rules",
+      title: "Cross-Border SaaS Billing: Aligning with GST & Transfer Pricing Mandates",
+      category: "Compliance & Advisory",
+      excerpt: "How domestic software platforms can set up compliant export invoicing and utilize LUT for zero-rated sales.",
+      content: "Selling software globally requires strict tax compliance. We analyze how Indian SaaS founders can leverage the Letter of Undertaking (LUT) to export services without paying IGST, manage foreign exchange compliance, file Input Tax Credit (ITC) refunds, and structure transfer pricing rules for US-incorporated subsidiaries.",
+      date: "April 2026",
+      readTime: "7 min read",
+      authorName: "Siddharth Rao",
+      authorAvatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80",
+      authorRole: "Taxation Partner",
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80"
+    }
+  ];
+
+  await prisma.blog.deleteMany({});
+
+for (const post of blogPostsData) {
+  const { id, ...postDataWithoutId } = post; 
+  await prisma.blog.create({
+    data: postDataWithoutId,
+  });
+}
+  console.log("Seeded all blog posts successfully!");
 }
 
 main()

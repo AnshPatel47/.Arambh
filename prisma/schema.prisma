@@ -127,3 +127,19 @@ model Contact {
 
   createdAt DateTime @default(now())
 }
+
+model Blog {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  category     String   @default("General")
+  excerpt      String?
+  content      String?
+  date         String   
+  readTime     String?  @default("5 min read")
+  authorName   String?  @default("Arambh Editorial Team")
+  authorAvatar String?  @default("https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80")
+  authorRole   String?  @default("Corporate Advisory Group")
+  image        String   
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

@@ -15,10 +15,11 @@ export default function LeftPanel() {
   return (
     <div className="flex-shrink-0 w-full max-w-[396.32px] flex flex-col gap-10 items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0">
 
-      {/* Reusable Section Header with exact match styling */}
+      {/* Reusable Section Header with forced center alignment until lg (1024px) */}
       <SectionHeader
         align="left"
         alignMobile="center"
+        className="w-full ![text-align:center] lg:![text-align:left] !mx-auto lg:!mx-0"
         title={
           <>
             <span className="text-[#131313]">Empowering </span>
@@ -26,7 +27,6 @@ export default function LeftPanel() {
           </>
         }
         description="Growing our network of successful businesses, one state at a time."
-        className="w-full"
       />
 
       {/* Stat cards wrapped in one bordered container */}

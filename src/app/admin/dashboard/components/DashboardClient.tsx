@@ -43,51 +43,31 @@ export default function DashboardClient({
 }: DashboardClientProps) {
   const [activeTab, setActiveTab] = useState<"services" | "contacts" | "schedule">("services");
   const [typeFilter, setTypeFilter] = useState<"SERVICE" | "SCHEME">("SERVICE");
-  const [expandedFields, setExpandedFields] = useState<Record<string, boolean>>({});
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const router = useRouter();
 
-  const toggleExpand = (key: string) => {
-    setExpandedFields((prev) => ({ ...prev, [key]: !prev[key] }));
+const toggleRowExpand = (id: string) => {
+    setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const renderInlineTruncatedCell = (
-  text: string | null | undefined,
-  fieldId: string,
-  threshold = 15
-) => {
-  if (!text || text.trim() === "") return "-";
+ const renderCleanCell = (text: string | null | undefined, isExpanded: boolean) => {
+    if (!text || text.trim() === "") return "-";
 
-  const isExpanded = expandedFields[fieldId];
-  const isLongText = text.length > threshold;
-
-  return (
-    <div className="flex flex-col justify-center min-h-[24px]">
-      <div className="flex items-center gap-1.5 w-full max-w-[180px] sm:max-w-[240px]">
-        <span
-          className={
-            isExpanded
-              ? "whitespace-pre-wrap break-all leading-normal"
-              : "truncate inline-block leading-none"
-          }
-        >
-          {isExpanded ? text : isLongText ? `${text.slice(0, threshold)}...` : text}
-        </span>
-
-        {isLongText && (
-          <button
-            type="button"
-            onClick={() => toggleExpand(fieldId)}
-            className="text-xs font-semibold text-[#C2943A] hover:underline cursor-pointer select-none whitespace-nowrap shrink-0 leading-none"
-          >
-            {isExpanded ? "Less" : "View"}
-          </button>
+    return (
+      <div className="w-full overflow-hidden">
+        {isExpanded ? (
+          <p className="whitespace-pre-wrap break-words text-zinc-800 leading-normal">
+            {text}
+          </p>
+        ) : (
+          <span className="block truncate text-zinc-700 w-full" title={text}>
+            {text}
+          </span>
         )}
       </div>
-    </div>
-  );
-};
-
+    );
+  };
   const combinedItems = [
     ...services.map((s) => ({ ...s, type: s.type || "SERVICE" })),
     ...schemes.map((s) => ({ ...s, type: s.type || "SCHEME" })),
@@ -214,35 +194,52 @@ export default function DashboardClient({
           <th className="px-6 py-4 w-44">Email</th>
           <th className="px-6 py-4 w-32">Phone</th>
           <th className="px-6 py-4 w-36">Company</th>
-          <th className="px-6 py-4 w-48">Message</th>
+       <th className="px-6 py-4 w-[260px] min-w-[260px]">Message</th>
           <th className="px-6 py-4 w-40">Date</th>
+          <th className="px-6 py-4 w-24 text-right">Actions</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-zinc-200 bg-white text-zinc-700">
         {contacts.length === 0 ? (
           <tr>
-            <td colSpan={6} className="px-6 py-10 text-center text-zinc-500">
+            <td colSpan={7} className="px-6 py-10 text-center text-zinc-500">
               No contacts found in the database.
             </td>
           </tr>
         ) : (
-         contacts.map((contact) => (
-  <tr key={contact.id} className="hover:bg-zinc-50 transition-colors duration-150 align-middle border-b border-zinc-200">
-    <td className="px-6 py-4 font-medium text-zinc-900 truncate max-w-[140px] align-middle">{formatValue(contact.name)}</td>
-    <td className="px-6 py-4 truncate max-w-[180px] align-middle">{formatValue(contact.email)}</td>
-    <td className="px-6 py-4 whitespace-nowrap align-middle">{formatValue(contact.phone)}</td>
-    <td className="px-6 py-4 truncate max-w-[140px] align-middle">{formatValue(contact.company)}</td>
-    <td className="px-6 py-4 align-middle">
-      {renderInlineTruncatedCell(contact.message, `contact-msg-${contact.id}`, 20)}
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs align-middle">
-      {new Date(contact.createdAt).toLocaleString(undefined, {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })}
-    </td>
-  </tr>
-))
+    contacts.map((contact) => {
+            const isExpanded = !!expandedRows[contact.id];
+            const hasLongContent = (contact.message?.length || 0) > 25;
+
+            return (
+              <tr key={contact.id} className="hover:bg-zinc-50 transition-colors duration-150 align-middle border-b border-zinc-200">
+                <td className="px-6 py-4 font-medium text-zinc-900 truncate max-w-[140px]">{formatValue(contact.name)}</td>
+                <td className="px-6 py-4 truncate max-w-[180px]">{formatValue(contact.email)}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{formatValue(contact.phone)}</td>
+                <td className="px-6 py-4 truncate max-w-[140px]">{formatValue(contact.company)}</td>
+               <td className="px-6 py-4 w-[260px] max-w-[260px]">
+                  {renderCleanCell(contact.message, isExpanded)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs">
+                  {new Date(contact.createdAt).toLocaleString(undefined, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </td>
+                <td className="px-6 py-4 text-center whitespace-nowrap">
+                  {hasLongContent && (
+                    <button
+                      type="button"
+                      onClick={() => toggleRowExpand(contact.id)}
+                      className="text-xs font-semibold text-[#C2943A] hover:underline cursor-pointer select-none"
+                    >
+                      {isExpanded ? "Less" : "View"}
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })
         )}
       </tbody>
     </table>
@@ -252,50 +249,64 @@ export default function DashboardClient({
         {/* Schedule Booking Tab */}
 {activeTab === "schedule" && (
   <div className="overflow-x-auto border border-zinc-200 rounded-lg shadow-sm">
-    <table className="min-w-full divide-y divide-zinc-200 text-left text-sm table-fixed sm:table-auto">
+    <table className="w-full text-left text-sm table-fixed min-w-[900px] divide-y divide-zinc-200">
       <thead className="bg-zinc-50 text-zinc-600 uppercase font-semibold text-xs tracking-wider">
         <tr>
-          <th className="px-6 py-4 w-32">Name</th>
-          <th className="px-6 py-4 w-44">Email</th>
-          <th className="px-6 py-4 w-36">Schedule Date</th>
-          <th className="px-6 py-4 w-32">Schedule Time</th>
-          <th className="px-6 py-4 w-44">Notes</th>
-          <th className="px-6 py-4 w-44">Guests</th>
-          <th className="px-6 py-4 w-40">Created At</th>
+        <th className="px-6 py-4 w-[140px]">Name</th>
+          <th className="px-6 py-4 w-[180px]">Email</th>
+          <th className="px-6 py-4 w-[130px]">Schedule Date</th>
+          <th className="px-6 py-4 w-[120px]">Schedule Time</th>
+          <th className="px-6 py-4 w-[200px]">Notes</th>
+          <th className="px-6 py-4 w-[200px]">Guests</th>
+          <th className="px-6 py-4 w-[140px]">Created At</th>
+          <th className="px-6 py-4 w-[110px] text-center">Actions</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-zinc-200 bg-white text-zinc-700">
         {bookings.length === 0 ? (
           <tr>
-            <td colSpan={7} className="px-6 py-10 text-center text-zinc-500">
+            <td colSpan={8} className="px-6 py-10 text-center text-zinc-500">
               No schedule bookings found in the database.
             </td>
           </tr>
         ) : (
-          bookings.map((booking) => (
-  <tr key={booking.id} className="hover:bg-zinc-50 transition-colors duration-150 align-middle border-b border-zinc-200">
-    <td className="px-6 py-4 font-medium text-zinc-900 truncate max-w-[140px] align-middle">{formatValue(booking.name)}</td>
-    <td className="px-6 py-4 truncate max-w-[180px] align-middle">{formatValue(booking.email)}</td>
-    <td className="px-6 py-4 whitespace-nowrap align-middle">{formatScheduleDate(booking.scheduleDate)}</td>
-    <td className="px-6 py-4 whitespace-nowrap align-middle">{formatValue(booking.scheduleTime)}</td>
-    <td className="px-6 py-4 align-middle">
-      {renderInlineTruncatedCell(booking.scheduleNotes, `booking-note-${booking.id}`, 20)}
-    </td>
-    <td className="px-6 py-4 align-middle">
-      {renderInlineTruncatedCell(
-        booking.scheduleGuests?.length > 0 ? booking.scheduleGuests.join(", ") : null,
-        `booking-guest-${booking.id}`,
-        20
-      )}
-    </td>
-    <td className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs align-middle">
-      {new Date(booking.createdAt).toLocaleString(undefined, {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })}
-    </td>
-  </tr>
-))
+        bookings.map((booking) => {
+            const isExpanded = !!expandedRows[booking.id];
+            const guestsText = booking.scheduleGuests?.length > 0 ? booking.scheduleGuests.join(", ") : null;
+            const hasLongContent = (booking.scheduleNotes?.length || 0) > 25 || (guestsText?.length || 0) > 25;
+
+            return (
+              <tr key={booking.id} className="hover:bg-zinc-50 transition-colors duration-150 align-middle border-b border-zinc-200">
+<td className="px-6 py-4 font-medium text-zinc-900 truncate">{formatValue(booking.name)}</td>
+                <td className="px-6 py-4 truncate">{formatValue(booking.email)}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{formatScheduleDate(booking.scheduleDate)}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{formatValue(booking.scheduleTime)}</td>
+                <td className="px-6 py-4 overflow-hidden">
+                  {renderCleanCell(booking.scheduleNotes, isExpanded)}
+                </td>
+                <td className="px-6 py-4 overflow-hidden">
+                  {renderCleanCell(guestsText, isExpanded)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-zinc-500 text-xs">
+                  {new Date(booking.createdAt).toLocaleString(undefined, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </td>
+                <td className="px-6 py-4 text-center whitespace-nowrap">
+                  {hasLongContent && (
+                    <button
+                      type="button"
+                      onClick={() => toggleRowExpand(booking.id)}
+                      className="text-xs font-semibold text-[#C2943A] hover:underline cursor-pointer select-none"
+                    >
+                      {isExpanded ? "Less" : "View"}
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })
         )}
       </tbody>
     </table>

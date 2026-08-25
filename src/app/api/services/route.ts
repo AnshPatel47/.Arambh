@@ -3,16 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const typeParam = searchParams.get("type");
+
     const services = await prisma.service.findMany({
-      where: { status: "active" },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        description: true,
-        category: true,
-        image: true,
-      },
+      where: typeParam ? { type: typeParam } : {}, // Removed the hardcoded active status filter for Admin
       orderBy: { createdAt: "desc" },
     });
 

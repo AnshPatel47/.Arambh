@@ -206,9 +206,9 @@ export default function ServicesManager({ items = [], activeTypeFilter = "ALL" }
                     </span>
                   </td>
 
-                  <td className="px-6 py-4 font-medium text-zinc-900">
-                    {service.price ? `$${service.price}` : "Custom"}
-                  </td>
+                <td className="px-6 py-4 font-medium text-zinc-900">
+  {service.price ? `₹${service.price}` : "-"}
+</td>
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
@@ -265,15 +265,22 @@ export default function ServicesManager({ items = [], activeTypeFilter = "ALL" }
             onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside form
             className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto my-auto cursor-default"
           >
-            <ServiceForm
-              initialData={editingService}
-              activeTypeFilter={listingType}
-              onCancel={() => setIsModalOpen(false)}
-              onSubmitSuccess={() => {
-                setIsModalOpen(false);
-                fetchServices();
-              }}
-            />
+<ServiceForm
+  initialData={editingService}
+  activeTypeFilter={listingType}
+  onCancel={() => setIsModalOpen(false)}
+  onSubmitSuccess={(savedService) => {
+    setIsModalOpen(false);
+    setServices((prev) => {
+      const exists = prev.some((s) => s.id === savedService.id);
+      if (exists) {
+        // Update ONLY the target service in state without refreshing the entire list
+        return prev.map((s) => (s.id === savedService.id ? savedService : s));
+      }
+      return [savedService, ...prev];
+    });
+  }}
+/>
           </div>
         </div>,
         document.body

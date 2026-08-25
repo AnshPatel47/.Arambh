@@ -1,7 +1,13 @@
 export interface Blog {
-  id: number;
+  id: string;
   title: string;
-  date: string;
   category: string;
+  date: string;
   image: string;
+  excerpt?: string;
+  description?: string;
+  content?: string;
+  readTime?: string;
+  authorName?: string;
+  authorAvatar?: string;
 }
