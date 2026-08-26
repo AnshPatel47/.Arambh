@@ -3,7 +3,8 @@
 import { useState } from "react";
 import CaseStudiesHeader from "./CaseStudiesHeader";
 import CaseStudiesList from "./CaseStudiesList";
-import CaseStudyModal from "./CaseStudyModal";
+// Import the main dedicated popup component
+import CaseStudyDetailModal from "@/components/blog&case_study/CasestudiesDetail"; 
 import { CaseStudy } from "./caseStudy.types";
 
 export default function CaseStudies() {
@@ -14,21 +15,11 @@ export default function CaseStudies() {
       id="case-studies"
       className="w-full bg-[#FBF7EE] py-14 overflow-hidden"
     >
-      <div
-        className="
-          mx-auto
-          max-w-[1440px]
-          px-6
-          lg:px-20
-          flex
-          flex-col
-          gap-10
-        "
-      >
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-20 flex flex-col gap-10">
         {/* Header */}
         <CaseStudiesHeader />
 
-        {/* Horizontal Line below the heading */}
+        {/* Horizontal Line */}
         <div className="w-full border-t border-[#E6DFD4]" />
 
         {/* Cards List slider */}
@@ -36,8 +27,8 @@ export default function CaseStudies() {
           <CaseStudiesList onSelectStudy={setSelectedStudy} />
         </div>
 
-        {/* Detail Modal */}
-        <CaseStudyModal
+        {/* Reused Shared Popup Modal */}
+        <CaseStudyDetailModal
           study={selectedStudy}
           onClose={() => setSelectedStudy(null)}
         />
