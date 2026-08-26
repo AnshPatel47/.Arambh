@@ -228,7 +228,7 @@ export default function ResourcesBlogPage() {
     // Scroll down to bring the Cards Grid into view so the user sees the filtered cards pop up
     setTimeout(() => {
       if (cardsContainerRef.current) {
-        const yOffset = -90;
+        const yOffset = -240;
         const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
@@ -370,12 +370,12 @@ export default function ResourcesBlogPage() {
         </div>
 
         {/* Filter Category Pills Row */}
-        <div className="flex flex-wrap items-center gap-2.5 mb-8 txt-up txt-delay-3">
+        <div className="flex flex-wrap items-center gap-2 mb-4 txt-up txt-delay-3">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`px-3 py-1 text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
+              className={`px-1 sm:px-3 py-1 sm:py-1 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
                   : "bg-white border border-zinc-300 text-zinc-800 hover:border-zinc-400"
@@ -498,7 +498,7 @@ export default function ResourcesBlogPage() {
           </div>
 
           {/* Right Sidebar Area */}
-          <aside className="lg:sticky lg:top-28 lg:self-start">
+          <aside className="lg:sticky lg:top-28 lg:self-start mt-0">
             
             {/* 1. Most Read Box (Scrolls away naturally as you scroll down) */}
             <div className="rv-up w-full bg-white border border-zinc-300 rounded-[16px] overflow-hidden shadow-xs antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
@@ -534,7 +534,7 @@ export default function ResourcesBlogPage() {
             </div>
 
             {/* 2 & 3. Sticky Container: Only Monthly Insights + Core Offerings */}
-            <div className="lg:sticky lg:top-28 lg:self-start w-full overflow-hidden antialiased [transform:translateZ(0)] [backface-visibility:hidden] [perspective:1000px]">
+            <div className="lg:sticky text-DM sans antialiased lg:top-28 lg:self-start w-full overflow-hidden">
               <NewsletterCard />
             </div>
           </aside>
@@ -561,7 +561,6 @@ export default function ResourcesBlogPage() {
 
       <section id="hero-section" className="hidden"></section>
       <ScrollToTopButton heroSectionId="hero-section" />
-      <section className="w-full bg-white text-zinc-900 pt-0 pb-0 sm:pt-12 sm:pb-32 md:pb-20 relative z-0"></section>
     </div>
   );
 }

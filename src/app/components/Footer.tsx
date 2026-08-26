@@ -82,13 +82,12 @@ export default function Footer() {
     <footer className="w-full bg-transparent pt-0 text-zinc-300 font-sans relative z-50 overflow-hidden">
       
    {/* ── DYNAMIC CONTAINER MATCHING PREVIOUS SECTION ── */}
-<div 
+  <div 
   style={{ backgroundColor: topBgColor }} 
   className="w-full transition-colors duration-300 pt-6 pb-12"
->
-
-        {/* ── BOLD & PREMIUM GOLD CARD ── */}
-        <div className="w-[96%] sm:w-[96%] max-w-[1280px] mx-auto relative z-20 mt-0 md:-mt-0 mb-10 bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] py-10 px-5 sm:px-8 md:px-12 rounded-2xl overflow-hidden shadow-xl">
+  >
+    {/* ── BOLD & PREMIUM GOLD CARD ── */}
+        <div className="w-[96%] sm:w-[96%] max-w-[1280px] mx-auto relative z-20 mt-0 md:-mt-0 mb-0 bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] py-10 px-5 sm:px-8 md:px-12 rounded-2xl overflow-hidden shadow-xl">
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 lg:gap-12">
 
             {/* Left Side: Heading text */}
@@ -102,69 +101,83 @@ export default function Footer() {
             </div> 
 
             {/* Right Side: Input Field + Button Group */}
-            <div className="w-full md:w-auto flex flex-col sm:flex-row items-center justify-center gap-3">
-               <form
-                onSubmit={handleSubmit}
-                className="w-full flex flex-col sm:flex-row items-center justify-center gap-3"
-               >
-              <div className="w-full sm:w-64 lg:w-72 shadow-md rounded-lg sm:rounded-full overflow-hidden shrink-0">
-                <input
-                 type="email"
-                 value={email}
-                 onChange={(e)=>setEmail(e.target.value)}
-                 placeholder="Enter your email address"
-                 disabled = {isSubmitting}
-                 className="w-full bg-white text-zinc-900 rounded-full sm:rounded-full px-7 py-3 text-sm font-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all appearance-none"
-                 />      
-              </div> 
-              <button 
-                type="submit"
-                disabled ={isSubmitting}
-                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 cursor-pointer shrink-0"
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </button>
-              <a
-                href="tel:+918866556327"
-                className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 shrink-0"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#C2943A]">
-                 <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
-                </svg>
-                Call Now
-              </a>
-            </form>
 
-              {/* Status Message Display */}
-              {statusMessage && (
-                <span
-                  className={`text-xs font-DM sans text-center md:text-right mt-1 ${
-                    statusMessage.type === "success"
-                      ? "text-green-300 font-medium"
-                      : "text-red-300 font-medium"
-                  }`}
-                >
+            <div className="w-full md:w-auto flex flex-col items-center justify-center gap-3">
+          <form
+             onSubmit={handleSubmit}
+            className="w-full flex flex-col sm:flex-row items-center justify-center gap-3"
+             >
+               {/* Input Wrapper with absolute positioning container */}
+               <div className="relative w-full sm:w-64 lg:w-72 shrink-0">
+                 <div className="w-full shadow-md rounded-lg sm:rounded-full overflow-hidden">
+                   <input
+                     type="email"
+                     value={email}
+                     onChange={(e) => setEmail(e.target.value)}
+                     placeholder="Enter your email address"
+                     disabled={isSubmitting}
+                     className="w-full bg-white text-zinc-900 rounded-full sm:rounded-full px-7 py-3 text-sm font-DM sans placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#120E07] transition-all appearance-none"
+                    />
+                  </div>
+                 {/* Absolute positioned message prevents shifting the input box */}
+                   {statusMessage && (
+                  <span
+                    className={`absolute left-4 top-full mt-1.5 text-[13px] font-DM sans whitespace-nowrap ${
+                     statusMessage.type === "success"
+                        ? "text-emerald-700 font-medium"
+                        : "text-red-700 font-medium"
+                      }`}
+                     >
                   {statusMessage.text}
-                </span>
-              )}
+                 </span>
+                 )}
+                </div>
 
-            </div>
+                {/* Button Container: side-by-side on mobile */}
+              <div className="w-full sm:w-auto flex flex-row items-center gap-3 shrink-0">
+                  <button
+                     type="submit"
+                     disabled={isSubmitting}
+                     className="flex-1 sm:flex-none sm:w-auto text-center py-[clamp(10px,1.2vw,14px)] px-[clamp(18px,2vw,26px)] rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 cursor-pointer shrink-0"
+                     >
+                   {isSubmitting ? "Submitting..." : "Submit"}
+                   </button>
 
+                 <a
+                    href="tel:+918866556327"
+                   className="flex-1 sm:flex-none sm:w-auto text-center py-[clamp(10px,1.2vw,14px)] px-[clamp(16px,2vw,24px)] rounded-full bg-[#120E07] hover:bg-black text-white font-semibold text-sm font-DM sans transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 cursor-pointer shrink-0"
+                  >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4 text-[#C2943A]"
+                   >
+                   <path
+                     fillRule="evenodd"
+                     d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
+                     clipRule="evenodd"
+                     />
+                  </svg>
+                    Call Now
+                </a>
+              </div>
+            </form>
           </div>
+         </div>
         </div>
       </div>
-
-      {/* Dark Footer Container */}
+     {/* Dark Footer Container */}
       <div className="w-full bg-gradient-to-b from-[#120E07] via-[#764A04] to-[#DC8800] relative z-10">
 
         {/* ── MAIN FOOTER CONTENT WRAPPER ── */}
         <div className="max-w-[1440px] mx-auto w-full relative z-10">
 
           {/* UPPER PART */}
-          <div className="w-full max-w-[1280px] mx-auto flex flex-col lg:flex-row justify-between pt-[40px] px-8 lg:px-0 pb-[16px] gap-12 lg:gap-0">
+          <div className="w-full max-w-[1280px] mx-auto flex flex-col sm:flex-row justify-between pt-[40px] px-6 sm:px-8 pb-[16px] gap-8 sm:gap-6 lg:gap-0">
 
             {/* Col 1: Arambh Advisory Logo & Description */}
-            <div className="flex flex-col gap-6 w-full lg:w-[368px] text-left text-base">
+            <div className="flex flex-col gap-6 w-full sm:w-[32%] lg:w-[368px] text-left text-base">
               <div className="flex items-center gap-3">
                 <div className="text-white flex items-center">
                   <img
@@ -203,15 +216,15 @@ export default function Footer() {
             </div>
 
             {/* Col 2 & 3: Quick Links & Services */}
-            <div className="flex flex-row gap-4 sm:gap-6 lg:gap-[48px] w-full max-w-[386px] text-left text-base">
+            <div className="flex flex-row gap-4 sm:gap-6 lg:gap-[48px] w-full sm:w-[35%] max-w-[386px] text-left text-base">
               <div className="flex flex-col gap-5 w-1/2">
                 <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Quick Links</h3>
                 <ul className="flex flex-col gap-3 text-DM sans text-[14px] font-medium text-zinc-300">
-                  <li><a href="/about" className="hover:text-amber-400 transition-colors">About Us</a></li>
-                  <li><a href="/" className="hover:text-amber-400 transition-colors">Government Schemes</a></li>
-                  <li><a href="/resources/blogs" className="hover:text-amber-400 transition-colors">Blog</a></li>
-                  <li><a href="/" className="hover:text-amber-400 transition-colors">FAQs</a></li>
-                  <li><a href="/contact" className="hover:text-amber-400 transition-colors">Contact</a></li>
+                  <li><Link href="/about" className="hover:text-amber-400 transition-colors">About Us</Link></li>
+                  <li><Link href="/" className="hover:text-amber-400 transition-colors">Government Schemes</Link></li>
+                  <li><Link href="/resources/blogs" className="hover:text-amber-400 transition-colors">Blog</Link></li>
+                  <li><Link href="/#faq" className="hover:text-amber-400 transition-colors">FAQs</Link></li>
+                  <li><Link href="/contact" className="hover:text-amber-400 transition-colors">Contact</Link></li>
                 </ul>
               </div>
               <div className="flex flex-col gap-5 w-1/2 ">
@@ -228,67 +241,68 @@ export default function Footer() {
             </div>
 
             {/* Col 4: Reach Out */}
-          <div className="flex flex-col gap-[20px] w-full lg:w-[236px] text-left text-base">
-            <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Reach Out</h3>
-            <div className="flex flex-col gap-4 text-DM sans">
-               <a
-                 href="tel:+918866556327"
-                 className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
-                 >
-                 <span className="text-white">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z" />
-                 </svg>
-                 </span>
-                 <span className="font-medium text-white hover:text-[#BD8E32] transition-colors">
-                 +91 88665 56327
-                 </span>
-                 </a>
-                 <a href="mailto:contact@arambhadvisory.com"
-                    className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
-                   >
-                   <span className="text-white">
+            <div className="flex flex-col gap-[20px] w-full sm:w-[28%] lg:w-[236px] text-left text-base">
+              <h3 className="text-DM sans text-[12px] font-bold uppercase tracking-widest text-zinc-400">Reach Out</h3>
+              <div className="flex flex-col gap-4 text-DM sans">
+                <a
+                  href="tel:+918866556327"
+                  className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
+                >
+                  <span className="text-white shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.622c0-1.037.828-1.84 1.854-1.84h4.863c.383 0 .733.204.918.54l1.58 2.87c.156.284.06.634-.216.812l-1.393.904a11.026 11.026 0 0 0 3.902 3.902l.904-1.393c.178-.276.528-.372.812-.216l2.87 1.58c.336.185.54.535.54.918v4.863c0 1.026-.803 1.854-1.84 1.854a15.42 15.42 0 0 1-15.42-15.42Z" />
+                    </svg>
+                  </span>
+                  <span className="font-medium text-white hover:text-[#BD8E32] transition-colors leading-relaxed">
+                    +91 88665 56327
+                  </span>
+                </a>
+                <a
+                  href="mailto:contact@arambhadvisory.com"
+                  className="flex items-center gap-4 text-[14px] cursor-pointer hover:opacity-80 transition-opacity"
+                >
+                  <span className="text-white shrink-0">
                     <svg 
-                     xmlns="http://www.w3.org/2000/svg" 
-                     fill="none" 
-                     viewBox="0 0 24 24" 
-                     strokeWidth={1.5} 
-                     stroke="currentColor" 
-                     className="w-5 h-5"
-                     >
-                     <path strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" 
-                     />
-                   </svg>
-                   </span>
-                    <span className="font-medium text-white hover:text-[#BD8E32] transition-colors whitespace-normal break-all lg:break-normal">
-                        @arambhadvisory.com
-                    </span>
-                  </a>   
-                   <a
-                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Ahmedabad, Gujarat, India")}`}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="flex items-start gap-4 text-[14px] group cursor-pointer"
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={1.5} 
+                      stroke="currentColor" 
+                      className="w-5 h-5"
                     >
-                      <span className="text-white mt-0.5 group-hover:text-[#BD8E32] transition-colors">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
-                         </svg>
-                      </span>
-                       <div className="flex flex-col font-sans">
-                           <span className="font-medium text-white group-hover:text-[#BD8E32] transition-colors">
-                           Ahmedabad, Gujarat, India
-                           </span>
-                           <span className="text-white/80 text-[12px] mt-0.5">
-                            Mon – Sat, 9:30 AM – 6:30 PM
-                          </span>
-                       </div>
-                 </a>                 
+                      <path strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" 
+                      />
+                    </svg>
+                  </span>
+                  <span className="font-medium text-white hover:text-[#BD8E32] transition-colors whitespace-normal break-all lg:break-normal leading-relaxed">
+                    contact@arambhadvisory.com
+                  </span>
+                </a>   
+                <a
+                  href={`https://www.google.com/maps/dir/23.6836361,72.5330807/ARAMBH+SERVICES,+Money+Plant+High+Street,+B-516,+Jagatpur+Rd,+Gota,+Ahmedabad,+Gujarat+382470/@23.40093,72.2009059,10z/data=!3m1!4b1!4m10!4m9!1m1!4e1!1m5!1m1!1s0x395e83005bf88867:0x39769603b8440060!2m2!1d72.5384327!2d23.1140194!3e0?entry=ttu&g_ep=EgoyMDI2MDgyNC4wIKXMDSoASAFQAw%3D%3D`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 text-[14px] group cursor-pointer"
+                >
+                  <span className="text-white mt-0.5 group-hover:text-[#BD8E32] transition-colors shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
+                  </span>
+                  <div className="flex flex-col font-sans">
+                    <span className="font-medium text-white group-hover:text-[#BD8E32] transition-colors">
+                      Ahmedabad, Gujarat, India
+                    </span>
+                    <span className="text-white/80 text-[12px] mt-0.5">
+                      Mon – Sat, 9:30 AM – 6:30 PM
+                    </span>
+                  </div>
+                </a>                  
+              </div>
             </div>
-           </div>
           </div>
           {/* BOTTOM PART (Parent container MUST have overflow-hidden & relative) */}
           <div className="relative px-8 lg:px-0 pt-12 pb-10 w-full max-w-[1280px] mx-auto min-h-[340px] overflow-hidden">

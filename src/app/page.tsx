@@ -75,7 +75,9 @@ export default function Page() {
         </SectionErrorBoundary>
 
         <SectionErrorBoundary sectionName="FAQ">
-          <FAQ />
+          <div id="faq" className="scroll-mt-24">
+            <FAQ />
+          </div>
         </SectionErrorBoundary>
 
         <ScrollToTopButton heroSectionId="hero-section" />

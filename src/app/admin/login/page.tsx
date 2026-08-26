@@ -2,12 +2,34 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
+const usePasswordToggle = () => {
+  const [visible, setVisibility] = useState(false);
+
+  const Icon = (
+    <span
+      className="cursor-pointer"
+      onClick={() => setVisibility((prev) => !prev)}
+    >
+      <FontAwesomeIcon icon={visible ? faEyeSlash : faEye} />
+    </span>
+  );
+
+  const InputType = visible ? "text" : "password";
+
+  return [InputType, Icon] as const;
+};
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [passwordInputType, ToggleIcon] = usePasswordToggle();
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -15,11 +37,42 @@ export default function AdminLoginPage() {
     setLoading(true);
     setErrorMessage(null);
 
+    const validEmail = "admin@admin.com";
+    const validPassword = "admin123";
+
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    const isEmailWrong = cleanEmail !== validEmail;
+    const isPasswordWrong = cleanPassword !== validPassword;
+
+    // 1. Check Email first
+    if (isEmailWrong && !isPasswordWrong) {
+      setErrorMessage("Email doesn't match");
+      setLoading(false);
+      return;
+    }
+
+    // 2. Check Password second
+    if (isPasswordWrong && !isEmailWrong) {
+      setErrorMessage("Password does not match");
+      setLoading(false);
+      return;
+    }
+
+    // 3. Check Both
+    if (isEmailWrong && isPasswordWrong) {
+      setErrorMessage("Credentials do not match");
+      setLoading(false);
+      return;
+    }
+
+    // If both are correct, proceed to login
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: cleanEmail, password: cleanPassword }),
       });
 
       const data = await res.json();
@@ -37,7 +90,6 @@ export default function AdminLoginPage() {
         return;
       }
 
-      localStorage.setItem("admin_token", "authenticated");
       localStorage.setItem("admin_user", JSON.stringify(data.user));
 
       router.push("/admin/dashboard");
@@ -90,14 +142,19 @@ export default function AdminLoginPage() {
             <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 mb-2">
               Password
             </label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl bg-zinc-800/80 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#C2943A] focus:border-transparent transition-all"
-            />
+            <div className="relative">
+              <input
+                type={passwordInputType}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-3 pr-11 rounded-xl bg-zinc-800/80 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#C2943A] focus:border-transparent transition-all"
+              />
+              <span className="password-toogle-icon absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-200">
+                {ToggleIcon}
+              </span>
+            </div>
           </div>
 
           <button

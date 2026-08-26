@@ -4,6 +4,7 @@ const commonAnswer =
   "We work with aspiring entrepreneurs, startups, MSMEs, and growing businesses seeking expert guidance and government support.";
 
 export const faqItems: FAQItem[] = [
+  
   {
     id: 1,
     question: "Do you help with company registration?",

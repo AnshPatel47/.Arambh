@@ -238,7 +238,7 @@ export default function CaseStudies() {
     // Scroll down to bring the Cards Grid into view below the fixed header
     setTimeout(() => {
       if (cardsContainerRef.current) {
-        const yOffset = -80; 
+        const yOffset = -230; 
         const y = cardsContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
@@ -387,7 +387,7 @@ export default function CaseStudies() {
             <button
               key={cat}
               onClick={() => handleCategoryChange(cat)}
-              className={`px-1 sm:px-3 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
+              className={`px-1 sm:px-3 py-1 sm:py-1 text-xs sm:text-sm font-semibold rounded-full transition-all duration-200 cursor-pointer ${
                 activeCategory === cat
                   ? "bg-black text-white shadow-sm"
                   : "bg-white border border-zinc-300 text-zinc-800 hover:border-zinc-400"
