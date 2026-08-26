@@ -30,7 +30,7 @@ export default function ServicesPage() {
   useEffect(() => {
     async function fetchServices() {
       try {
-        const res = await fetch("/api/services");
+       const res = await fetch("/api/services?type=SERVICE");
         const data = await res.json();
         if (data.success && data.services.length > 0) {
           setServices(data.services);

@@ -1,20 +1,30 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { ServiceType } from "@prisma/client";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const typeParam = searchParams.get("type");
 
+    // Build Prisma query condition safely
+    const whereClause: any = {
+      status: "active", // Ensure only published/active services are fetched for users
+    };
+
+    if (typeParam) {
+      whereClause.type = typeParam as ServiceType;
+    }
+
     const services = await prisma.service.findMany({
-      where: typeParam ? { type: typeParam } : {}, // Removed the hardcoded active status filter for Admin
+      where: whereClause,
       orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({ success: true, services });
   } catch (error) {
     console.error("Error fetching services:", error);
-    return NextResponse.json({ success: false });
+    return NextResponse.json({ success: false, services: [] }, { status: 500 });
   }
 }
 
@@ -51,7 +61,7 @@ export async function POST(req: Request) {
           : [],
         icon: icon || "Briefcase",
         status: status || "active",
-        type: type === "SCHEME" ? "SCHEME" : "SERVICE", // <-- Saves as SCHEME or SERVICE
+        type: (type === "SCHEME" ? "SCHEME" : "SERVICE") as ServiceType,
       },
     });
 

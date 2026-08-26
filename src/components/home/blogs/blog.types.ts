@@ -8,6 +8,10 @@ export interface Blog {
   description?: string;
   content?: string;
   readTime?: string;
-  authorName?: string;
-  authorAvatar?: string;
+  
+  author?: {
+    name: string;
+    avatar: string;
+    role?: string;
+  };
 }
